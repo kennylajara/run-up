@@ -1,13 +1,10 @@
 from setuptools import setup
-
-# Get version from `.version` file
-with open('.version') as f:
-    version = f.read()
+from utils.runup import get_version
 
 # Define setup
 setup(
     name="RunUp",
-    version=version,
+    version=get_version(),
     py_modules=["runup"],
     install_requires=[
         'Click==8.0.1',
