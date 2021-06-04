@@ -1,5 +1,5 @@
 import click
-from runup import Config, RunupDB
+from runup import Config, RunupDB, RunupYAML
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -9,7 +9,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 @click.option('-c', '--context', type=click.Path(), default=Config.context)
 @click.option('--verbose', is_flag=True,
               help='Show more information about the internal process.')
-@click.version_option(package_name='runup', prog_name='RunUp')
+@click.version_option(prog_name='RunUp') # package_name='runup', 
 @pass_config
 def cli(config:Config, context:str, verbose:bool):
     """A simple backup system that only saves the files that has changed."""
@@ -27,6 +27,8 @@ def cli(config:Config, context:str, verbose:bool):
 def init(config):
     """Initialize the backup system."""
 
+    parsed_yaml = RunupYAML()
+    parsed_yaml.parse(config.context)
     print('Initiated')
 
 

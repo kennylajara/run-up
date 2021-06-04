@@ -1,5 +1,7 @@
-import click
+from pathlib import Path
 import sqlite3
+
+import click
 import yaml
 
 
@@ -25,7 +27,7 @@ class RunupDB:
 
 
 class RunupYAML:
-    """Intepreter of the `runup.yml` or `runup.yaml` file."""
+    """Analizer of the `runup.yml` or `runup.yaml` file."""
 
     def parse(self, context):
         """
@@ -37,3 +39,18 @@ class RunupYAML:
         maintaining backwards compatibility.
         """
         pass
+
+    def _read_yaml_file(self, context):
+        """Automatically detect and read the `runup.yml` or `runup.yaml`."""
+        
+        yaml_file = Path(f"{context}/runup.yaml")
+        yml_file = Path(f"{context}/runup.yml")
+        if yaml_file.is_file():
+            # file exists
+            pass
+        elif yml_file.is_file():
+            # file exists
+            pass
+        else:
+            raise FileNotFoundError(f'No runup.yaml file has been found in the given context: {context}')
+
