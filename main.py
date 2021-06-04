@@ -1,5 +1,5 @@
 import click
-from runup import Config, DotRunup
+from runup import Config, RunupDB
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -11,17 +11,16 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
               help='Show more information about the internal process.')
 @click.version_option(package_name='runup', prog_name='RunUp')
 @pass_config
-def cli(config, context, verbose):
+def cli(config:Config, context:str, verbose:bool):
     """A simple backup system that only saves the files that has changed."""
 
     config.context = context
     config.verbose = verbose
 
     if verbose:
-        click.echo('Verbose mode: ON')
         click.echo(f'verbose: {verbose}')
         click.echo(f'Context: {context}')
-
+        click.echo('-'*10)
 
 @cli.command()
 @pass_config
