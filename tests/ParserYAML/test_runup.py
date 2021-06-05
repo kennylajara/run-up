@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
+    Optional,
 )
 import unittest
 from unittest import mock
@@ -22,38 +22,38 @@ class TestParserYAML(unittest.TestCase):
         """Find a `runup.yml` in the given context."""
 
         # Type hint
-        corrupted_file:None
-        no_file:None
-        path:Path
-        yaml_file:Dict
-        yml_file:Dict
+        path:Optional[Path]
+        result:bool
 
-        # Search for runup.yaml
-        path, yaml_file = ParserYAML('.', True)._read_yaml_file('./tests/ParserYAML/read/yaml')
-        self.assertIsInstance(path, Path)
-        self.assertIsInstance(yaml_file, Dict)
+        # directory: expected_result
+        dir_tests:dict[str, bool] = {
+            'yaml': True,
+            'yml': True,
+            'none': False,
+            'corrupted': False,
+        }
+        # Loop tests
+        for directory, expected_success in dir_tests.items():
 
-        # Search for runup.yml
-        path, yml_file = ParserYAML('.', True)._read_yaml_file('./tests/ParserYAML/read/yml')
-        self.assertIsInstance(path, Path)
-        self.assertIsInstance(yml_file, Dict)
+            path, result = ParserYAML(
+                context='.', # Can be anything in this test
+                verbose=True
+            )._read_yaml_file(f'./tests/ParserYAML/read/{directory}')
 
-        # Shouldn't find the file
-        path, no_file = ParserYAML('.', True)._read_yaml_file('./tests/ParserYAML/read/none')
-        self.assertIsInstance(path, Path)
-        self.assertIsNone(no_file)
+            # Assertions
+            self.assertIsInstance(path, Path)
+            if expected_success is True:
+                self.assertIsInstance(result, dict)
+            else:
+                self.assertIsNone(result)
 
-        # Shouldn't find the file
-        path, corrupted_file = ParserYAML('.', True)._read_yaml_file('./tests/ParserYAML/read/corrupted')
-        self.assertIsInstance(path, Path)
-        self.assertIsNone(corrupted_file)
 
     @mock.patch('runup.click.echo', return_value=None)
     def test__get_version(self, muck_click_echo):
         """Read the version of the a YAML file"""
 
         context:str = './tests/ParserYAML/version'
-        expected_values:Dict[str, Any] = {
+        expected_values:dict[str, Any] = {
             'missing-version': None,
             'unsupported-version': None,
             'version-non-string': None,
