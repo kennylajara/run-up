@@ -1,9 +1,9 @@
 from typing import (
     Any,
     Dict,
-    Optional,
 )
 import unittest
+from unittest import mock
 
 import yaml
 
@@ -13,7 +13,8 @@ from utils.runup import get_yaml_latest_version
 
 class TestRunupYAML(unittest.TestCase):
 
-    def test__read_yaml_file(self):
+    @mock.patch('runup.click.echo', return_value=None)
+    def test__read_yaml_file(self, muck_click_echo):
         """Find a `runup.yml` in the given context."""
         
         # Search for runup.yaml
@@ -32,7 +33,8 @@ class TestRunupYAML(unittest.TestCase):
         corrupted_file:None = RunupYAML('.')._read_yaml_file('./tests/RunupYaml/read/corrupted')
         self.assertIsNone(corrupted_file)
 
-    def test__get_version(self):
+    @mock.patch('runup.click.echo', return_value=None)
+    def test__get_version(self, muck_click_echo):
         """Read the version of the a YAML file"""
 
         context:str = './tests/RunupYaml/version'
@@ -40,7 +42,7 @@ class TestRunupYAML(unittest.TestCase):
             'missing-version': None,
             'unsupported-version': None,
             'version-non-string': None,
-            'version-string': '1',
+            'version-string': get_yaml_latest_version(),
         }
 
         for filename, expected_value in expected_values.items():
@@ -49,4 +51,3 @@ class TestRunupYAML(unittest.TestCase):
                 real_value = RunupYAML('.')._get_version(yaml_content)
 
             self.assertEqual(expected_value, real_value)
-

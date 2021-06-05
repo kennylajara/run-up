@@ -11,7 +11,6 @@ import click
 import yaml
 
 from utils.runup import (
-    get_version,
     list_yaml_versions,
 )
 import interpreter
@@ -70,7 +69,7 @@ class RunupYAML:
 
 
     def _get_version(self, config)->Union[str,None]:
-        """Get the version of the runner.yaml file."""
+        """Get the version of the runup.yaml file."""
         
         if not 'version' in config:
             click.echo('The file `runnup.yaml` should contain a version.')
