@@ -1,15 +1,18 @@
+# Built-in
 from pathlib import Path
-import sqlite3
 from typing import (
     Dict,
     List,
     Optional,
+    Tuple,
     Union,
 )
 
+# 3rd Pary
 import click
 import yaml
 
+# Own
 from utils.runup import (
     list_yaml_versions,
 )
@@ -24,29 +27,16 @@ class Config(object):
     verbose:bool = False
 
 
-class RunupDB:
-    """
-    Handle the database where the data is stored.
-    
-    The `.runup` files are CSV-formated files containing the
-    path to the file, MD5 sign, SHA256 sign and ID of the backup
-    where this file was found the first time.
-    """
-    
-    def create(self, context:click.Path):
-        """Create a new `runup.db`."""
-        pass
-
-
-class RunupYAML:
+class ParserYAML:
     """Analizer of the `runup.yml` or `runup.yaml` file."""
 
-    def __init__(self, context:str):
+    def __init__(self, context:str, verbose:bool):
         """Define the properties of the class."""
         self._context:str = context
-        self._interpreter:interpreter.Interpreter
+        self._interpreter:Optional[interpreter.Interpreter] = None
+        self._verbose:bool = verbose
 
-    def parse(self)->None:
+    def parse(self)->Optional[Tuple[Path, interpreter.Interpreter]]:
         """
         It parse the YAML file and sends the data to the interpreter.
         
@@ -56,23 +46,31 @@ class RunupYAML:
         maintaining backwards compatibility.
         """
 
-        runnup_config:Optional[Dict[str, Union[str]]] = self._read_yaml_file(context=self._context)
-        if runnup_config is None:
+        path:Path
+        runup_config:Optional[Dict[str, Union[str]]]
+        
+        path, runup_config = self._read_yaml_file(context=self._context)
+        assert runup_config is not None
+        if runup_config is None:
             return None
 
-        version = self._get_version(runnup_config)
+        version = self._get_version(runup_config)
         if version is None:
             return None
 
         if version == '1':
-            self._interpreter = interpreter.Interpreter_1()
+            my_interpreter = interpreter.Interpreter_1(path, verbose=self._verbose)
+        else:
+            return None
+
+        return path, my_interpreter
 
 
     def _get_version(self, config)->Union[str,None]:
         """Get the version of the runup.yaml file."""
         
         if not 'version' in config:
-            click.echo('The file `runnup.yaml` should contain a version.')
+            click.echo('The file `runup.yaml` should contain a version.')
             return None
         elif not isinstance(config['version'], str):
             click.echo(f"The version needs to be a string.")
@@ -84,7 +82,7 @@ class RunupYAML:
             return config['version']
 
 
-    def _read_yaml_file(self, context:str)->Optional[Dict[str, Union[str]]]:
+    def _read_yaml_file(self, context:str)->Tuple[Path,Optional[Dict[str, Union[str]]]]:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""
 
         # Ensure context ends with /
@@ -106,14 +104,14 @@ class RunupYAML:
         # Raise error if the file has not been found.
         if not file_found:
             click.echo(f'No runup.yaml file has been found in the given context: {context}')
-            return None
+            return yaml_path, None
 
         # Return YAML file
         with open(yaml_path, 'r') as stream:
             try:
-                return yaml.safe_load(stream)
+                return yaml_path, yaml.safe_load(stream)
             except yaml.parser.ParserError as error:
                 where = str(error.args[3]).strip()
                 msg = f'Error {error.args[0]} {where}'
                 click.echo(msg)
-                return None
+                return yaml_path, None
