@@ -17,19 +17,19 @@ class TestRunupYAML(unittest.TestCase):
         """Find a `runup.yml` in the given context."""
         
         # Search for runup.yaml
-        yaml_file:Dict = RunupYAML()._read_yaml_file('./tests/RunupYaml/read/yaml')
+        yaml_file:Dict = RunupYAML('.')._read_yaml_file('./tests/RunupYaml/read/yaml')
         self.assertIsInstance(yaml_file, Dict)
 
         # Search for runup.yml
-        yml_file:Dict = RunupYAML()._read_yaml_file('./tests/RunupYaml/read/yml')
+        yml_file:Dict = RunupYAML('.')._read_yaml_file('./tests/RunupYaml/read/yml')
         self.assertIsInstance(yml_file, Dict)
 
         # Shouldn't find the file
-        no_file:None = RunupYAML()._read_yaml_file('./tests/RunupYaml/read/none')
+        no_file:None = RunupYAML('.')._read_yaml_file('./tests/RunupYaml/read/none')
         self.assertIsNone(no_file)
 
         # Shouldn't find the file
-        corrupted_file:None = RunupYAML()._read_yaml_file('./tests/RunupYaml/read/corrupted')
+        corrupted_file:None = RunupYAML('.')._read_yaml_file('./tests/RunupYaml/read/corrupted')
         self.assertIsNone(corrupted_file)
 
     def test__get_version(self):
@@ -46,7 +46,7 @@ class TestRunupYAML(unittest.TestCase):
         for filename, expected_value in expected_values.items():
             with open(f'{context}/{filename}.yaml') as stream:
                 yaml_content:dict = yaml.safe_load(stream)
-                real_value = RunupYAML()._get_version(yaml_content)
+                real_value = RunupYAML('.')._get_version(yaml_content)
 
             self.assertEqual(expected_value, real_value)
 

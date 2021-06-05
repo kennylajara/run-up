@@ -44,7 +44,7 @@ class RunupYAML:
 
     def __init__(self, context:str):
         """Define the properties of the class."""
-        self._context:str
+        self._context:str = context
         self._interpreter:interpreter.Interpreter
 
     def parse(self)->None:

@@ -4,7 +4,7 @@ from typing import List
 
 def get_version()->str:
     """Simple function to read RunUp's version"""
-    with open('./version/runner.version') as f:
+    with open('./version/runup.version') as f:
         return f.read()
 
 
