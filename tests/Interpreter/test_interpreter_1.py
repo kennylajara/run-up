@@ -5,8 +5,8 @@ from shutil import rmtree as rmdir_recursive
 from unittest import mock
 
 # Own
-from utils.unittest import TestCaseExtended
-from interpreter import Interpreter_1
+from src.utils.unittest import TestCaseExtended
+from src.interpreter import Interpreter_1
 
 
 class TestInterpreter_1(TestCaseExtended):
@@ -19,7 +19,7 @@ class TestInterpreter_1(TestCaseExtended):
         if os.path.exists(f"{self._context}/set_environment/.runup"):
             rmdir_recursive(f"{self._context}/set_environment/.runup")
 
-    @mock.patch('interpreter.click.echo', return_value=None)
+    @mock.patch('src.interpreter.click.echo', return_value=None)
     def test_set_environment(self, muck_click_echo) -> None:
         """Test: `Interpreter_1.set_environment`"""
 

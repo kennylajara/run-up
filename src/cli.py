@@ -1,11 +1,22 @@
 # Built-in
-from interpreter import Interpreter
+from typing import Optional
+
+# 3rd Party
 import click
 
 # Own
-from runup import Config, ParserYAML
-from utils.runup import get_version
+from src.interpreter import Interpreter
+from src.utils.version import get_version
+from src.yaml_parser import ParserYAML
 
+
+
+class Config(object):
+    """Default config of the "Global" args and kwargs."""
+
+    context:str = '.'
+    debug:bool = False
+    verbose:bool = False
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
 
@@ -33,11 +44,10 @@ def cli(config:Config, context:str, verbose:bool):
 def init(config):
     """Initialize the backup system."""
 
-    yaml_parser = ParserYAML(config.context)
-    interpreter:Interpreter = yaml_parser.parse()
-    interpreter.set_environment(verbose=config.verbose)
-
-    click.echo('Initiated')
+    yaml_parser = ParserYAML(config.context, verbose=config.verbose)
+    interpreter:Optional[Interpreter] = yaml_parser.parse()
+    if interpreter is not None:
+        interpreter.set_environment(verbose=config.verbose)
 
 if __name__ == "__main__":
     cli()

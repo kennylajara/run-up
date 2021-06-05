@@ -11,13 +11,13 @@ from unittest import mock
 import yaml
 
 # Own
-from runup import ParserYAML
-from utils.runup import get_yaml_latest_version
+from src.yaml_parser import ParserYAML
+from src.utils.version import get_yaml_latest_version
 
 
 class TestParserYAML(unittest.TestCase):
 
-    @mock.patch('runup.click.echo', return_value=None)
+    @mock.patch('src.yaml_parser.click.echo', return_value=None)
     def test__read_yaml_file(self, muck_click_echo):
         """Find a `runup.yml` in the given context."""
 
@@ -48,7 +48,7 @@ class TestParserYAML(unittest.TestCase):
                 self.assertIsNone(result)
 
 
-    @mock.patch('runup.click.echo', return_value=None)
+    @mock.patch('src.yaml_parser.click.echo', return_value=None)
     def test__get_version(self, muck_click_echo):
         """Read the version of the a YAML file"""
 

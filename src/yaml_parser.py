@@ -13,18 +13,10 @@ import click
 import yaml
 
 # Own
-from utils.runup import (
+from src.utils.version import (
     list_yaml_versions,
 )
-import interpreter
-
-
-class Config(object):
-    """Default config of the "Global" args and kwargs."""
-
-    context:str = '.'
-    debug:bool = False
-    verbose:bool = False
+from src import interpreter
 
 
 class ParserYAML:
@@ -50,7 +42,7 @@ class ParserYAML:
         runup_config:Optional[Dict[str, Union[str]]]
         
         path, runup_config = self._read_yaml_file(context=self._context)
-        assert runup_config is not None
+        
         if runup_config is None:
             return None
 
@@ -103,7 +95,7 @@ class ParserYAML:
         
         # Raise error if the file has not been found.
         if not file_found:
-            click.echo(f'No runup.yaml file has been found in the given context: {context}')
+            click.echo(f'No `runup.yaml` file has been found in the given context: {context}')
             return yaml_path, None
 
         # Return YAML file
