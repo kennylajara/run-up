@@ -8,7 +8,7 @@ Unfortunately it is not ready yet, so it cannot be used. I am working hard on it
 
 ## Contribution
 
-Contributions are welcome, either as an ideas or as an implementations in the form of Pull Request. Do not hesitate to open a new issue to clarify doubts that may help the development of the product.
+Contributions are welcome, either as an idea or as an implementations in the form of Pull Request. Do not hesitate to open a new issue to clarify doubts that may help the development of the product.
 
 ## Licencia
 
