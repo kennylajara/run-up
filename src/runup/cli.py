@@ -5,9 +5,9 @@ from typing import Optional
 import click
 
 # Own
-from src.interpreter import Interpreter
+from src.runup.interpreter import Interpreter
 from src.utils.version import get_version
-from src.yaml_parser import ParserYAML
+from src.runup.yaml_parser import ParserYAML
 
 
 

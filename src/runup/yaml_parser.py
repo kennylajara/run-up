@@ -16,7 +16,7 @@ import yaml
 from src.utils.version import (
     list_yaml_versions,
 )
-from src import interpreter
+from src.runup import interpreter
 
 
 class ParserYAML:
