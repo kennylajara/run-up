@@ -1,31 +1,23 @@
 import setuptools 
+from src.utils.version import get_version
 
-# Get content of `README.md` to 
-# add it on the long description
-with open('README.md', "r", encoding="utf-8") as f:
-    README:str = f.read()
 
 # Get content of `.version` to 
 # add it on the long description
 with open('.version', "r", encoding="utf-8") as f:
     VERSION:str = f.read()
 
+# Get content of `README.md` to 
+# add it on the long description
+with open('README.md', "r", encoding="utf-8") as f:
+    README:str = f.read()
+
+
 # Define setup
 setuptools.setup(
     name="RunUp",
-    version=VERSION,
     author="Kenny Lajara",
     author_email="kennylajara@gmail.com",
-    description="RunUp is a backup system that can be managed by command line.",
-    long_description=README,
-    long_description_content_type="text/markdown",
-    url="https://github.com/kennylajara/runup",
-    project_urls={
-        # "Documentation": "https://readthedocs.org/",
-        # 'Source': "https://github.com/kennylajara/runup",
-        'Tracker': 'https://github.com/kennylajara/runup/issues',
-    },
-    include_package_data=True,
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Environment :: Console",
@@ -41,14 +33,25 @@ setuptools.setup(
         "Topic :: System :: Archiving :: Compression",
         "Topic :: System :: Recovery Tools",
     ],
-    python_requires='>=3.6',
-    install_requires=[
-        'Click==8.0.1',
-        'pyyaml==5.4.1',
-    ],
+    description="RunUp is a backup system that can be managed by command line.",
     entry_points={
         'console_scripts': [
             'runup = src.runup.cli:cli',
         ],
     },
+    include_package_data=True,
+    install_requires=[
+        'Click==8.0.1',
+        'pyyaml==5.4.1',
+    ],
+    long_description=README,
+    long_description_content_type="text/markdown",
+    project_urls={
+        # "Documentation": "https://readthedocs.org/",
+        # 'Source': "https://github.com/kennylajara/runup",
+        'Tracker': 'https://github.com/kennylajara/runup/issues',
+    },
+    python_requires='>=3.6',
+    url="https://github.com/kennylajara/runup",
+    version=VERSION,
 )
