@@ -23,7 +23,7 @@ setuptools.setup(
     project_urls={
         # "Documentation": "https://readthedocs.org/",
         # 'Source': "https://github.com/kennylajara/runup",
-        'Tracker': 'https://github.com/docker/compose/issues',
+        'Tracker': 'https://github.com/kennylajara/runup/issues',
     },
     include_package_data=True,
     classifiers=[
