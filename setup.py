@@ -45,6 +45,7 @@ setuptools.setup(
     ],
     long_description=README,
     long_description_content_type="text/markdown",
+    packages=setuptools.find_packages(),
     project_urls={
         # "Documentation": "https://readthedocs.org/",
         # 'Source': "https://github.com/kennylajara/runup",
