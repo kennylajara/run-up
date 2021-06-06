@@ -1,5 +1,4 @@
 import setuptools 
-from src.utils.version import get_version
 
 
 # Get content of `.version` to 
