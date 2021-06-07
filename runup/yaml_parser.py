@@ -79,7 +79,7 @@ class ParserYAML:
                 return config['version']
             # If doesn't contains a dot (is major/general)
             else:
-                # Use the latest of this type
+                # Use the latest minor version of this type mayor
                 found_major:bool = False
                 latest_minor:Optional[str] = None
                 for version in yaml_versions:
@@ -93,12 +93,8 @@ class ParserYAML:
                             return latest_minor
 
                 # If this the execution reach this point, that means that the YAML
-                # version indicated by the user is a minor verion that has not been
-                # released but the number before the period is a released major version.
-                # Example: The YAML ask for version 3.1416 and version 3 is released 
-                #          but the version 3.1416 doesn't exists.
-                click.echo(f"The YAML version {config['version']} doesn't exists.")
-                return None
+                # version indicated by the user is the last major verion 
+                return yaml_versions[-1]
 
 
     def _read_yaml_file(self, context:str)->Tuple[Path, Optional[Dict[str, Union[str]]]]:
