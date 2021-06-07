@@ -7,7 +7,7 @@ from pathlib import Path
 import click
 
 # Own
-from src.runup.runupdb import RunupDB
+from runup.runupdb import RunupDB
 
 
 class Interpreter(ABC):

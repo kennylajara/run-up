@@ -13,10 +13,8 @@ import click
 import yaml
 
 # Own
-from src.utils.version import (
-    list_yaml_versions,
-)
-from src.runup import interpreter
+from runup.version import yaml_versions
+from runup import interpreter
 
 
 class ParserYAML:
@@ -61,20 +59,49 @@ class ParserYAML:
     def _get_version(self, config)->Union[str,None]:
         """Get the version of the runup.yaml file."""
         
+        # If the version is not declared on the YAML file
         if not 'version' in config:
             click.echo('The file `runup.yaml` should contain a version.')
             return None
+        # If the version is not declared as string
         elif not isinstance(config['version'], str):
             click.echo(f"The version needs to be a string.")
             return None
-        elif config['version'] not in list_yaml_versions():
+        # If the version is not in the list of supported versions
+        elif config['version'] not in yaml_versions:
             click.echo(f"The YAML version {config['version']} is not supported.")
             return None
+        # If the version is good and and nice ;-)
         else:
-            return config['version']
+            # If it contains a dot (is a minor/specific version)
+            if config['version'].find('.') > 0:
+                # Use the vesion defined by the user
+                return config['version']
+            # If doesn't contains a dot (is major/general)
+            else:
+                # Use the latest of this type
+                found_major:bool = False
+                latest_minor:Optional[str] = None
+                for version in yaml_versions:
+                    if version == config['version']:
+                        found_major = True
+
+                    if found_major:
+                        if version.startswith(f"{config['version']}."):
+                            latest_minor = version
+                        elif latest_minor is not None:
+                            return latest_minor
+
+                # If this the execution reach this point, that means that the YAML
+                # version indicated by the user is a minor verion that has not been
+                # released but the number before the period is a released major version.
+                # Example: The YAML ask for version 3.1416 and version 3 is released 
+                #          but the version 3.1416 doesn't exists.
+                click.echo(f"The YAML version {config['version']} doesn't exists.")
+                return None
 
 
-    def _read_yaml_file(self, context:str)->Tuple[Path,Optional[Dict[str, Union[str]]]]:
+    def _read_yaml_file(self, context:str)->Tuple[Path, Optional[Dict[str, Union[str]]]]:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""
 
         # Ensure context ends with /

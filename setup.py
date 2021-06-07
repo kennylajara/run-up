@@ -1,16 +1,17 @@
 import setuptools 
+import subprocess
 
 
-# Get content of `.version` to 
-# add it on the long description
-with open('.version', "r", encoding="utf-8") as f:
-    VERSION:str = f.read()
+# Get version from tags
+remote_version:str = subprocess.run(
+    ['git', 'describe', '--tags'],
+    stdout=subprocess.PIPE
+).stdout.decode("utf-8").strip()
 
 # Get content of `README.md` to 
 # add it on the long description
 with open('README.md', "r", encoding="utf-8") as f:
     README:str = f.read()
-
 
 # Define setup
 setuptools.setup(
@@ -35,7 +36,7 @@ setuptools.setup(
     description="RunUp is a backup system that can be managed by command line.",
     entry_points={
         'console_scripts': [
-            'runup = src.runup.cli:cli',
+            'runup = runup.cli:cli',
         ],
     },
     include_package_data=True,
@@ -45,7 +46,7 @@ setuptools.setup(
     ],
     long_description=README,
     long_description_content_type="text/markdown",
-    packages=setuptools.find_packages(),
+    packages=["runup"], # setuptools.find_packages(),
     project_urls={
         # "Documentation": "https://readthedocs.org/",
         # 'Source': "https://github.com/kennylajara/runup",
@@ -53,5 +54,5 @@ setuptools.setup(
     },
     python_requires='>=3.6',
     url="https://github.com/kennylajara/runup",
-    version=VERSION,
+    version=remote_version,
 )

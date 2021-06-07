@@ -11,13 +11,13 @@ from unittest import mock
 import yaml
 
 # Own
-from src.runup.yaml_parser import ParserYAML
-from src.utils.version import get_yaml_latest_version
+from runup.yaml_parser import ParserYAML
+from runup.version import yaml_versions
 
 
 class TestParserYAML(unittest.TestCase):
 
-    @mock.patch('src.runup.yaml_parser.click.echo', return_value=None)
+    @mock.patch('runup.yaml_parser.click.echo', return_value=None)
     def test__read_yaml_file(self, muck_click_echo):
         """Find a `runup.yml` in the given context."""
 
@@ -48,16 +48,22 @@ class TestParserYAML(unittest.TestCase):
                 self.assertIsNone(result)
 
 
-    @mock.patch('src.runup.yaml_parser.click.echo', return_value=None)
+    @mock.patch('runup.yaml_parser.click.echo', return_value=None)
     def test__get_version(self, muck_click_echo):
         """Read the version of the a YAML file"""
 
         context:str = './tests/ParserYAML/version'
+
+        # Do not remove or edit this comment  
+        # without reading the version.py :
+        # "Update major to latest until 2.0 is released"
         expected_values:dict[str, Any] = {
             'missing-version': None,
             'unsupported-version': None,
             'version-non-string': None,
-            'version-string': get_yaml_latest_version(),
+            'version-string-minor': '1.0',
+            'version-string-wrong': None,
+            'version-string-major': '1.0',
         }
 
         for filename, expected_value in expected_values.items():

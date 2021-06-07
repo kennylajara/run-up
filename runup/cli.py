@@ -1,13 +1,13 @@
 # Built-in
-from typing import Optional
+from typing import List, Optional
 
 # 3rd Party
 import click
 
 # Own
-from src.runup.interpreter import Interpreter
-from src.utils.version import get_version
-from src.runup.yaml_parser import ParserYAML
+from runup.interpreter import Interpreter
+from runup.version import runup_version
+from runup.yaml_parser import ParserYAML
 
 
 
@@ -26,7 +26,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
               help="Directory where the runup.yaml is located.")
 @click.option('--verbose', is_flag=True,
               help='Show more information about the internal process.')
-@click.version_option(version=get_version(), prog_name='RunUp')
+@click.version_option(version=runup_version, prog_name='RunUp')
 @pass_config
 def cli(config:Config, context:str, verbose:bool):
     """A simple backup system that only saves the files that has changed."""
