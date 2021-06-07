@@ -1,5 +1,7 @@
 # RunUp
 
+[![PyPI version](https://badge.fury.io/py/RunUp.svg)](https://badge.fury.io/py/RunUp)
+
 RunUp is a backup system that can be managed by command line. It is intended to be easy to use, secure and fast.
 
 ## Usage
