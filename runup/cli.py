@@ -3,8 +3,6 @@ from typing import List, Optional
 
 # 3rd Party
 import click
-from click.core import Context
-from runup import version
 
 # Own
 from runup.interpreter import Interpreter
@@ -59,7 +57,8 @@ def init(config):
 
     # Take actions
     if interpreter is not None:
-        interpreter.set_environment()
+        if interpreter.set_environment():
+            click.echo('New job initialized.')
 
 if __name__ == "__main__":
     cli()

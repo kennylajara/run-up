@@ -124,7 +124,12 @@ class ParserYAML:
         # Return YAML file
         with open(yaml_path, 'r') as stream:
             try:
-                return yaml.safe_load(stream)
+                yaml_content:Optional[dict] = yaml.safe_load(stream)
+                if yaml_content is None:
+                    click.echo('The YAML file is empty. No job have been initated.')
+
+                return yaml_content
+
             except yaml.parser.ParserError as error:
                 where = str(error.args[3]).strip()
                 msg = f'Error {error.args[0]} {where}'
