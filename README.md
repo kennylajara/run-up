@@ -13,6 +13,3 @@ Contributions are welcome, either as an idea or as an implementations in the for
 ## Licencia
 
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at [https://mozilla.org/MPL/2.0/](https://mozilla.org/MPL/2.0/).
-
-RunUP uses third party components. These components have their own licenses, you can find a copy of them [here](https://github.com/kennylajara/runup/tree/main/3rd-party-licenses).
-
