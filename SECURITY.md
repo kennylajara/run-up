@@ -1,24 +1,17 @@
 # Security Policy
 
-## Supported Versions
-
-Here you can find a list of the released versions and their support for
-security update. 
-
-| Version | Supported          | Until      |
-| ------- | ------------------ | ---------- |
-| 0.1.0   | :white_check_mark: | Undefined  |
-
-<!---
-This is how you indicate that certain version is not supported:
-| 0.1.x   | :x:                | mm-dd-yyyy |
--->
-
 ## Reporting a Vulnerability
 
-Do not open an issue to report vulnerabilities as this will make it public 
-for others to exploit. If you have found something that can be considered a 
-security risk, send me an email at `kennylajara+vulnerability[at-dont-spam-me]gmail.com`.
+First, be sure that the vulnerabilty have been found on a supported version. 
+A list of supported versions can be found in the next section.
 
-Be sure to email me ONLY about a security issue. Other types of emails will 
-likely be ignored and receive no response.
+If the vulnerability was found in a supported version, then report it as a bug. 
+This may not be the best practice but, if people show interest in the product, 
+I will make sure this is changed in the future.
+
+## Supported Versions
+
+| Version           | Supported          |
+| ----------------- | ------------------ |
+| 0.1.dev6          | :white_check_mark: |
+| 0.1.Dev5 or lower | :x:                |
