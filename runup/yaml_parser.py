@@ -4,7 +4,6 @@ from typing import (
     Dict,
     List,
     Optional,
-    Tuple,
     Union,
 )
 
@@ -26,7 +25,7 @@ class ParserYAML:
         self._interpreter:Optional[interpreter.Interpreter] = None
         self._verbose:bool = verbose
 
-    def parse(self)->Optional[Tuple[Path, interpreter.Interpreter]]:
+    def parse(self)->Optional[interpreter.Interpreter]:
         """
         It parse the YAML file and sends the data to the interpreter.
         
@@ -36,10 +35,8 @@ class ParserYAML:
         maintaining backwards compatibility.
         """
 
-        path:Path
         runup_config:Optional[Dict[str, Union[str]]]
-        
-        path, runup_config = self._read_yaml_file(context=self._context)
+        runup_config = self._read_yaml_file(context=self._context)
         
         if runup_config is None:
             return None
@@ -48,12 +45,15 @@ class ParserYAML:
         if version is None:
             return None
 
-        if version == '1':
-            my_interpreter = interpreter.Interpreter_1(path, verbose=self._verbose)
+        if version.split('.')[0] == '1':
+            my_interpreter = interpreter.Interpreter_1(
+                context=Path(self._context), 
+                verbose=self._verbose
+            )
         else:
-            return None
+            raise RuntimeError('Impossible to detect the interpreter.')
 
-        return path, my_interpreter
+        return my_interpreter
 
 
     def _get_version(self, config)->Union[str,None]:
@@ -79,7 +79,7 @@ class ParserYAML:
                 return config['version']
             # If doesn't contains a dot (is major/general)
             else:
-                # Use the latest minor version of this type mayor
+                # Use the latest minor version of this major
                 found_major:bool = False
                 latest_minor:Optional[str] = None
                 for version in yaml_versions:
@@ -97,7 +97,7 @@ class ParserYAML:
                 return yaml_versions[-1]
 
 
-    def _read_yaml_file(self, context:str)->Tuple[Path, Optional[Dict[str, Union[str]]]]:
+    def _read_yaml_file(self, context:str)->Optional[Dict[str, Union[str]]]:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""
 
         # Ensure context ends with /
@@ -119,14 +119,14 @@ class ParserYAML:
         # Raise error if the file has not been found.
         if not file_found:
             click.echo(f'No `runup.yaml` file has been found in the given context: {context}')
-            return yaml_path, None
+            return None
 
         # Return YAML file
         with open(yaml_path, 'r') as stream:
             try:
-                return yaml_path, yaml.safe_load(stream)
+                return yaml.safe_load(stream)
             except yaml.parser.ParserError as error:
                 where = str(error.args[3]).strip()
                 msg = f'Error {error.args[0]} {where}'
                 click.echo(msg)
-                return yaml_path, None
+                return None

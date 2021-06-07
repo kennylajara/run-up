@@ -3,6 +3,8 @@ from typing import List, Optional
 
 # 3rd Party
 import click
+from click.core import Context
+from runup import version
 
 # Own
 from runup.interpreter import Interpreter
@@ -35,6 +37,9 @@ def cli(config:Config, context:str, verbose:bool):
     config.verbose = verbose
 
     if verbose:
+        click.echo('-'*10)
+        click.echo(f'RunUp, version {runup_version}')
+        click.echo('-'*10)
         click.echo(f'verbose: {verbose}')
         click.echo(f'Context: {context}')
         click.echo('-'*10)
@@ -44,10 +49,17 @@ def cli(config:Config, context:str, verbose:bool):
 def init(config):
     """Initialize the backup system."""
 
-    yaml_parser = ParserYAML(config.context, verbose=config.verbose)
-    interpreter:Optional[Interpreter] = yaml_parser.parse()
+    interpreter:Optional[Interpreter] = None
+
+    # Parse YAML file
+    interpreter = ParserYAML(
+        context=config.context, 
+        verbose=config.verbose,
+    ).parse()
+
+    # Take actions
     if interpreter is not None:
-        interpreter.set_environment(verbose=config.verbose)
+        interpreter.set_environment()
 
 if __name__ == "__main__":
     cli()

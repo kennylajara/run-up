@@ -22,7 +22,6 @@ class TestParserYAML(unittest.TestCase):
         """Find a `runup.yml` in the given context."""
 
         # Type hint
-        path:Optional[Path]
         result:bool
 
         # directory: expected_result
@@ -35,13 +34,12 @@ class TestParserYAML(unittest.TestCase):
         # Loop tests
         for directory, expected_success in dir_tests.items():
 
-            path, result = ParserYAML(
+            result = ParserYAML(
                 context='.', # Can be anything in this test
                 verbose=True
             )._read_yaml_file(f'./tests/ParserYAML/read/{directory}')
 
             # Assertions
-            self.assertIsInstance(path, Path)
             if expected_success is True:
                 self.assertIsInstance(result, dict)
             else:
