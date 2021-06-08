@@ -23,8 +23,8 @@ jobs:
       id: pytest
       uses: alexanderdamiani/pytester-cov@v1.1.0
       with:
-        pytest-root-dir: '.'
-        cov-omit-list: 'tests/*, dev/*, */__init__.py, setup.py'
+        pytest-root-dir: './runup'
+        cov-omit-list: 'runnup/__init__.py'
         cov-threshold-single: 10
         cov-threshold-total: 50
     - name: Commit pytest coverage table
