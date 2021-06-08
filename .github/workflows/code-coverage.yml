@@ -26,9 +26,9 @@ jobs:
       uses: alexanderdamiani/pytester-cov@v1.2.0
       with:
         pytest-root-dir: './runup'
-        cov-omit-list: './runnup/init.py'
-        cov-threshold-single: 80
-        cov-threshold-total: 85
+#        cov-omit-list: '__init__.py'
+#        cov-threshold-single: 80
+#        cov-threshold-total: 85
         requirements-file: 'requirements-test.txt'
         
     - name: Commit pytest coverage table
@@ -36,14 +36,14 @@ jobs:
       with:
         body: ${{ steps.pytest.outputs.output-table }}
         
-    - name: Coverage single fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == true }}
-      run: |
-        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
-        exit 1
+#    - name: Coverage single fail - exit
+#      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == true }}
+#      run: |
+#        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
+#        exit 1
         
-    - name: Coverage total fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == true }}
-      run: |
-        echo "cov total fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
-        exit 1
+#    - name: Coverage total fail - exit
+#      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == true }}
+#      run: |
+#        echo "cov total fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
+#        exit 1
