@@ -19,24 +19,52 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-test.txt
-#         pip install black
-#     - name: Lint with black
-#       run: |
-#         black --check .
     - name: pytest
       id: pytest
       uses: alexanderdamiani/pytester-cov@v1.1.0
       with:
         pytest-root-dir: '.'
-        cov-omit-list: 'tests/*'
+        cov-omit-list: 'tests/*, dev/*, */__init__.py'
         cov-threshold-single: 10
         cov-threshold-total: 50
     - name: Commit pytest coverage table
       uses: peter-evans/commit-comment@v1
       with:
         body: ${{ steps.pytest.outputs.output-table }}
+
+    - name: Coverage single fail - new issue
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Pytest coverage single falls below minimum ${{ env.COVERAGE_SINGLE }}
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: ${{ steps.pytester-cov.outputs.output-table }}
+
+    - name: Coverage single fail - exit
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      run: |
+        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
+        exit 1
+
+    - name: Coverage total fail - new issue
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
+      uses: nashmaniac/create-issue-action@v1.1
+      with:
+        title: Pytest coverage total falls below minimum ${{ env.COVERAGE_TOTAL }}
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: ${{ steps.pytester-cov.outputs.output-table }}
+
     - name: Coverage total fail - exit
       if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
       run: |
         echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
         exit 1
+
+#     - name: Commit pytest coverage table
+#       uses: peter-evans/commit-comment@v1
+#       with:
+#         body: ${{ steps.pytester-cov.outputs.output-table }}
