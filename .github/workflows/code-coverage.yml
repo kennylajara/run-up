@@ -33,8 +33,8 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      COVERAGE_SINGLE: 50
-      COVERAGE_TOTAL: 70
+      COVERAGE_SINGLE: 60
+      COVERAGE_TOTAL: 60
 
     steps:
     - uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
       uses: nashmaniac/create-issue-action@v1.1
       with:
         title: Pytest coverage single falls below minimum ${{ env.COVERAGE_SINGLE }}
-        token: ${{secrets.GITHUB_TOKEN}}
+        token: ${{secrets.CREATE_ISSUES}}
         assignees: ${{github.actor}}
         labels: worflow-failed
         body: ${{ steps.pytester-cov.outputs.output-table }}
@@ -78,7 +78,7 @@ jobs:
       uses: nashmaniac/create-issue-action@v1.1
       with:
         title: Pytest coverage total falls below minimum ${{ env.COVERAGE_TOTAL }}
-        token: ${{secrets.GITHUB_TOKEN}}
+        token: ${{secrets.CREATE_ISSUES}}
         assignees: ${{github.actor}}
         labels: worflow-failed
         body: ${{ steps.pytester-cov.outputs.output-table }}
