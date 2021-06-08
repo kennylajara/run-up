@@ -15,10 +15,12 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+        
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements-test.txt
+        
     - name: pytest
       id: pytest
       uses: alexanderdamiani/pytester-cov@v1.2.0
@@ -26,14 +28,22 @@ jobs:
         pytest-root-dir: './runup'
         cov-omit-list: './runnup/init.py'
         cov-threshold-single: 70
-        cov-threshold-total: 80
+        cov-threshold-total: 100
         requirements-file: 'requirements-test.txt'
+        
     - name: Commit pytest coverage table
       uses: peter-evans/commit-comment@v1
       with:
         body: ${{ steps.pytest.outputs.output-table }}
+        
+    - name: Coverage single fail - exit
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      run: |
+        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
+        exit 1
+        
     - name: Coverage total fail - exit
       if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
       run: |
-        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
+        echo "cov total fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
         exit 1
