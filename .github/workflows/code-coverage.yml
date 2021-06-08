@@ -27,8 +27,8 @@ jobs:
       with:
         pytest-root-dir: './runup'
         cov-omit-list: './runnup/init.py'
-        cov-threshold-single: 70
-        cov-threshold-total: 100
+        cov-threshold-single: 80
+        cov-threshold-total: 85
         requirements-file: 'requirements-test.txt'
         
     - name: Commit pytest coverage table
