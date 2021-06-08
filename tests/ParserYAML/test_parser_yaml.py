@@ -1,9 +1,5 @@
 # Built-in
-from pathlib import Path
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Optional
 import unittest
 from unittest import mock
 
@@ -12,7 +8,6 @@ import yaml
 
 # Own
 from runup.yaml_parser import ParserYAML
-from runup.version import yaml_versions
 
 
 class TestParserYAML(unittest.TestCase):
@@ -55,7 +50,7 @@ class TestParserYAML(unittest.TestCase):
         # Do not remove or edit this comment  
         # without reading the version.py :
         # "Update major to latest until 2.0 is released"
-        expected_values:dict[str, Any] = {
+        expected_values:dict[str, Optional[str]] = {
             'missing-version': None,
             'unsupported-version': None,
             'version-non-string': None,
