@@ -52,7 +52,6 @@ class TestInterpreter_1(TestCaseExtended):
         
         directories:List[str] = [
             'dir-exists',
-            'version-exists',
         ]
 
         for directory in directories:
