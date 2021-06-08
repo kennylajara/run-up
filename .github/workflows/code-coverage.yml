@@ -37,13 +37,13 @@ jobs:
         body: ${{ steps.pytest.outputs.output-table }}
         
     - name: Coverage single fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == true }}
       run: |
         echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
         exit 1
         
     - name: Coverage total fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
+      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == true }}
       run: |
         echo "cov total fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
         exit 1
