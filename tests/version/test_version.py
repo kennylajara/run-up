@@ -1,6 +1,6 @@
 # Built-in
 import re
-from typing import List
+from typing import List, Pattern
 import unittest
 
 # Own
@@ -21,5 +21,5 @@ class TestParserYAML(unittest.TestCase):
         self.assertIsInstance(yaml_versions, List)
         for version in yaml_versions:
             self.assertIsInstance(version, str)
-            format = re.compile(r'^(0|[1-9]\d*)(\.(0|[1-9]\d*))?$')
+            format:Pattern[str] = re.compile(r'^(0|[1-9]\d*)(\.(0|[1-9]\d*))?$')
             self.assertRegex(version, format)

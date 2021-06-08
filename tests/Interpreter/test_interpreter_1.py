@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 from shutil import rmtree as rmdir_recursive
+from typing import List
 from unittest import mock
 
 # Own
@@ -16,14 +17,14 @@ class TestInterpreter_1(TestCaseExtended):
 
     def tearDown(self) -> None:
         """Clean the environment after running the tests."""
-        if os.path.exists(f"{self._context}/set_environment/.runup"):
-            rmdir_recursive(f"{self._context}/set_environment/.runup")
+        if os.path.exists(f"{self._context}/set_environment/empty/.runup"):
+            rmdir_recursive(f"{self._context}/set_environment/empty/.runup")
 
     @mock.patch('runup.interpreter.click.echo', return_value=None)
-    def test_set_environment(self, muck_click_echo) -> None:
+    def test_set_environment_success(self, muck_click_echo) -> None:
         """Test: `Interpreter_1.set_environment`"""
 
-        context:Path = f'{self._context}/set_environment'
+        context:Path = f'{self._context}/set_environment/empty'
         env_is_set:bool = Interpreter_1(context, True).set_environment()
         self.assertTrue(env_is_set)
 
@@ -43,3 +44,18 @@ class TestInterpreter_1(TestCaseExtended):
         # Confirm that the `.version` file hast the right version
         with open(f'{context}/.runup/.version') as f:
             self.assertEqual(f.read(), self._version)
+
+
+    @mock.patch('runup.interpreter.click.echo', return_value=None)
+    def test_set_environment_fail(self, muck_click_echo) -> None:
+        """Test: `Interpreter_1.set_environment`"""
+        
+        directories:List[str] = [
+            'dir-exists',
+            'version-exists',
+        ]
+
+        for directory in directories:
+            context:Path = f'{self._context}/set_environment/{directory}'
+            env_is_set:bool = Interpreter_1(context, True).set_environment()
+            self.assertFalse(env_is_set)

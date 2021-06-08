@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from shutil import rmtree as rmdir_recursive
+from unittest import mock
 
 from click.testing import CliRunner
 
@@ -38,6 +39,17 @@ class CLI_1_0(TestCaseExtended):
         result = runner.invoke(cli, ['--context', context, 'init'])
         # Assert
         self.assertEqual(result.output, 'New job initialized.\n')
+        self.assertEqual(result.exit_code, 0)
+
+    @mock.patch('runup.cli.click.echo', return_value=None)
+    def test_init_verbose(self, mock_click_echo):
+
+        # Prepare
+        runner:CliRunner = CliRunner()
+        context:Path = f'{self._context}/init-verbose'
+        # Execute
+        result = runner.invoke(cli, ['--verbose', '--context', context, 'init'])
+        # Assert
         self.assertEqual(result.exit_code, 0)
 
     def test_version(self):

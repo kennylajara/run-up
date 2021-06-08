@@ -76,16 +76,10 @@ class Interpreter_1(Interpreter):
             return False
         
         # Create file `.version`
-        if not os.path.exists(f'{self._context}/.runup/.version'):
-            with open(f'{self._context}/.runup/.version', "w") as file:
-                file.write(self._version)
-            if self._verbose:
-                click.echo(f'created file {self._context}/.runup/.version')
-        else:
-            if self._verbose:
-                click.echo(f'The file `{self._context}/.runup/.version` already exists.')
-            click.echo('RunUp is already initiated.')
-            return False
+        with open(f'{self._context}/.runup/.version', "w") as file:
+            file.write(self._version)
+        if self._verbose:
+            click.echo(f'created file {self._context}/.runup/.version')
 
         # Create database
         RunupDB(self._context, self._verbose).create_database()

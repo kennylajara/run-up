@@ -21,10 +21,11 @@ class TestParserYAML(unittest.TestCase):
 
         # directory: expected_result
         dir_tests:dict[str, bool] = {
+            'empty': False,
+            'corrupted': False,
+            'none': False,
             'yaml': True,
             'yml': True,
-            'none': False,
-            'corrupted': False,
         }
         # Loop tests
         for directory, expected_success in dir_tests.items():
