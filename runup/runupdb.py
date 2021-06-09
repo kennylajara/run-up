@@ -2,6 +2,7 @@
 from pathlib import Path
 import sqlite3
 from sqlite3 import Error
+from typing import List
 
 # 3rd Party
 import click
@@ -57,5 +58,50 @@ class RunupDB:
         
     def create_database(self):
         """Create a database `runup.db`."""
+
+        sql_list:List[str] = [
+        """
+            CREATE TABLE `procedures` (
+                `name` TEXT PRIMARY KEY,
+                `running` BOOL NOT NULL,
+                `source` TEXT NOT NULL,
+                `cron` TEXT NOT NULL DEFAULT '0 * * * *'
+            );
+        """,
+        """
+            CREATE TABLE `jobs` (
+                `job_id` INTEGER PRIMARY KEY,
+                `procedure_name` TEXT NOT NULL,
+                `time_start` DATETIME NOT NULL,
+                `time_finish` DATETIME NULL,
+                `files_num` INT DEFAULT 0,
+                FOREIGN KEY (`procedure_name`)
+                REFERENCES `procedures` (`procedure_name`)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            );
+        """,
+        """
+            CREATE TABLE `files` (
+                `file_id` INTEGER PRIMARY KEY,
+                `job_id` INTEGER NOT NULL,
+                `path` TEXT NOT NULL,
+                `md5` TEXT NOT NULL,
+                `sha1` TEXT NOT NULL,
+                `sha2` TEXT NOT NULL,
+                FOREIGN KEY (`job_id`)
+                REFERENCES `jobs` (`job_id`)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+            );
+        """,
+        """
+            CREATE UNIQUE INDEX `signature` 
+            ON `files` (`md5`, `sha1`, `sha2`);
+        """
+        ]
+
         self.connect()
+        for sql in sql_list:
+            self.execute(sql)
         self.close_connection()
