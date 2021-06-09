@@ -9,4 +9,4 @@ procedure:
       - './icon_cache'
     encrypt:
       - './config.json'
-    password: '$ecet_P4ssW0rd'
+    password: '$ecret_P4ssW0rd'

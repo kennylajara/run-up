@@ -159,11 +159,15 @@ class Interpreter_1(Interpreter):
         if '.' not in parameter:
             vInfo(self._verbose, f"Parameter `{parameter}` doesn't have sub-paramenters")
             if parameter == '*':
-                vInfo(self._verbose, f"YAML file cointains {len(yaml_config)} parameters.")
-                if len(yaml_config) > 0:
+                if yaml_config is not None and len(yaml_config) > 0:
+                    vInfo(self._verbose, f"YAML file cointains {len(yaml_config)} parameters.")
                     return None
-                else:
+                elif yaml_config is not None:
+                    vInfo(self._verbose, f"YAML file cointains no parameters.")
                     return '*'
+                else:
+                    vInfo(self._verbose, f"YAML file cointains no parameters.")
+                    return None
             elif parameter not in yaml_config.keys():
                 vInfo(self._verbose, f"Single parameter `{parameter}` not found in YAML file")
                 return parameter

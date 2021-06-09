@@ -94,7 +94,7 @@ class ParserYAML:
         
         # If the version is not declared on the YAML file
         if not 'version' in config:
-            click.echo('The file `runup.yaml` should contain a version.')
+            click.echo('The file runup YAML should contain a version.')
             return None
         # If the version is not declared as string
         elif not isinstance(config['version'], str):
@@ -171,6 +171,12 @@ class ParserYAML:
 
             except yaml.parser.ParserError as error:
                 where = str(error.args[3]).strip()
-                msg = f'Error {error.args[0]} {where}'
+                msg = f'ParserError {error.args[0]} {where}'
+                click.echo(msg)
+                return None
+
+            except yaml.scanner.ScannerError as error:
+                where = str(error.args[3]).strip()
+                msg = f'ScannerError {error.args[0]} {where}'
                 click.echo(msg)
                 return None
