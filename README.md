@@ -23,7 +23,7 @@ Git history can't be modified, to do simple tasks like deleting older restore po
 > 
 > — Linus Torvalds ([source](https://towardsdatascience.com/data-versioning-all-you-need-to-know-7077aa5ed6d1#d5e7))
 
-So why another backup solution? Because you have to finally solve these problems and that's what this tool does by creating "fragmented backups", a new backup strategy that not only reduces both backup creation and restore time, but avoids data duplication altogether.
+So why another backup solution? Because we have to finally solve these problems and that's what this tool does by creating "fragmented backups", a new backup strategy that not only reduces both backup creation and restore time, but avoids data duplication altogether.
 
 ## Usage
 
