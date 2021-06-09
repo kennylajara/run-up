@@ -1,5 +1,5 @@
 # Built-in
-from typing import Optional
+from typing import Dict, Optional
 import unittest
 from unittest import mock
 
@@ -13,14 +13,15 @@ from runup.yaml_parser import ParserYAML
 class TestParserYAML(unittest.TestCase):
 
     @mock.patch('runup.yaml_parser.click.echo', return_value=None)
-    def test__read_yaml_file(self, muck_click_echo):
+    @mock.patch('runup.utils.echo', return_value=None)
+    def test__read_yaml_file(self, muck_click_echo, muck_verbose):
         """Find a `runup.yml` in the given context."""
 
         # Type hint
         result:bool
 
         # directory: expected_result
-        dir_tests:dict[str, bool] = {
+        dir_tests:Dict[str, bool] = {
             'empty': False,
             'corrupted': False,
             'none': False,
@@ -37,13 +38,14 @@ class TestParserYAML(unittest.TestCase):
 
             # Assertions
             if expected_success is True:
-                self.assertIsInstance(result, dict)
+                self.assertIsInstance(result, Dict)
             else:
                 self.assertIsNone(result)
 
 
     @mock.patch('runup.yaml_parser.click.echo', return_value=None)
-    def test__get_version(self, muck_click_echo):
+    @mock.patch('runup.utils.echo', return_value=None)
+    def test__get_version(self, muck_click_echo, muck_verbose):
         """Read the version of the a YAML file"""
 
         context:str = './tests/ParserYAML/version'
@@ -51,7 +53,7 @@ class TestParserYAML(unittest.TestCase):
         # Do not remove or edit this comment  
         # without reading the version.py :
         # "Update major to latest until 2.0 is released"
-        expected_values:dict[str, Optional[str]] = {
+        expected_values:Dict[str, Optional[str]] = {
             'missing-version': None,
             'unsupported-version': None,
             'version-non-string': None,
@@ -62,7 +64,7 @@ class TestParserYAML(unittest.TestCase):
 
         for filename, expected_value in expected_values.items():
             with open(f'{context}/{filename}.yaml') as stream:
-                yaml_content:dict = yaml.safe_load(stream)
+                yaml_content:Dict = yaml.safe_load(stream)
                 real_value = ParserYAML('.', True)._get_version(yaml_content)
 
             self.assertEqual(expected_value, real_value)

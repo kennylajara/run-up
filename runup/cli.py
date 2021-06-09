@@ -1,4 +1,5 @@
 # Built-in
+import sys
 from typing import List, Optional
 
 # 3rd Party
@@ -8,7 +9,7 @@ import click
 from runup.interpreter import Interpreter
 from runup.version import runup_version
 from runup.yaml_parser import ParserYAML
-
+from runup.utils import vCall, vInfo, vResponse
 
 
 class Config(object):
@@ -50,15 +51,24 @@ def init(config):
     interpreter:Optional[Interpreter] = None
 
     # Parse YAML file
+    vCall(config.verbose, 'ParserYAML.parse')
     interpreter = ParserYAML(
         context=config.context, 
         verbose=config.verbose,
     ).parse()
+    vResponse(config.verbose, 'ParserYAML.parse', interpreter)
 
     # Take actions
     if interpreter is not None:
-        if interpreter.set_environment():
+        vCall(config.verbose, 'Interpreter:set_environment')
+        env_set:bool = interpreter.set_environment()
+        vResponse(config.verbose, 'Interpreter:set_environment', env_set)
+
+        if env_set:
             click.echo('New job initialized.')
+    else:
+        click.echo('Interpreter not detected.')
+        sys.exit(1)
 
 if __name__ == "__main__":
     cli()

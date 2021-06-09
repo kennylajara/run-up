@@ -14,6 +14,7 @@ import yaml
 # Own
 from runup.version import yaml_versions
 from runup import interpreter
+from runup.utils import vCall, vInfo, vResponse
 
 
 class ParserYAML:
@@ -35,28 +36,60 @@ class ParserYAML:
         maintaining backwards compatibility.
         """
 
-        runup_config:Optional[Dict[str, Union[str]]]
-        runup_config = self._read_yaml_file(context=self._context)
+        yaml_config:Optional[Dict[str, Union[str]]]
+        vCall(self._verbose, 'ParserYAML:_read_yaml_file')
+        yaml_config = self._read_yaml_file(context=self._context)
+        vResponse(self._verbose, 'ParserYAML:_read_yaml_file', yaml_config)
         
-        if runup_config is None:
+        if yaml_config is None:
             return None
 
-        version = self._get_version(runup_config)
+        vCall(self._verbose, 'ParserYAML:_get_version')
+        version = self._get_version(yaml_config)
+        vResponse(self._verbose, f' ParserYAML:_get_version', version)
+
         if version is None:
+            vInfo(self._verbose, f'Version not detected')
             return None
 
+        # Select correct interpreter
         if version.split('.')[0] == '1':
+            # Initialize interpreter
+            vCall(self._verbose, f' interpreter.Interpreter_1')
             my_interpreter = interpreter.Interpreter_1(
                 context=Path(self._context), 
                 verbose=self._verbose
             )
+            vResponse(self._verbose, f'interpreter.Interpreter_1', my_interpreter)
+
+            # Find missing parameter
+            vCall(self._verbose, 'my_interpreter.missing_parameter')
+            missing_parameter:Optional[str] = my_interpreter.missing_parameter(yaml_config)
+            vResponse(self._verbose, f'my_interpreter.missing_parameter', missing_parameter)
+
+            if missing_parameter is not None:
+                if missing_parameter.startswith('*'):
+                    click.echo(f'Parameter `{missing_parameter[1:]}` cannot be empty.')
+                else:
+                    click.echo(f'Missing required parameter `{missing_parameter}` on YAML file.')
+                return None
+
+            # Validate received parameters
+            vCall(self._verbose, 'my_interpreter.validate_parameters')
+            invalid_parameters:Optional[str] = my_interpreter.validate_parameters(yaml_config)
+            vResponse(self._verbose, f'my_interpreter.validate_parameters', invalid_parameters)
+
+            if invalid_parameters is not None:
+                click.echo(f'Found invalid parameter `{invalid_parameters}` on YAML file.')
+                return None
+
         else:
             raise RuntimeError('Impossible to detect the interpreter.')
 
         return my_interpreter
 
 
-    def _get_version(self, config)->Union[str,None]:
+    def _get_version(self, config)->Union[str, None]:
         """Get the version of the runup.yaml file."""
         
         # If the version is not declared on the YAML file
@@ -73,12 +106,16 @@ class ParserYAML:
             return None
         # If the version is good and and nice ;-)
         else:
+            vInfo(self._verbose, f'YAML version found')
+
             # If it contains a dot (is a minor/specific version)
             if config['version'].find('.') > 0:
+                vInfo(self._verbose, f"Info: Version {config['version']} is minor version")
                 # Use the vesion defined by the user
                 return config['version']
             # If doesn't contains a dot (is major/general)
             else:
+                vInfo(self._verbose, f'Version is major version')
                 # Use the latest minor version of this major
                 found_major:bool = False
                 latest_minor:Optional[str] = None
@@ -120,11 +157,13 @@ class ParserYAML:
         if not file_found:
             click.echo(f'No `runup.yaml` file has been found in the given context: {context}')
             return None
+        else:
+            vInfo(self._verbose, f'`{file_found}` found.')
 
         # Return YAML file
         with open(yaml_path, 'r') as stream:
             try:
-                yaml_content:Optional[dict] = yaml.safe_load(stream)
+                yaml_content:Optional[Dict] = yaml.safe_load(stream)
                 if yaml_content is None:
                     click.echo('The YAML file is empty. No job have been initated.')
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 import sqlite3
 from sqlite3 import Error
-from typing import List
+from typing import Dict
 
 # 3rd Party
 import click
@@ -22,12 +22,11 @@ class RunupDB:
         self._verbose:bool = verbose
         self._conn = None
         
-    def execute(self, query):
+    def execute(self, name:str, query:str):
         """Execute a query."""
 
         if self._verbose:
-            click.echo(f'Execute query on database: {self._dbname}')
-            click.echo(query)
+            click.echo(f'Executed query: {name}')
 
         try:
             c = self._conn.cursor()
@@ -59,29 +58,29 @@ class RunupDB:
     def create_database(self):
         """Create a database `runup.db`."""
 
-        sql_list:List[str] = [
-        """
+        sql_dict:Dict[str] = {
+        "Create procedures": """
             CREATE TABLE `procedures` (
                 `name` TEXT PRIMARY KEY,
                 `running` BOOL NOT NULL,
                 `source` TEXT NOT NULL,
-                `cron` TEXT NOT NULL DEFAULT '0 * * * *'
+                `cron` TEXT NOT NULL
             );
         """,
-        """
+        "Create jobs": """
             CREATE TABLE `jobs` (
                 `job_id` INTEGER PRIMARY KEY,
                 `procedure_name` TEXT NOT NULL,
                 `time_start` DATETIME NOT NULL,
                 `time_finish` DATETIME NULL,
-                `files_num` INT DEFAULT 0,
+                `files_num` INT NOT NULL,
                 FOREIGN KEY (`procedure_name`)
                 REFERENCES `procedures` (`procedure_name`)
                     ON UPDATE CASCADE
                     ON DELETE CASCADE
             );
         """,
-        """
+        "Create files": """
             CREATE TABLE `files` (
                 `file_id` INTEGER PRIMARY KEY,
                 `job_id` INTEGER NOT NULL,
@@ -95,13 +94,13 @@ class RunupDB:
                     ON DELETE CASCADE
             );
         """,
-        """
+        "Create signature index": """
             CREATE UNIQUE INDEX `signature` 
             ON `files` (`md5`, `sha1`, `sha2`);
-        """
-        ]
+        """,
+        }
 
         self.connect()
-        for sql in sql_list:
-            self.execute(sql)
+        for name, sql in sql_dict.items():
+            self.execute(name, sql)
         self.close_connection()

@@ -21,7 +21,8 @@ class TestInterpreter_1(TestCaseExtended):
             rmdir_recursive(f"{self._context}/set_environment/empty/.runup")
 
     @mock.patch('runup.interpreter.click.echo', return_value=None)
-    def test_set_environment_success(self, muck_click_echo) -> None:
+    @mock.patch('runup.utils.echo', return_value=None)
+    def test_set_environment_success(self, muck_click_echo, muck_verbose) -> None:
         """Test: `Interpreter_1.set_environment`"""
 
         context:Path = f'{self._context}/set_environment/empty'
@@ -47,7 +48,8 @@ class TestInterpreter_1(TestCaseExtended):
 
 
     @mock.patch('runup.interpreter.click.echo', return_value=None)
-    def test_set_environment_fail(self, muck_click_echo) -> None:
+    @mock.patch('runup.utils.echo', return_value=None)
+    def test_set_environment_fail(self, muck_click_echo, muck_verbose) -> None:
         """Test: `Interpreter_1.set_environment`"""
         
         directories:List[str] = [
