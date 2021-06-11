@@ -62,7 +62,7 @@ class RunupDB:
         "Create procedures": """
             CREATE TABLE `procedures` (
                 `name` TEXT PRIMARY KEY,
-                `running` BOOL NOT NULL,
+                `running` INTEGER NOT NULL,
                 `source` TEXT NOT NULL,
                 `cron` TEXT NOT NULL
             );
@@ -71,9 +71,9 @@ class RunupDB:
             CREATE TABLE `jobs` (
                 `job_id` INTEGER PRIMARY KEY,
                 `procedure_name` TEXT NOT NULL,
-                `time_start` DATETIME NOT NULL,
-                `time_finish` DATETIME NULL,
-                `files_num` INT NOT NULL,
+                `time_start` INTEGER NOT NULL,
+                `time_finish` INTEGER NULL,
+                `files_num` INTEGER NOT NULL,
                 FOREIGN KEY (`procedure_name`)
                 REFERENCES `procedures` (`procedure_name`)
                     ON UPDATE CASCADE
