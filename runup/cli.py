@@ -67,7 +67,7 @@ def init(config):
         if env_set:
             click.echo('New job initialized.')
     else:
-        click.echo('Interpreter not detected.')
+        # click.echo('Interpreter not detected.')
         sys.exit(1)
 
 if __name__ == "__main__":

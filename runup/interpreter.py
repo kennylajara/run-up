@@ -48,7 +48,7 @@ class Interpreter(ABC):
         """Set interpreter variables."""
         self._context:Path = context
         self._required_parameters:List[str] = required_parameters
-        self._valid_parameters:List[str] = valid_parameters
+        self._valid_parameters:Dict[str, Any] = valid_parameters
         self._verbose:bool = verbose
         self._version:str = version
         
@@ -76,31 +76,69 @@ class Interpreter(ABC):
     def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> Optional[str]:
         """Finds the parameters in YAML file not accepted by the interpreter"""
         result:Optional[str] = None
+        valid_parameters:Dict[str] = self._valid_parameters.keys()
 
         if prefix != '':
             prefix = f'{prefix}.'
             vInfo(self._verbose, f'New prefix `{prefix}`')
 
-        for key, values in yaml_config.items():
+        if type(yaml_config) == list:
+            for value in yaml_config:
+                vInfo(self._verbose, f'Testing parameter `{value}`')
+                full_key:str = ''
+                if f'{prefix}*' in valid_parameters:
+                    vInfo(self._verbose, f'`{value}` has been found as `{prefix}*`')
+                    full_key = f'{prefix}*'
+                elif f'{prefix}{value}' in valid_parameters:
+                    full_key = f'{prefix}{value}'
+                    vInfo(self._verbose, f'`{value}` has been found as `{prefix}{value}`')
 
-            vInfo(self._verbose, f'Testing parameter `{key}`')
-            if f'{prefix}*' in self._valid_parameters or f'{prefix}{key}' in self._valid_parameters:
-                vInfo(self._verbose, f'`{key}` has been found')
+                if len(full_key) > 0:
+                    vInfo(self._verbose, f'The value of parameter `{full_key}` is type {type(value)}')
+                    if type(value) == self._valid_parameters[full_key]:
+                        vInfo(self._verbose, f'`{type(value)}` is a valid type for parameter `{full_key}`')
+                    else:
+                        click.echo(f'`{value}` expected to be type `{self._valid_parameters[full_key]}` but received `{type(value)}`')
+                        return full_key
+                else:
+                    vInfo(self._verbose, f'`{value}` is not a valid parameter')
+                    return full_key
 
-                vInfo(self._verbose, f'The value of parameter `{key}` is type {type(values)}')
-                if type(values) == dict:
+        elif type(yaml_config) == dict:
+            for key, values in yaml_config.items():
 
-                    vInfo(self._verbose, f'Analysing subparameters of `{key}`')
-                    vCall(self._verbose, 'Interpreter:validate_parameters')
-                    next_prefix:str = f'{prefix}*' if f'{prefix}*' in self._valid_parameters else f'{prefix}{key}'
-                    result = self.validate_parameters(values, next_prefix)
-                    vResponse(self._verbose, 'Interpreter:validate_parameters', result)
-                    if result is not None:
-                        vInfo(self._verbose, f'`{key}` is not a valid subparameter')
-                        return result
-            else:
-                vInfo(self._verbose, f'`{key}` is not a valid parameter')
-                return key
+                vInfo(self._verbose, f'Testing parameter `{key}`')
+                full_key:str = ''
+                if f'{prefix}*' in valid_parameters:
+                    vInfo(self._verbose, f'`{key}` has been found as `{prefix}*`')
+                    full_key = f'{prefix}*'
+                elif f'{prefix}{key}' in valid_parameters:
+                    full_key = f'{prefix}{key}'
+                    vInfo(self._verbose, f'`{key}` has been found as `{prefix}{key}`')
+
+                if len(full_key) > 0:
+                    vInfo(self._verbose, f'The value of parameter `{prefix}{key}` is type {type(values)}')
+                    if type(values) == self._valid_parameters[full_key]:
+                        vInfo(self._verbose, f'`{type(values)}` is a valid type for parameter `{prefix}{key}`')
+                    else:
+                        click.echo(f'`{key}` expected to be type `{self._valid_parameters[full_key]}` but received `{type(values)}`')
+                        return full_key
+
+                    if type(values) == dict or type(values) == list:
+                        vInfo(self._verbose, f'Analysing subparameters of `{key}`')
+                        vCall(self._verbose, 'Interpreter:validate_parameters')
+                        next_prefix:str = f'{prefix}*' if f'{prefix}*' in valid_parameters else f'{prefix}{key}'
+                        result = self.validate_parameters(values, next_prefix)
+                        vResponse(self._verbose, 'Interpreter:validate_parameters', result)
+                        if result is not None:
+                            vInfo(self._verbose, f'`{key}` has an invalid subparameter')
+                            return result
+                else:
+                    vInfo(self._verbose, f'`{key}` is not a valid parameter')
+                    return full_key
+
+        else:
+            raise TypeError(f'`yaml_config` expected to be dict or list, `{type(yaml_config)}` received.')
 
         return None
 
@@ -108,25 +146,30 @@ class Interpreter(ABC):
 
 
 class Interpreter_1(Interpreter):
-    """Interpreter that implements the rules for YAML version 1."""
+    """Interpreter that implements the rules for YAML version 1.0"""
     
     def __init__(self, context:Path, verbose:bool):
         super(Interpreter_1, self).__init__(
             context=context,
             required_parameters = [
+                # 'version', # Already validated to get the right interpreter
                 'procedure',
                 'procedure.*', # `procedure` needs to have ANY value - not empty
             ],
-            valid_parameters = [
-                'version',
-                'procedure',
-                'procedure.*', # `procedure` needs to have ANY value - not empty
-                'procedure.*.cron',
-                'procedure.*.encrypt',
-                'procedure.*.exclude',
-                'procedure.*.include',
-                'procedure.*.password',
-            ],
+            valid_parameters = {
+                # 'fieldname': type,
+                'version': str,
+                'procedure': dict,
+                'procedure.*': dict,
+                'procedure.*.cron': str,
+                'procedure.*.encrypt': list,
+                'procedure.*.encrypt.*': str,
+                'procedure.*.exclude': list,
+                'procedure.*.exclude.*': str,
+                'procedure.*.include': list,
+                'procedure.*.include.*': str,
+                'procedure.*.password': str,
+            },
             verbose=verbose,
             version='1',
         )

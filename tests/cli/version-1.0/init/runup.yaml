@@ -2,6 +2,7 @@ version: '1.0'
 
 procedure: 
   mybackup:
+    cron: '0 * * * *'
     include: 
       - '.'
     exclude:
