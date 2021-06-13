@@ -2,8 +2,8 @@
 from abc import ABC, abstractmethod
 import os
 from pathlib import Path
-import re
 from typing import Any, Dict, List, Optional
+import zipfile
 
 # 3rd party
 import click
@@ -11,31 +11,6 @@ import click
 # Own
 from runup.runupdb import RunupDB
 from runup.utils import vCall, vInfo, vResponse
-
-
-class Procedure:
-    """Describe the properties of the procedures"""
-
-    def __init__(self, name):
-        self._name:str = name
-        self._cron:str = '0 * * * *'
-        self.running:bool = False
-        self.source:str = '.'
-
-    @property
-    def cron(self):
-        return self._cron
-
-    @cron.setter
-    def cron(self, schedule:str):
-        if re.search():
-            self._cron=schedule
-        else:
-            click.echo('Invalid cron')
-
-    @property
-    def name(self):
-        return self._name
 
 
 
@@ -53,17 +28,17 @@ class Interpreter(ABC):
         self._version:str = version
         
     @abstractmethod
-    def create_backup(self) -> bool:
+    def create_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
         """Create a new backup."""
         raise NotImplementedError()
         
     @abstractmethod
-    def restore_backup(self, backup_id:str) -> bool:
+    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
         """Restore the specified backup."""
         raise NotImplementedError()
 
     @abstractmethod
-    def set_environment(self) -> bool:
+    def set_environment(self, yaml_config:Dict[str, Any]) -> bool:
         """Create the backup enviroment."""
         raise NotImplementedError()
 
@@ -143,8 +118,6 @@ class Interpreter(ABC):
         return None
 
 
-
-
 class Interpreter_1(Interpreter):
     """Interpreter that implements the rules for YAML version 1.0"""
     
@@ -153,32 +126,65 @@ class Interpreter_1(Interpreter):
             context=context,
             required_parameters = [
                 # 'version', # Already validated to get the right interpreter
-                'procedure',
-                'procedure.*', # `procedure` needs to have ANY value - not empty
+                'project',
+                'project.*', # `project` needs to have ANY value - not empty
             ],
             valid_parameters = {
                 # 'fieldname': type,
                 'version': str,
-                'procedure': dict,
-                'procedure.*': dict,
-                'procedure.*.cron': str,
-                'procedure.*.encrypt': list,
-                'procedure.*.encrypt.*': str,
-                'procedure.*.exclude': list,
-                'procedure.*.exclude.*': str,
-                'procedure.*.include': list,
-                'procedure.*.include.*': str,
-                'procedure.*.password': str,
+                'project': dict,
+                'project.*': dict,
+                'project.*.cron': str,
+                'project.*.encrypt': list,
+                'project.*.encrypt.*': str,
+                'project.*.exclude': list,
+                'project.*.exclude.*': str,
+                'project.*.include': list,
+                'project.*.include.*': str,
+                'project.*.password': str,
             },
             verbose=verbose,
             version='1',
         )
 
-    def create_backup(self) -> bool:
-        pass
 
-    def restore_backup(self, backup_id:str) -> bool:
-        pass
+    def create_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> Optional[str]:
+
+        initiated:bool = self._validate_prev_init(yaml_config)
+        if not initiated:
+            return None
+
+        backup_list:List[str] = []
+        job_list:List[str] = []
+        working_directories:List[str] = []
+        
+        if backup_id == '':
+            backup_list = yaml_config['project'].keys()
+        else:
+            backup_list.append(backup_id)
+
+        for backup in backup_list:
+            vCall(self._verbose, f'Interpreter_1:_working_directories')
+            working_directories.extend(self._working_directories(yaml_config['project'][backup]))
+            vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
+
+            # Create backup
+            vCall(self._verbose, f'RunupDB:insert_job')
+            job_id = RunupDB(self._context, self._verbose).insert_job(backup)
+            vResponse(self._verbose, f'RunupDB:insert_job', job_id)
+
+            with zipfile.ZipFile(f'./.runup/jobs/{job_id}', 'w') as my_zip:
+                for path in working_directories:
+                    my_zip.write(path)
+
+        return job_list
+
+
+    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
+        initiated:bool = self._validate_prev_init(yaml_config)
+        if not initiated:
+            return None
+
 
     def missing_parameter(self, yaml_config:Dict[str, Any], search_area:Optional[List[str]]=None) -> Optional[str]:
         
@@ -195,6 +201,7 @@ class Interpreter_1(Interpreter):
                 return missing_part
 
         return None
+
 
     def missing_parameter_part(self, yaml_config:Dict, parameter:str) -> Optional[str]:
         """Analyse each part of a parameter looking for missing parts."""
@@ -233,6 +240,7 @@ class Interpreter_1(Interpreter):
                 else:
                     return f'{parameter}'
 
+
     def set_environment(self) -> bool:
         """
         Create the backup enviroment.
@@ -256,7 +264,16 @@ class Interpreter_1(Interpreter):
         # Create file `.version`
         with open(f'{self._context}/.runup/.version', "w") as file:
             file.write(self._version)
-        vInfo(self._verbose, f'Created file {self._context}/.runup/.version')
+        vInfo(self._verbose, f'Created file `{self._context}/.runup/.version`')
+
+        # Create the directory `.runup`
+        if not os.path.exists(f'{self._context}/.runup/jobs'):
+            os.mkdir(f'{self._context}/.runup/jobs')
+            vInfo(self._verbose, f'Created directory `{self._context}/.runup/jobs`')
+        else:
+            vInfo(self._verbose, f'The directory `{self._context}/.runup/jobs` already exists.')
+            click.echo('RunUp is already initiated.')
+            return False
 
         # Create database
         RunupDB(self._context, self._verbose).create_database()
@@ -266,5 +283,49 @@ class Interpreter_1(Interpreter):
 
         return True
 
+
     def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> bool:
         return super().validate_parameters(yaml_config, prefix)
+
+
+    def _validate_prev_init(self, yaml_config:Dict[str, Any]):
+        """Validate RunUp havs been previously initialized."""
+        if not os.path.exists(f'{self._context}/.runup'):
+            vInfo(self._verbose, f'RunUp has not been initialized.')
+            return False
+
+        for project in yaml_config['project'].keys():
+            vCall(self._verbose, 'RunupDB.insert_backup')
+            db = RunupDB(self._context, self._verbose)
+            res = db.insert_backup(project)
+            vResponse(self._verbose, f'RunupDB.insert_backup', res)
+
+        return True
+
+
+    def _working_directories(self, config:Dict[str, Any]) -> List[str]:
+        """Select the working directories based on the `include` and `exclude` on the YAML file."""
+
+        directories:List[str] = []
+
+        for include in config['include']:
+            # traverse root directory, and list directories as dirs and files as files
+            for root, _, files in os.walk(include):
+                if root not in config['exclude'] and not '.runup' in root.split(os.sep):
+                    vInfo(self._verbose, f'Including directory `{root}` into workspace.')
+                    directories.append(root)
+                    for file in files:
+                        filepath:str = root + os.sep + file
+                        if filepath in config['exclude'] or file in ['runup.yml', 'runup.yaml']:
+                            vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
+                        else:
+                            vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
+                            directories.append(filepath)
+                else:
+                    vInfo(self._verbose, f'Ignoring directory `{root}` from workspace')
+
+        # Delete duplicates and sort to prevent errors
+        directories = list(set(directories))
+        directories.sort()
+
+        return directories

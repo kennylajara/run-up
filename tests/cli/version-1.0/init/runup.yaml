@@ -1,7 +1,7 @@
 version: '1.0'
 
-procedure: 
-  mybackup:
+project: 
+  myproject:
     cron: '0 * * * *'
     include: 
       - '.'

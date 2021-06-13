@@ -1,11 +1,16 @@
 # Built-in
+from hashlib import sha256
 from pathlib import Path
 import sqlite3
 from sqlite3 import Error
+import time;
 from typing import Dict
 
 # 3rd Party
 import click
+
+# Own
+from runup.utils import vCall, vInfo, vResponse, hashfile
 
 
 class RunupDB:
@@ -18,64 +23,66 @@ class RunupDB:
     """
     
     def __init__(self, context:Path, verbose:bool):
-        self._dbname:Path = Path(f'{context}/.runup/runup.db')
+
+        self._dbname:Path = f'{context}/.runup/runup.db'
         self._verbose:bool = verbose
         self._conn = None
-        
+
+
     def execute(self, name:str, query:str):
         """Execute a query."""
 
-        if self._verbose:
-            click.echo(f'Executed query: {name}')
+        vInfo(self._verbose, f'Executed query: {name}')
 
         try:
             c = self._conn.cursor()
             c.execute(query)
+            return c
         except Error as e:
             click.echo(e)
 
-    def close_connection(self):
+
+    def close_connection(self, commit=True):
         """Close database connection"""
 
-        if self._verbose:
-            click.echo(f'Closing connection to: {self._dbname}')
+        vInfo(self._verbose, f'Closing connection to: {self._dbname}')
+        if commit:
+            self._conn.commit()
         self._conn.close()
-        if self._verbose:
-            click.echo(f'Connetion closed')
+        vInfo(self._verbose, f'Connetion closed')
+
 
     def connect(self):
         """Create a database connection to a `runup.db`."""
-        if self._verbose:
-            click.echo(f'Creating connection to: {self._dbname}')
+        vInfo(self._verbose, f'Creating connection to: {self._dbname}')
 
         try:
             self._conn = sqlite3.connect(self._dbname)
-            if self._verbose:
-                click.echo(f'Database version: {sqlite3.version}')
+            vInfo(self._verbose, f'Database version: {sqlite3.version}')
         except Error as e:
             click.echo(e)
         
+
     def create_database(self):
         """Create a database `runup.db`."""
 
         sql_dict:Dict[str] = {
-        "Create procedures": """
-            CREATE TABLE `procedures` (
+        "Create backups": """
+            CREATE TABLE `backups` (
                 `name` TEXT PRIMARY KEY,
                 `running` INTEGER NOT NULL,
-                `source` TEXT NOT NULL,
-                `cron` TEXT NOT NULL
+                `execute` INTEGER NULL
             );
         """,
         "Create jobs": """
             CREATE TABLE `jobs` (
                 `job_id` INTEGER PRIMARY KEY,
-                `procedure_name` TEXT NOT NULL,
+                `backup_name` TEXT NOT NULL,
                 `time_start` INTEGER NOT NULL,
                 `time_finish` INTEGER NULL,
                 `files_num` INTEGER NOT NULL,
-                FOREIGN KEY (`procedure_name`)
-                REFERENCES `procedures` (`procedure_name`)
+                FOREIGN KEY (`backup_name`)
+                REFERENCES `backups` (`backup_name`)
                     ON UPDATE CASCADE
                     ON DELETE CASCADE
             );
@@ -85,18 +92,22 @@ class RunupDB:
                 `file_id` INTEGER PRIMARY KEY,
                 `job_id` INTEGER NOT NULL,
                 `path` TEXT NOT NULL,
-                `md5` TEXT NOT NULL,
-                `sha1` TEXT NOT NULL,
-                `sha2` TEXT NOT NULL,
+                `sha256` TEXT NOT NULL,
+                `sha512` TEXT NOT NULL,
+                `job_loc` INTEGER NOT NULL,
                 FOREIGN KEY (`job_id`)
-                REFERENCES `jobs` (`job_id`)
-                    ON UPDATE CASCADE
-                    ON DELETE CASCADE
+                    REFERENCES `jobs` (`job_id`)
+                        ON UPDATE CASCADE
+                        ON DELETE CASCADE,
+                FOREIGN KEY (`job_loc`)
+                    REFERENCES `jobs` (`job_loc`)
+                        ON UPDATE CASCADE
+                        ON DELETE CASCADE
             );
         """,
         "Create signature index": """
             CREATE UNIQUE INDEX `signature` 
-            ON `files` (`md5`, `sha1`, `sha2`);
+            ON `files` (`sha256`, `sha512`);
         """,
         }
 
@@ -104,3 +115,67 @@ class RunupDB:
         for name, sql in sql_dict.items():
             self.execute(name, sql)
         self.close_connection()
+
+
+    def insert_backup(self, name:str) -> bool:
+        """Insert a backup"""
+
+        sql:str = f"""
+            INSERT OR IGNORE
+            INTO backups (name, running, execute)
+            VALUES ('{name}', 0, NULL)
+        """
+
+        self.connect()
+        self.execute('Insert backup', sql)
+        self.close_connection()
+
+
+    def insert_file(self, job_id:int, filename:str):
+        """Insert a file"""
+
+        self.connect()
+
+        # Find
+        sql:str = f"""
+            SELECT sha256, sha512, job_loc
+            FROM files
+            WHERE sha256='{hashfile(filename, "sha256")}' AND sha{hashfile(filename, "sha512")}
+            LIMIT 1;
+        """
+        cursor = self.execute(f'Insert file: {filename}', sql)
+        result = cursor.fetchall()
+
+        if len(result) == 0:
+            # Insert
+            sql:str = f"""
+                INSERT INTO files (job_id, sha256, sha512, job_loc, path)
+                VALUES ({job_id}, '{hashfile(filename, "sha256")}', '{hashfile(filename, "sha512")}', {job_id}, {filename})
+            """
+            cursor = self.execute(f'Insert file: {filename}', sql)
+        else:
+            # Insert
+            sql:str = f"""
+                INSERT INTO files (job_id, sha256, sha512, job_loc, path)
+                VALUES ({job_id}, '{result['sha256']}', '{result['sha512']}', {result['job_loc']}, {filename})
+            """
+            cursor = self.execute(f'Insert file: {filename}', sql)
+
+        self.close_connection()
+
+        return cursor.lastrowid
+
+
+    def insert_job(self, backup_name:str):
+        """Insert a job"""
+
+        sql:str = f"""
+            INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)
+            VALUES (NULL, '{backup_name}', {int(time.time())}, NULL, 0)
+        """
+
+        self.connect()
+        cursor = self.execute('Insert job', sql)
+        self.close_connection()
+
+        return cursor.lastrowid

@@ -1,9 +1,10 @@
 # Built-in
 import sys
-from typing import List, Optional
+from typing import Dict, Optional, Union
 
 # 3rd Party
 import click
+from runup import interpreter
 
 # Own
 from runup.interpreter import Interpreter
@@ -16,8 +17,9 @@ class Config(object):
     """Default config of the "Global" args and kwargs."""
 
     context:str = '.'
-    debug:bool = False
+    interpreter:Optional[Interpreter] = None
     verbose:bool = False
+    yaml:Optional[Dict[str, Union[str]]] = None
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
 
@@ -43,32 +45,58 @@ def cli(config:Config, context:str, verbose:bool):
         click.echo(f'Context: {context}')
         click.echo('-'*10)
 
+    # Parse YAML file
+    vCall(config.verbose, 'ParserYAML.parse')
+    config.yaml, config.interpreter = ParserYAML(
+        context=config.context, 
+        verbose=config.verbose,
+    ).parse()
+    vResponse(config.verbose, 'ParserYAML.parse', config.interpreter)
+
 @cli.command()
 @pass_config
 def init(config):
     """Initialize the backup system."""
 
-    interpreter:Optional[Interpreter] = None
-
-    # Parse YAML file
-    vCall(config.verbose, 'ParserYAML.parse')
-    interpreter = ParserYAML(
-        context=config.context, 
-        verbose=config.verbose,
-    ).parse()
-    vResponse(config.verbose, 'ParserYAML.parse', interpreter)
-
     # Take actions
-    if interpreter is not None:
+    if config.interpreter is not None:
         vCall(config.verbose, 'Interpreter:set_environment')
-        env_set:bool = interpreter.set_environment()
+        env_set:bool = config.interpreter.set_environment()
         vResponse(config.verbose, 'Interpreter:set_environment', env_set)
 
         if env_set:
-            click.echo('New job initialized.')
+            click.echo('RunUp has been initialized successfully.')
     else:
         # click.echo('Interpreter not detected.')
         sys.exit(1)
+
+
+@cli.command()
+@click.option('--restore', is_flag=True,
+            help="Change execution mode to restore backup.")
+@click.argument('id', type=str, default='')
+@pass_config
+def backup(config, restore:bool, id:str):
+    """Create a backup based on he yaml file config."""
+
+    # Take actions
+    if config.interpreter is not None:
+        if restore:
+            vCall(config.verbose, 'Interpreter:restore_backup')
+            restored:bool = config.interpreter.restore_backup(config.yaml, id)
+            vResponse(config.verbose, 'Interpreter:restore_backup', restored)
+            if restored:
+                click.echo('The backup has been restored.')
+        else:
+            vCall(config.verbose, 'Interpreter:create_backup')
+            created:Optional[str] = config.interpreter.create_backup(config.yaml, id)
+            vResponse(config.verbose, 'Interpreter:create_backup', created)
+            if created is not None:
+                click.echo('New backup created.')
+    else:
+        # click.echo('Interpreter not detected.')
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     cli()

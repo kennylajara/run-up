@@ -38,7 +38,7 @@ class CLI_1_0(TestCaseExtended):
         # Execute
         result = runner.invoke(cli, ['--context', context, 'init'])
         # Assert
-        self.assertEqual(result.output, 'New job initialized.\n')
+        self.assertEqual(result.output, 'RunUp has been initialized successfully.\n')
         self.assertEqual(result.exit_code, 0)
 
     @mock.patch('runup.cli.click.echo', return_value=None)

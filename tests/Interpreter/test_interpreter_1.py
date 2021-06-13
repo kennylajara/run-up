@@ -8,6 +8,7 @@ from unittest import mock
 # Own
 from dev.unittest import TestCaseExtended
 from runup.interpreter import Interpreter_1
+from runup.yaml_parser import ParserYAML
 
 
 class TestInterpreter_1(TestCaseExtended):

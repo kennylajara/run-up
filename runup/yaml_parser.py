@@ -4,6 +4,7 @@ from typing import (
     Dict,
     List,
     Optional,
+    Tuple,
     Union,
 )
 
@@ -12,9 +13,10 @@ import click
 import yaml
 
 # Own
+from runup.runupdb import RunupDB
 from runup.version import yaml_versions
-from runup import interpreter
 from runup.utils import vCall, vInfo, vResponse
+from runup import interpreter
 
 
 class ParserYAML:
@@ -26,7 +28,7 @@ class ParserYAML:
         self._interpreter:Optional[interpreter.Interpreter] = None
         self._verbose:bool = verbose
 
-    def parse(self)->Optional[interpreter.Interpreter]:
+    def parse(self)->Tuple[Optional[Dict[str, Union[str]]], Optional[interpreter.Interpreter]]:
         """
         It parse the YAML file and sends the data to the interpreter.
         
@@ -42,7 +44,7 @@ class ParserYAML:
         vResponse(self._verbose, 'ParserYAML:_read_yaml_file', yaml_config)
         
         if yaml_config is None:
-            return None
+            return None, None
 
         vCall(self._verbose, 'ParserYAML:_get_version')
         version = self._get_version(yaml_config)
@@ -50,7 +52,7 @@ class ParserYAML:
 
         if version is None:
             vInfo(self._verbose, f'Version not detected')
-            return None
+            return None, None
 
         # Select correct interpreter
         if version.split('.')[0] == '1':
@@ -72,7 +74,7 @@ class ParserYAML:
                     click.echo(f'Parameter `{missing_parameter[1:]}` cannot be empty.')
                 else:
                     click.echo(f'Missing required parameter `{missing_parameter}` on YAML file.')
-                return None
+                return None, None
 
             # Validate received parameters
             vCall(self._verbose, 'my_interpreter.validate_parameters')
@@ -81,12 +83,13 @@ class ParserYAML:
 
             if invalid_parameters is not None:
                 click.echo(f'Found invalid parameter `{invalid_parameters}` on YAML file.')
-                return None
+                return None, None
 
         else:
             raise RuntimeError('Impossible to detect the interpreter.')
 
-        return my_interpreter
+
+        return yaml_config, my_interpreter
 
 
     def _get_version(self, config)->Union[str, None]:
