@@ -1,10 +1,14 @@
+# Built-in
+from distutils.dir_util import copy_tree
 import os
 from pathlib import Path
 from shutil import rmtree as rmdir_recursive
 from unittest import mock
 
+# 3rd party
 from click.testing import CliRunner
 
+# Own
 from dev.unittest import TestCaseExtended
 from runup.cli import cli
 from runup.version import runup_version
@@ -15,10 +19,20 @@ class CLI_1_0(TestCaseExtended):
 
     _context:str = './tests/cli/version-1.0'
 
+
+    def setUp(self) -> None:
+        if not os.path.exists(f"{self._context}/create-backup/.runup"):
+            os.mkdir(f"{self._context}/create-backup/.runup")
+            copy_tree(f"{self._context}/create-backup/.runup-test-restore", f"{self._context}/create-backup/.runup")
+
+
     def tearDown(self) -> None:
         """Clean the environment after running the tests."""
         if os.path.exists(f"{self._context}/init/.runup"):
             rmdir_recursive(f"{self._context}/init/.runup")
+        if os.path.exists(f"{self._context}/create-backup/.runup"):
+            rmdir_recursive(f"{self._context}/create-backup/.runup")
+
 
     def test_help(self):
 
@@ -29,6 +43,7 @@ class CLI_1_0(TestCaseExtended):
         result = runner.invoke(cli, ['--help', context])
         # Assert
         self.assertEqual(result.exit_code, 0)
+
 
     def test_init(self):
 
@@ -41,6 +56,7 @@ class CLI_1_0(TestCaseExtended):
         self.assertEqual(result.output, 'RunUp has been initialized successfully.\n')
         self.assertEqual(result.exit_code, 0)
 
+
     @mock.patch('runup.cli.click.echo', return_value=None)
     def test_init_verbose(self, mock_click_echo):
 
@@ -52,6 +68,7 @@ class CLI_1_0(TestCaseExtended):
         # Assert
         self.assertEqual(result.exit_code, 0)
 
+
     def test_version(self):
 
         # Prepare
@@ -60,4 +77,16 @@ class CLI_1_0(TestCaseExtended):
         result = runner.invoke(cli, ['--version'])
         # Assert
         self.assertEqual(result.output, f'RunUp, version {runup_version}\n')
+        self.assertEqual(result.exit_code, 0)
+
+
+    def test_create_backup(self):
+
+        # Prepare
+        runner:CliRunner = CliRunner()
+        context:Path = f'{self._context}/create-backup'
+        # Execute
+        result = runner.invoke(cli, ['--context', context, 'backup'])
+        # Assert
+        self.assertEqual(result.output, f'New backup created.\n')
         self.assertEqual(result.exit_code, 0)

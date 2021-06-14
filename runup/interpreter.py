@@ -155,7 +155,7 @@ class Interpreter_1(Interpreter):
             return None
 
         backup_list:List[str] = []
-        job_list:List[str] = []
+        # job_list:List[str] = []
         working_directories:List[str] = []
         
         if backup_id == '':
@@ -173,11 +173,19 @@ class Interpreter_1(Interpreter):
             job_id = RunupDB(self._context, self._verbose).insert_job(backup)
             vResponse(self._verbose, f'RunupDB:insert_job', job_id)
 
-            with zipfile.ZipFile(f'./.runup/jobs/{job_id}', 'w') as my_zip:
+            # Make context relative
+            context:str = str(self._context)
+            if not context.endswith('/'):
+                context += '/'
+
+            # Zip File
+            with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
+                vInfo(self._verbose, f'ZipFile => {my_zip}')
                 for path in working_directories:
+                    vInfo(self._verbose, f'Zipping file: {path}')
                     my_zip.write(path)
 
-        return job_list
+        return job_id
 
 
     def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
