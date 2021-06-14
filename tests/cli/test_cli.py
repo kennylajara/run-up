@@ -23,6 +23,7 @@ class CLI_1_0(TestCaseExtended):
     def setUp(self) -> None:
         if not os.path.exists(f"{self._context}/create-backup/.runup"):
             os.mkdir(f"{self._context}/create-backup/.runup")
+            os.mkdir(f"{self._context}/create-backup/.runup/jobs")
             copy_tree(f"{self._context}/create-backup/.runup-test-restore", f"{self._context}/create-backup/.runup")
 
 
