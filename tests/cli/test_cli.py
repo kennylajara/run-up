@@ -31,8 +31,8 @@ class CLI_1_0(TestCaseExtended):
         """Clean the environment after running the tests."""
         if os.path.exists(f"{self._context}/init/.runup"):
             rmdir_recursive(f"{self._context}/init/.runup")
-        # if os.path.exists(f"{self._context}/create-backup/.runup"):
-        #     rmdir_recursive(f"{self._context}/create-backup/.runup")
+        if os.path.exists(f"{self._context}/create-backup/.runup"):
+            rmdir_recursive(f"{self._context}/create-backup/.runup")
 
 
     def test_help(self):
