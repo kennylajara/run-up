@@ -37,6 +37,10 @@ class RunupDB:
         try:
             c = self._conn.cursor()
             c.execute(query)
+            if query.lower().strip().startswith('insert into '):
+                return c.lastrowid
+            elif query.lower().strip().startswith('insert or ignore into '):
+                return c.lastrowid
             return c
         except Error as e:
             click.echo(e)
@@ -134,36 +138,49 @@ class RunupDB:
     def insert_file(self, job_id:int, filename:str):
         """Insert a file"""
 
+        sha256:str = hashfile(filename, "sha256")
+        sha512:str = hashfile(filename, "sha512")
+
         self.connect()
 
         # Find
-        sql:str = f"""
-            SELECT sha256, sha512, job_loc
-            FROM files
-            WHERE sha256='{hashfile(filename, "sha256")}' AND sha{hashfile(filename, "sha512")}
-            LIMIT 1;
-        """
+        if sha256 == 'dir' or sha512 == 'dir':
+            sql:str = f"""
+                SELECT sha256, sha512, job_loc
+                FROM files
+                WHERE sha256='{sha256}' AND sha512='{sha512}' AND path='{filename}'
+                LIMIT 1;
+            """
+        else:
+            sql:str = f"""
+                SELECT sha256, sha512, job_loc
+                FROM files
+                WHERE sha256='{sha256}' AND sha512='{sha512}'
+                LIMIT 1;
+            """
+
         cursor = self.execute(f'Insert file: {filename}', sql)
         result = cursor.fetchall()
+        id:int 
 
         if len(result) == 0:
             # Insert
             sql:str = f"""
-                INSERT INTO files (job_id, sha256, sha512, job_loc, path)
-                VALUES ({job_id}, '{hashfile(filename, "sha256")}', '{hashfile(filename, "sha512")}', {job_id}, {filename})
+                INSERT OR IGNORE INTO files (job_id, sha256, sha512, job_loc, path)
+                VALUES ({job_id}, '{sha256}', '{sha512}', {job_id}, '{filename}')
             """
-            cursor = self.execute(f'Insert file: {filename}', sql)
+            id = self.execute(f'Insert file: {filename}', sql)
         else:
             # Insert
             sql:str = f"""
-                INSERT INTO files (job_id, sha256, sha512, job_loc, path)
-                VALUES ({job_id}, '{result['sha256']}', '{result['sha512']}', {result['job_loc']}, {filename})
+                INSERT OR IGNORE INTO files (job_id, sha256, sha512, job_loc, path)
+                VALUES ({job_id}, '{result[0][0]}', '{result[0][1]}', {result[0][2]}, '{filename}')
             """
-            cursor = self.execute(f'Insert file: {filename}', sql)
+            id = self.execute(f'Insert file: {filename}', sql)
 
         self.close_connection()
 
-        return cursor.lastrowid
+        return id
 
 
     def insert_job(self, backup_name:str):
@@ -175,7 +192,7 @@ class RunupDB:
         """
 
         self.connect()
-        cursor = self.execute('Insert job', sql)
+        id:str = self.execute('Insert job', sql)
         self.close_connection()
 
-        return cursor.lastrowid
+        return id

@@ -1,11 +1,11 @@
 # Built-in
+from os import path
 from typing import Any, Optional
 import hashlib
 
 
 # 3rd party
 from click import echo
-import click
 
 
 # ------- #
@@ -46,11 +46,15 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 def hashfile( fname, algo:str ):
+    algorithm:str
+    if not path.isfile(fname):
+        return 'dir'
+
     if algo == 'sha256':
         algorithm = hashlib.sha256()
     elif algo == 'sha512':
         algorithm = hashlib.sha512()
     else:
-        raise ValueError(f'Incorrect hash algorithm: {algo}')
+        raise ValueError(f'Unsupported hash algorithm: {algo}')
     return hash_bytestr_iter(file_as_blockiter(open(fname, 'rb')), algorithm)
     

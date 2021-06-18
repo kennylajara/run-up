@@ -169,8 +169,9 @@ class Interpreter_1(Interpreter):
             vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
 
             # Create backup
+            db:RunupDB = RunupDB(self._context, self._verbose)
             vCall(self._verbose, f'RunupDB:insert_job')
-            job_id = RunupDB(self._context, self._verbose).insert_job(backup)
+            job_id = db.insert_job(backup)
             vResponse(self._verbose, f'RunupDB:insert_job', job_id)
 
             # Make context relative
@@ -184,6 +185,9 @@ class Interpreter_1(Interpreter):
                 for path in working_directories:
                     vInfo(self._verbose, f'Zipping file: {path}')
                     my_zip.write(path)
+                    vCall(self._verbose, f'RunupDB:insert_file')
+                    res = db.insert_file(job_id, path)
+                    vResponse(self._verbose, f'RunupDB:insert_file', res)
 
         return job_id
 
@@ -299,7 +303,7 @@ class Interpreter_1(Interpreter):
     def _validate_prev_init(self, yaml_config:Dict[str, Any]):
         """Validate RunUp havs been previously initialized."""
         if not os.path.exists(f'{self._context}/.runup'):
-            vInfo(self._verbose, f'RunUp has not been initialized.')
+            click.echo(f'RunUp has not been initialized.')
             return False
 
         for project in yaml_config['project'].keys():
