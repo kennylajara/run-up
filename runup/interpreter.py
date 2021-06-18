@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import zipfile
 
 # 3rd party
@@ -148,51 +148,50 @@ class Interpreter_1(Interpreter):
         )
 
 
-    def create_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> Optional[str]:
+    def create_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[str]:
 
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return None
 
         backup_list:List[str] = []
-        # job_list:List[str] = []
         working_directories:List[str] = []
         
-        if backup_id == '':
+        if project == '':
             backup_list = yaml_config['project'].keys()
         else:
-            backup_list.append(backup_id)
+            backup_list.append(project)
 
         for backup in backup_list:
             vCall(self._verbose, f'Interpreter_1:_working_directories')
             working_directories.extend(self._working_directories(yaml_config['project'][backup]))
             vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
 
-            # Create backup
-            db:RunupDB = RunupDB(self._context, self._verbose)
-            vCall(self._verbose, f'RunupDB:insert_job')
-            job_id = db.insert_job(backup)
-            vResponse(self._verbose, f'RunupDB:insert_job', job_id)
+        # Create backup
+        db:RunupDB = RunupDB(self._context, self._verbose)
+        vCall(self._verbose, f'RunupDB:insert_job')
+        job_id = db.insert_job(backup)
+        vResponse(self._verbose, f'RunupDB:insert_job', job_id)
 
-            # Make context relative
-            context:str = str(self._context)
-            if not context.endswith('/'):
-                context += '/'
+        # Make context relative
+        context:str = str(self._context)
+        if not context.endswith('/'):
+            context += '/'
 
-            # Zip File
-            with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
-                vInfo(self._verbose, f'ZipFile => {my_zip}')
-                for path in working_directories:
-                    vInfo(self._verbose, f'Zipping file: {path}')
-                    my_zip.write(path)
-                    vCall(self._verbose, f'RunupDB:insert_file')
-                    res = db.insert_file(job_id, path)
-                    vResponse(self._verbose, f'RunupDB:insert_file', res)
+        # Zip File
+        with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
+            vInfo(self._verbose, f'ZipFile => {my_zip}')
+            for path in working_directories:
+                vInfo(self._verbose, f'Zipping file: {path}')
+                my_zip.write(path)
+                vCall(self._verbose, f'RunupDB:insert_file')
+                res = db.insert_file(job_id, path)
+                vResponse(self._verbose, f'RunupDB:insert_file', res)
 
         return job_id
 
 
-    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
+    def restore_backup(self, yaml_config:Dict[str, Any], project:str) -> bool:
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return None
@@ -320,15 +319,18 @@ class Interpreter_1(Interpreter):
 
         directories:List[str] = []
 
-        for include in config['include']:
+        include_list:List[str] = [os.path.join(self._context, inc) for inc in config['include']]
+        exclude_list:List[str] = [os.path.join(self._context, exc) for exc in config['exclude']]
+
+        for include in include_list:
             # traverse root directory, and list directories as dirs and files as files
             for root, _, files in os.walk(include):
-                if root not in config['exclude'] and not '.runup' in root.split(os.sep):
+                if root not in exclude_list and not '.runup' in root.split(os.sep):
                     vInfo(self._verbose, f'Including directory `{root}` into workspace.')
                     directories.append(root)
                     for file in files:
                         filepath:str = root + os.sep + file
-                        if filepath in config['exclude'] or file in ['runup.yml', 'runup.yaml']:
+                        if filepath in exclude_list or file in ['runup.yml', 'runup.yaml']:
                             vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
                         else:
                             vInfo(self._verbose, f'Including file `{filepath}` into workspace.')

@@ -53,6 +53,7 @@ def cli(config:Config, context:str, verbose:bool):
     ).parse()
     vResponse(config.verbose, 'ParserYAML.parse', config.interpreter)
 
+
 @cli.command()
 @pass_config
 def init(config):
@@ -72,24 +73,24 @@ def init(config):
 
 
 @cli.command()
+@click.argument('project', type=str, default='')
 @click.option('--restore', is_flag=True,
             help="Change execution mode to restore backup.")
-@click.argument('id', type=str, default='')
 @pass_config
-def backup(config, restore:bool, id:str):
+def backup(config, project:str, restore:bool):
     """Create a backup based on he yaml file config."""
 
     # Take actions
     if config.interpreter is not None:
         if restore:
             vCall(config.verbose, 'Interpreter:restore_backup')
-            restored:bool = config.interpreter.restore_backup(config.yaml, id)
+            restored:bool = config.interpreter.restore_backup(config.yaml, project)
             vResponse(config.verbose, 'Interpreter:restore_backup', restored)
             if restored:
                 click.echo('The backup has been restored.')
         else:
             vCall(config.verbose, 'Interpreter:create_backup')
-            created:Optional[str] = config.interpreter.create_backup(config.yaml, id)
+            created:Optional[str] = config.interpreter.create_backup(config.yaml, project)
             vResponse(config.verbose, 'Interpreter:create_backup', created)
             if created is not None:
                 click.echo('New backup created.')
