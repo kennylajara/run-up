@@ -130,6 +130,8 @@ class Interpreter_1(Interpreter):
                 # 'version', # Already validated to get the right interpreter
                 'project',
                 'project.*', # `project` needs to have ANY value - not empty
+                'project.*.include',
+                'project.*.include.*',
             ],
             valid_parameters = {
                 # 'fieldname': type,
@@ -216,42 +218,57 @@ class Interpreter_1(Interpreter):
         return None
 
 
-    def missing_parameter_part(self, yaml_config:Dict, parameter:str) -> Optional[str]:
+    def missing_parameter_part(self, search_area:Dict, parameter:str) -> Optional[str]:
         """Analyse each part of a parameter looking for missing parts."""
 
         if '.' not in parameter:
             vInfo(self._verbose, f"Parameter `{parameter}` doesn't have sub-paramenters")
             if parameter == '*':
-                if yaml_config is not None and len(yaml_config) > 0:
-                    vInfo(self._verbose, f"YAML file cointains {len(yaml_config)} parameters.")
+                if search_area is not None and len(search_area) > 0:
+                    vInfo(self._verbose, f"YAML file cointains {len(search_area)} parameters.")
                     return None
-                elif yaml_config is not None:
+                elif search_area is not None:
                     vInfo(self._verbose, f"YAML file cointains no parameters.")
                     return '*'
                 else:
                     vInfo(self._verbose, f"YAML file cointains no parameters.")
                     return None
-            elif parameter not in yaml_config.keys():
-                vInfo(self._verbose, f"Single parameter `{parameter}` not found in YAML file")
+            elif parameter not in search_area.keys():
+                vInfo(self._verbose, f"Single parameter `{parameter}` not found in search area")
                 return parameter
         else:
             vInfo(self._verbose, f"Parameter `{parameter}` have sub-paramenters")
+            missing:Optional[str] = None
 
             parts = parameter.split('.', 1)
-            if parts[0] not in yaml_config.keys():
-                vInfo(self._verbose, f"Parameter part `{parts[0]}` not found in YAML file")
-                return parts[0]
-            else:
-                vInfo(self._verbose, f"Parameter part `{parts[0]}` found in YAML file")
-                vCall(self._verbose, f"Interpreter_1:missing_parameter_part")
-                missing:str = self.missing_parameter_part(yaml_config[parts[0]], parts[1])
-                vResponse(self._verbose, f'Interpreter_1:missing_parameter_part', missing)
-                if missing == '*':
-                    return f'*{parameter[0:-2]}'
-                elif missing is None:
+            vInfo(self._verbose, f"Search `{parts[0]}` in search_area {list(search_area.keys())}")
+            if (parts[0] == '*' and len(search_area) > 0) or parts[0] in search_area.keys():
+                vInfo(self._verbose, f"Parameter part `{parts[0]}` found in search area.")
+
+                if parts[0] != '*':
+                    vCall(self._verbose, f"Interpreter_1:missing_parameter_part")
+                    missing = self.missing_parameter_part(search_area[parts[0]], parts[1])
+                    vResponse(self._verbose, f'Interpreter_1:missing_parameter_part', missing)
+                else:
+                    for element in search_area.keys():
+                        vCall(self._verbose, f"Interpreter_1:missing_parameter_part")
+                        missing = self.missing_parameter_part(search_area[element], parts[1])
+                        vResponse(self._verbose, f'Interpreter_1:missing_parameter_part', missing)
+                        if missing is not None:
+                            break
+                
+                if missing is None:
                     return None
+                elif missing == '*':
+                    if parameter.endswith('.*'):
+                        return f'*{parameter[0:-2]}'
+                    else:
+                        return f'*.{parameter}'
                 else:
                     return f'{parameter}'
+            else:
+                vInfo(self._verbose, f"Parameter part `{parts[0]}` not found in search area")
+                return parts[0]
 
 
     def set_environment(self) -> bool:
@@ -320,9 +337,11 @@ class Interpreter_1(Interpreter):
         """Select the working directories based on the `include` and `exclude` on the YAML file."""
 
         directories:List[str] = []
-
+        exclude_list:List[str] = []
         include_list:List[str] = [os.path.join(self._context, inc) for inc in config['include']]
-        exclude_list:List[str] = [os.path.join(self._context, exc) for exc in config['exclude']]
+
+        if 'exclude' in config:
+            exclude_list = [os.path.join(self._context, exc) for exc in config['exclude']]
 
         for include in include_list:
             # traverse root directory, and list directories as dirs and files as files
