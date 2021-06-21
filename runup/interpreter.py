@@ -71,12 +71,12 @@ class Interpreter(ABC):
                 if len(full_key) > 0:
                     vInfo(self._verbose, f'The value of parameter `{full_key}` is type {type(value)}')
                     if type(value) == self._valid_parameters[full_key]:
-                        vInfo(self._verbose, f'`{type(value)}` is a valid type for parameter `{full_key}`')
+                        vInfo(self._verbose, f'`{type(value)}` is a valid type for `{full_key}`')
                     else:
-                        click.echo(f'`{value}` expected to be type `{self._valid_parameters[full_key]}` but received `{type(value)}`')
+                        click.echo(f'`{value}` expected to be `{self._valid_parameters[full_key]}` but received `{type(value)}`')
                         return full_key
                 else:
-                    vInfo(self._verbose, f'`{value}` is not a valid parameter')
+                    vInfo(self._verbose, f'`{value}` is an invalid parameter')
                     return full_key
 
         elif type(yaml_config) == dict:
@@ -92,7 +92,7 @@ class Interpreter(ABC):
                     vInfo(self._verbose, f'`{key}` has been found as `{prefix}{key}`')
 
                 if len(full_key) > 0:
-                    vInfo(self._verbose, f'The value of parameter `{prefix}{key}` is type {type(values)}')
+                    vInfo(self._verbose, f'The value of the parameter `{prefix}{key}` is type {type(values)}')
                     if type(values) == self._valid_parameters[full_key]:
                         vInfo(self._verbose, f'`{type(values)}` is a valid type for parameter `{prefix}{key}`')
                     else:
