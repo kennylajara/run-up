@@ -6,7 +6,7 @@ from typing import List
 # ----------------------------------------------- #
 # Al lanzar la version 0.1.0 nos pasamos a SemVer #
 # ----------------------------------------------- #
-runup_version:str = '0.1.dev9'
+runup_version:str = '0.1.dev11'
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #
