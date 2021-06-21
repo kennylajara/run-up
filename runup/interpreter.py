@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Union
 import zipfile
 
 # 3rd party
@@ -48,7 +48,7 @@ class Interpreter(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> Optional[str]:
+    def validate_parameters(self, search_area:Union[Dict[str, Any]], prefix:str='') -> Optional[str]:
         """Finds the parameters in YAML file not accepted by the interpreter"""
         result:Optional[str] = None
         valid_parameters:Dict[str] = self._valid_parameters.keys()
@@ -57,8 +57,9 @@ class Interpreter(ABC):
             prefix = f'{prefix}.'
             vInfo(self._verbose, f'New prefix `{prefix}`')
 
-        if type(yaml_config) == list:
-            for value in yaml_config:
+        if type(search_area) == list:
+            vInfo(self._verbose, f'`search_area` is a list')
+            for value in search_area:
                 vInfo(self._verbose, f'Testing parameter `{value}`')
                 full_key:str = ''
                 if f'{prefix}*' in valid_parameters:
@@ -71,16 +72,17 @@ class Interpreter(ABC):
                 if len(full_key) > 0:
                     vInfo(self._verbose, f'The value of parameter `{full_key}` is type {type(value)}')
                     if type(value) == self._valid_parameters[full_key]:
-                        vInfo(self._verbose, f'`{type(value)}` is a valid type for `{full_key}`')
+                        vInfo(self._verbose, f'`{type(value)}` is a valid type for parameter `{full_key}`')
                     else:
-                        click.echo(f'`{value}` expected to be `{self._valid_parameters[full_key]}` but received `{type(value)}`')
+                        click.echo(f'`{value}` expected to be type `{self._valid_parameters[full_key]}` but received `{type(value)}`')
                         return full_key
                 else:
-                    vInfo(self._verbose, f'`{value}` is an invalid parameter')
+                    vInfo(self._verbose, f'`{value}` is not a valid parameter')
                     return full_key
 
-        elif type(yaml_config) == dict:
-            for key, values in yaml_config.items():
+        elif type(search_area) == dict:
+            vInfo(self._verbose, f'`search_area` is a dict')
+            for key, values in search_area.items():
 
                 vInfo(self._verbose, f'Testing parameter `{key}`')
                 full_key:str = ''
@@ -92,7 +94,7 @@ class Interpreter(ABC):
                     vInfo(self._verbose, f'`{key}` has been found as `{prefix}{key}`')
 
                 if len(full_key) > 0:
-                    vInfo(self._verbose, f'The value of the parameter `{prefix}{key}` is type {type(values)}')
+                    vInfo(self._verbose, f'The value of parameter `{prefix}{key}` is type {type(values)}')
                     if type(values) == self._valid_parameters[full_key]:
                         vInfo(self._verbose, f'`{type(values)}` is a valid type for parameter `{prefix}{key}`')
                     else:
@@ -113,7 +115,7 @@ class Interpreter(ABC):
                     return full_key
 
         else:
-            raise TypeError(f'`yaml_config` expected to be dict or list, `{type(yaml_config)}` received.')
+            raise TypeError(f'`search_area` expected to be dict or list, `{type(search_area)}` received.')
 
         return None
 
