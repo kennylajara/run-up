@@ -1,5 +1,4 @@
 # Built-in
-from hashlib import sha256
 from pathlib import Path
 import sqlite3
 from sqlite3 import Error
@@ -10,7 +9,7 @@ from typing import Dict
 import click
 
 # Own
-from runup.utils import vCall, vInfo, vResponse, hashfile
+from runup.utils import vInfo, hashfile
 
 
 class RunupDB:
@@ -145,12 +144,7 @@ class RunupDB:
 
         # Find
         if sha256 == 'dir' or sha512 == 'dir':
-            sql:str = f"""
-                SELECT sha256, sha512, job_loc
-                FROM files
-                WHERE sha256='{sha256}' AND sha512='{sha512}' AND path='{filename}'
-                LIMIT 1;
-            """
+            pass
         else:
             sql:str = f"""
                 SELECT sha256, sha512, job_loc

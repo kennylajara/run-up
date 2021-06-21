@@ -1,12 +1,9 @@
 # Built-in
-from os import path
 from typing import Any, Optional
 import hashlib
 
-
 # 3rd party
 from click import echo
-
 
 # ------- #
 # VERBOSE #
@@ -47,8 +44,6 @@ def file_as_blockiter(afile, blocksize=65536):
 
 def hashfile( fname, algo:str ):
     algorithm:str
-    if not path.isfile(fname):
-        return 'dir'
 
     if algo == 'sha256':
         algorithm = hashlib.sha256()

@@ -188,9 +188,10 @@ class Interpreter_1(Interpreter):
             for path in working_directories:
                 vInfo(self._verbose, f'Zipping file: {path}')
                 my_zip.write(path)
-                vCall(self._verbose, f'RunupDB:insert_file')
-                res = db.insert_file(job_id, path)
-                vResponse(self._verbose, f'RunupDB:insert_file', res)
+                if os.path.isfile(path):
+                    vCall(self._verbose, f'RunupDB:insert_file')
+                    res = db.insert_file(job_id, path)
+                    vResponse(self._verbose, f'RunupDB:insert_file', res)
 
         return job_id
 
