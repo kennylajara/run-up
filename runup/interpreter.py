@@ -1,6 +1,6 @@
 # Built-in
 from abc import ABC, abstractmethod
-from collections import KeysView
+from collections.abc import KeysView
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
