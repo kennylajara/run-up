@@ -1,5 +1,4 @@
-# Built-in
-from distutils.dir_util import copy_tree
+# Built-in    
 import os
 from pathlib import Path
 from shutil import rmtree as rmdir_recursive
@@ -21,18 +20,29 @@ class CLI_1_0(TestCaseExtended):
 
 
     def setUp(self) -> None:
-        if not os.path.exists(f"{self._context}/create-backup/.runup"):
-            os.mkdir(f"{self._context}/create-backup/.runup")
-            os.mkdir(f"{self._context}/create-backup/.runup/jobs")
-            copy_tree(f"{self._context}/create-backup/.runup-test-restore", f"{self._context}/create-backup/.runup")
+        
+        # Init some tests
+        runner:CliRunner = CliRunner()
+        folders = [
+            'create-backup-explicit',
+            'create-backup-implicit',
+        ]
+        for folder in folders:
+            if not os.path.exists(f"{self._context}/{folder}/.runup"):
+                runner.invoke(cli, ['--context', f'{self._context}/{folder}', 'init'])
 
 
     def tearDown(self) -> None:
         """Clean the environment after running the tests."""
-        if os.path.exists(f"{self._context}/init/.runup"):
-            rmdir_recursive(f"{self._context}/init/.runup")
-        if os.path.exists(f"{self._context}/create-backup/.runup"):
-            rmdir_recursive(f"{self._context}/create-backup/.runup")
+        
+        folders = [
+            'create-backup-explicit',
+            'create-backup-implicit',
+            'init',
+        ]
+        for folder in folders:
+            if os.path.exists(f"{self._context}/{folder}/.runup"):
+                rmdir_recursive(f"{self._context}/{folder}/.runup")
 
 
     def test_help(self):
@@ -81,13 +91,25 @@ class CLI_1_0(TestCaseExtended):
         self.assertEqual(result.exit_code, 0)
 
 
-    def test_create_backup(self):
+    def test_create_backup_implicit(self):
 
         # Prepare
         runner:CliRunner = CliRunner()
-        context:Path = f'{self._context}/create-backup'
+        context:Path = f'{self._context}/create-backup-implicit'
         # Execute
         result = runner.invoke(cli, ['--context', context, 'backup'])  
+        # Assert
+        self.assertEqual(result.output, f'New backup created.\n')
+        self.assertEqual(result.exit_code, 0)
+
+
+    def test_create_backup_explicit(self):
+
+        # Prepare
+        runner:CliRunner = CliRunner()
+        context:Path = f'{self._context}/create-backup-explicit'
+        # Execute
+        result = runner.invoke(cli, ['--context', context, 'backup', 'myproject'])  
         # Assert
         self.assertEqual(result.output, f'New backup created.\n')
         self.assertEqual(result.exit_code, 0)
