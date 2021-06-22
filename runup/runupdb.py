@@ -97,20 +97,24 @@ class RunupDB:
                 `path` TEXT NOT NULL,
                 `sha256` TEXT NOT NULL,
                 `sha512` TEXT NOT NULL,
-                `job_loc` INTEGER NOT NULL,
+                `file_loc` INTEGER NULL,
                 FOREIGN KEY (`job_id`)
                     REFERENCES `jobs` (`job_id`)
                         ON UPDATE CASCADE
                         ON DELETE CASCADE,
-                FOREIGN KEY (`job_loc`)
-                    REFERENCES `jobs` (`job_loc`)
+                FOREIGN KEY (`file_loc`)
+                    REFERENCES `jobs` (`file_loc`)
                         ON UPDATE CASCADE
                         ON DELETE CASCADE
             );
         """,
         "Create signature index": """
-            CREATE UNIQUE INDEX `signature` 
+            CREATE INDEX `idx_signature` 
             ON `files` (`sha256`, `sha512`);
+        """,
+        "Create job_id index": """
+            CREATE INDEX `idx_job_id` 
+            ON `files` (`job_id`);
         """,
         }
 
@@ -134,11 +138,15 @@ class RunupDB:
         self.close_connection()
 
 
-    def insert_file(self, job_id:int, filename:str):
-        """Insert a file"""
+    def insert_file(self, job_id:int, path_from_pwd:str, path_from_yaml_file:str) -> bool:
+        """
+        Insert a file into DB.
+        
+        Returns a boolean indicatinf if the inserted
+        """
 
-        sha256:str = hashfile(filename, "sha256")
-        sha512:str = hashfile(filename, "sha512")
+        sha256:str = hashfile(path_from_pwd, "sha256")
+        sha512:str = hashfile(path_from_pwd, "sha512")
 
         self.connect()
 
@@ -147,34 +155,36 @@ class RunupDB:
             pass
         else:
             sql:str = f"""
-                SELECT sha256, sha512, job_loc
+                SELECT file_id, sha256, sha512
                 FROM files
                 WHERE sha256='{sha256}' AND sha512='{sha512}'
                 LIMIT 1;
             """
 
-        cursor = self.execute(f'Insert file: {filename}', sql)
+        cursor = self.execute(f'Search file: {path_from_yaml_file}', sql)
         result = cursor.fetchall()
-        id:int 
+        inserted_new:bool
 
         if len(result) == 0:
             # Insert
             sql:str = f"""
-                INSERT OR IGNORE INTO files (job_id, sha256, sha512, job_loc, path)
-                VALUES ({job_id}, '{sha256}', '{sha512}', {job_id}, '{filename}')
+                INSERT INTO files (job_id, sha256, sha512, path)
+                VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
             """
-            id = self.execute(f'Insert file: {filename}', sql)
+            self.execute(f'Insert new file: {path_from_yaml_file}', sql)
+            inserted_new = True
         else:
             # Insert
             sql:str = f"""
-                INSERT OR IGNORE INTO files (job_id, sha256, sha512, job_loc, path)
-                VALUES ({job_id}, '{result[0][0]}', '{result[0][1]}', {result[0][2]}, '{filename}')
+                INSERT INTO files (job_id, sha256, sha512, file_loc, path)
+                VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
             """
-            id = self.execute(f'Insert file: {filename}', sql)
+            self.execute(f'Insert existing file: {path_from_yaml_file}', sql)
+            inserted_new = False
 
         self.close_connection()
 
-        return id
+        return inserted_new
 
 
     def insert_job(self, backup_name:str):
