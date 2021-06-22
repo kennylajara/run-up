@@ -4,13 +4,12 @@ from typing import Dict, Optional, Union
 
 # 3rd Party
 import click
-from runup import interpreter
 
 # Own
 from runup.interpreter import Interpreter
 from runup.version import runup_version
 from runup.yaml_parser import ParserYAML
-from runup.utils import vCall, vInfo, vResponse
+from runup.utils import vCall, vResponse
 
 
 class Config(object):
@@ -83,11 +82,12 @@ def backup(config, project:str, restore:bool):
     # Take actions
     if config.interpreter is not None:
         if restore:
-            vCall(config.verbose, 'Interpreter:restore_backup')
-            restored:bool = config.interpreter.restore_backup(config.yaml, project)
-            vResponse(config.verbose, 'Interpreter:restore_backup', restored)
-            if restored:
-                click.echo('The backup has been restored.')
+            raise NotImplementedError('Restore Backup has not been implemented.')
+            # vCall(config.verbose, 'Interpreter:restore_backup')
+            # restored:bool = config.interpreter.restore_backup(config.yaml, project)
+            # vResponse(config.verbose, 'Interpreter:restore_backup', restored)
+            # if restored:
+            #     click.echo('The backup has been restored.')
         else:
             vCall(config.verbose, 'Interpreter:create_backup')
             created:Optional[str] = config.interpreter.create_backup(config.yaml, project)

@@ -1,5 +1,6 @@
 # Built-in
 from abc import ABC, abstractmethod
+from collections import KeysView
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
@@ -19,7 +20,7 @@ class Interpreter(ABC):
 
     @abstractmethod
     def __init__(self, context:Path, verbose:bool, version:str, required_parameters:List[str], 
-                valid_parameters:List[str]) -> None:
+                valid_parameters:Dict[str, Any]) -> None:
         """Set interpreter variables."""
         self._context:Path = context
         self._required_parameters:List[str] = required_parameters
@@ -28,17 +29,17 @@ class Interpreter(ABC):
         self._version:str = version
         
     @abstractmethod
-    def create_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
+    def create_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> Optional[bool]:
         """Create a new backup."""
         raise NotImplementedError()
         
     @abstractmethod
-    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> bool:
+    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> Optional[bool]:
         """Restore the specified backup."""
         raise NotImplementedError()
 
     @abstractmethod
-    def set_environment(self, yaml_config:Dict[str, Any]) -> bool:
+    def set_environment(self) -> bool:
         """Create the backup enviroment."""
         raise NotImplementedError()
 
@@ -51,7 +52,8 @@ class Interpreter(ABC):
     def validate_parameters(self, search_area:Union[Dict[str, Any]], prefix:str='') -> Optional[str]:
         """Finds the parameters in YAML file not accepted by the interpreter"""
         result:Optional[str] = None
-        valid_parameters:Dict[str] = self._valid_parameters.keys()
+        valid_parameters:KeysView[str] = self._valid_parameters.keys()
+        full_key:str = ''
 
         if prefix != '':
             prefix = f'{prefix}.'
@@ -61,7 +63,6 @@ class Interpreter(ABC):
             vInfo(self._verbose, f'`search_area` is a list')
             for value in search_area:
                 vInfo(self._verbose, f'Testing parameter `{value}`')
-                full_key:str = ''
                 if f'{prefix}*' in valid_parameters:
                     vInfo(self._verbose, f'`{value}` has been found as `{prefix}*`')
                     full_key = f'{prefix}*'
@@ -83,9 +84,7 @@ class Interpreter(ABC):
         elif type(search_area) == dict:
             vInfo(self._verbose, f'`search_area` is a dict')
             for key, values in search_area.items():
-
                 vInfo(self._verbose, f'Testing parameter `{key}`')
-                full_key:str = ''
                 if f'{prefix}*' in valid_parameters:
                     vInfo(self._verbose, f'`{key}` has been found as `{prefix}*`')
                     full_key = f'{prefix}*'
@@ -152,7 +151,7 @@ class Interpreter_1(Interpreter):
         )
 
 
-    def create_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[str]:
+    def create_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[bool]:
 
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
@@ -174,7 +173,7 @@ class Interpreter_1(Interpreter):
         # Create backup
         db:RunupDB = RunupDB(self._context, self._verbose)
         vCall(self._verbose, f'RunupDB:insert_job')
-        job_id = db.insert_job(backup)
+        job_id:bool = db.insert_job(backup)
         vResponse(self._verbose, f'RunupDB:insert_job', job_id)
 
         # Make context relative
@@ -202,10 +201,12 @@ class Interpreter_1(Interpreter):
         return job_id
 
 
-    def restore_backup(self, yaml_config:Dict[str, Any], project:str) -> bool:
+    def restore_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[bool]:
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return None
+
+        return None
 
 
     def missing_parameter(self, yaml_config:Dict[str, Any], search_area:Optional[List[str]]=None) -> Optional[str]:
@@ -216,7 +217,7 @@ class Interpreter_1(Interpreter):
         for parameter in search_area:
             vInfo(self._verbose, f'Analysing parameter `{parameter}`')
             vCall(self._verbose, f'Interpreter_1:missing_parameter_part')
-            missing_part:str = self.missing_parameter_part(yaml_config, parameter)
+            missing_part:Optional[str] = self.missing_parameter_part(yaml_config, parameter)
             vResponse(self._verbose, f'Interpreter_1:missing_parameter_part', missing_part)
             if missing_part:
                 vInfo(self._verbose, f'missing parameter part `{missing_part}`')
@@ -277,6 +278,7 @@ class Interpreter_1(Interpreter):
                 vInfo(self._verbose, f"Parameter part `{parts[0]}` not found in search area")
                 return parts[0]
 
+        return None
 
     def set_environment(self) -> bool:
         """
@@ -321,7 +323,7 @@ class Interpreter_1(Interpreter):
         return True
 
 
-    def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> bool:
+    def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> Optional[str]:
         return super().validate_parameters(yaml_config, prefix)
 
 
@@ -334,8 +336,8 @@ class Interpreter_1(Interpreter):
         for project in yaml_config['project'].keys():
             vCall(self._verbose, 'RunupDB.insert_backup')
             db = RunupDB(self._context, self._verbose)
-            res = db.insert_backup(project)
-            vResponse(self._verbose, f'RunupDB.insert_backup', res)
+            db.insert_backup(project)
+            vResponse(self._verbose, f'RunupDB.insert_backup', None)
 
         return True
 

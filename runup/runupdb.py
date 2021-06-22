@@ -23,7 +23,7 @@ class RunupDB:
     
     def __init__(self, context:Path, verbose:bool):
 
-        self._dbname:Path = f'{context}/.runup/runup.db'
+        self._dbname:str = f'{context}/.runup/runup.db'
         self._verbose:bool = verbose
         self._conn = None
 
@@ -34,6 +34,7 @@ class RunupDB:
         vInfo(self._verbose, f'Executed query: {name}')
 
         try:
+            assert self._conn is not None
             c = self._conn.cursor()
             c.execute(query)
             if query.lower().strip().startswith('insert into '):
@@ -124,7 +125,7 @@ class RunupDB:
         self.close_connection()
 
 
-    def insert_backup(self, name:str) -> bool:
+    def insert_backup(self, name:str) -> None:
         """Insert a backup"""
 
         sql:str = f"""
@@ -147,6 +148,7 @@ class RunupDB:
 
         sha256:str = hashfile(path_from_pwd, "sha256")
         sha512:str = hashfile(path_from_pwd, "sha512")
+        sql:str
 
         self.connect()
 
@@ -154,7 +156,7 @@ class RunupDB:
         if sha256 == 'dir' or sha512 == 'dir':
             pass
         else:
-            sql:str = f"""
+            sql = f"""
                 SELECT file_id, sha256, sha512
                 FROM files
                 WHERE sha256='{sha256}' AND sha512='{sha512}'
@@ -167,7 +169,7 @@ class RunupDB:
 
         if len(result) == 0:
             # Insert
-            sql:str = f"""
+            sql = f"""
                 INSERT INTO files (job_id, sha256, sha512, path)
                 VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
             """
@@ -175,7 +177,7 @@ class RunupDB:
             inserted_new = True
         else:
             # Insert
-            sql:str = f"""
+            sql = f"""
                 INSERT INTO files (job_id, sha256, sha512, file_loc, path)
                 VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
             """

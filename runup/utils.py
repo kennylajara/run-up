@@ -43,7 +43,7 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 def hashfile( fname, algo:str ):
-    algorithm:str
+    algorithm:hashlib._Hash
 
     if algo == 'sha256':
         algorithm = hashlib.sha256()
