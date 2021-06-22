@@ -2,7 +2,7 @@
 name: Support
 about: Let us help to implement RunUp
 title: ''
-labels: ''
+labels: 'help wanted'
 assignees: ''
 
 ---
