@@ -1,4 +1,5 @@
 # Built-in
+import os
 from pathlib import Path
 from typing import (
     Dict,
@@ -13,7 +14,6 @@ import click
 import yaml
 
 # Own
-from runup.runupdb import RunupDB
 from runup.version import yaml_versions
 from runup.utils import vCall, vInfo, vResponse
 from runup import interpreter
@@ -141,8 +141,8 @@ class ParserYAML:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""
 
         # Ensure context ends with /
-        if not context.endswith('/'):
-            context = f'{context}/'
+        if not context.endswith(os.sep):
+            context = f'{context}{os.sep}'
 
         # Valid names for the YAML files
         supported_names:List[str] = [
