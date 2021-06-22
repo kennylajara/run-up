@@ -1,8 +1,8 @@
 # RunUp
 
-[![GitHub](https://img.shields.io/github/license/kennylajara/RunUp?style=for-the-badge&color=%230374b4)](https://github.com/kennylajara/RunUp/blob/main/LICENSE){:target="_blank"}
+[![GitHub](https://img.shields.io/github/license/kennylajara/RunUp?style=for-the-badge&color=%230374b4)](https://github.com/kennylajara/RunUp/blob/main/LICENSE)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/RunUp?label=Python%20Support&style=for-the-badge)
-[![PyPI](https://img.shields.io/pypi/v/RunUp?style=for-the-badge&color=%230374b4&label=Version&logoColor=%23ffffff)](https://pypi.org/project/RunUp/){:target="_blank"}
+[![PyPI](https://img.shields.io/pypi/v/RunUp?style=for-the-badge&color=%230374b4&label=Version&logoColor=%23ffffff)](https://pypi.org/project/RunUp/)
 
 
 RunUp is a backup system that can be managed by command line. It is intended to be easy to use, secure and fast.
