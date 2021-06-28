@@ -49,7 +49,7 @@ class Interpreter(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def validate_parameters(self, search_area:Union[Dict[str, Any]], prefix:str='') -> Optional[str]:
+    def validate_parameters(self, search_area:Union[Dict[Any, Any], List[Any]], prefix:str='') -> Optional[str]:
         """Finds the parameters in YAML file not accepted by the interpreter"""
         result:Optional[str] = None
         valid_parameters:KeysView[str] = self._valid_parameters.keys()
@@ -323,7 +323,7 @@ class Interpreter_1(Interpreter):
         return True
 
 
-    def validate_parameters(self, yaml_config:Dict[str, Any], prefix:str='') -> Optional[str]:
+    def validate_parameters(self, yaml_config:Union[Dict[Any, Any], List[Any]], prefix:str='') -> Optional[str]:
         return super().validate_parameters(yaml_config, prefix)
 
 

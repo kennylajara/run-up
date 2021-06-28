@@ -26,7 +26,7 @@ class TestInterpreter_1(TestCaseExtended):
     def test_set_environment_success(self, muck_click_echo, muck_verbose) -> None:
         """Test: `Interpreter_1.set_environment`"""
 
-        context:Path = f'{self._context}/set_environment/empty'
+        context:Path = Path(f'{self._context}/set_environment/empty')
         env_is_set:bool = Interpreter_1(context, True).set_environment()
         self.assertTrue(env_is_set)
 
@@ -58,6 +58,6 @@ class TestInterpreter_1(TestCaseExtended):
         ]
 
         for directory in directories:
-            context:Path = f'{self._context}/set_environment/{directory}'
+            context:Path = Path(f'{self._context}/set_environment/{directory}')
             env_is_set:bool = Interpreter_1(context, True).set_environment()
             self.assertFalse(env_is_set)
