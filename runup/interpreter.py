@@ -34,7 +34,7 @@ class Interpreter(ABC):
         raise NotImplementedError()
         
     @abstractmethod
-    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str) -> Optional[bool]:
+    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str, location:str, job:int) -> Optional[bool]:
         """Restore the specified backup."""
         raise NotImplementedError()
 
@@ -159,54 +159,105 @@ class Interpreter_1(Interpreter):
 
         backup_list:List[str] = []
         working_directories:Dict[str, str] = {}
-        
-        if project == '':
-            backup_list = yaml_config['project'].keys()
-        else:
-            backup_list.append(project)
-
-        for backup in backup_list:
-            vCall(self._verbose, f'Interpreter_1:_working_directories')
-            working_directories.update(self._working_directories(yaml_config['project'][backup]))
-            vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
-
-        # Create backup
-        db:RunupDB = RunupDB(self._context, self._verbose)
-        vCall(self._verbose, f'RunupDB:insert_job')
-        job_id:bool = db.insert_job(backup)
-        vResponse(self._verbose, f'RunupDB:insert_job', job_id)
 
         # Make context relative
         context:str = str(self._context)
         if not context.endswith(os.sep):
             context += os.sep
+        
+        # Select project(s) to backup
+        if project == '':
+            backup_list = yaml_config['project'].keys()
+        else:
+            backup_list.append(project)
 
-        # Zip File
-        with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
-            vInfo(self._verbose, f'ZipFile => {my_zip}')
-            for path_from_pwd, path_from_yaml_file in working_directories.items():
-                if os.path.isfile(path_from_pwd):
-                    vCall(self._verbose, f'RunupDB:insert_file')
-                    inserted_new:bool = db.insert_file(job_id, path_from_pwd, path_from_yaml_file)
-                    vResponse(self._verbose, f'RunupDB:insert_file', inserted_new)
-                    if inserted_new:
-                        vInfo(self._verbose, f'Zipping file: {path_from_pwd}')
-                        my_zip.write(path_from_pwd, path_from_yaml_file)
+        # Create each backup
+        for backup in backup_list:
+
+            vCall(self._verbose, f'Interpreter_1:_working_directories')
+            working_directories.update(self._working_directories(yaml_config['project'][backup]))
+            vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
+
+            # Create DB backup
+            db:RunupDB = RunupDB(self._context, self._verbose)
+            vCall(self._verbose, f'RunupDB:insert_job')
+            job_id:bool = db.insert_job(backup)
+            vResponse(self._verbose, f'RunupDB:insert_job', job_id)
+
+            # Zip File
+            with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
+                vInfo(self._verbose, f'ZipFile => {my_zip}')
+                for path_from_pwd, path_from_yaml_file in working_directories.items():
+                    if os.path.isfile(path_from_pwd):
+                        vCall(self._verbose, f'RunupDB:insert_file')
+                        inserted_new:bool = db.insert_file(job_id, path_from_pwd, path_from_yaml_file)
+                        vResponse(self._verbose, f'RunupDB:insert_file', inserted_new)
+                        if inserted_new:
+                            vInfo(self._verbose, f'Zipping file: {path_from_pwd}')
+                            my_zip.write(path_from_pwd, path_from_yaml_file)
+                        else:
+                            vInfo(self._verbose, f'Not zipping file: {path_from_pwd}')
                     else:
-                        vInfo(self._verbose, f'Not zipping file: {path_from_pwd}')
-                else:
-                    vInfo(self._verbose, f'Zipping directory: {path_from_pwd}')
-                    my_zip.write(path_from_pwd, path_from_yaml_file)
+                        vInfo(self._verbose, f'Zipping directory: {path_from_pwd}')
+                        my_zip.write(path_from_pwd, path_from_yaml_file)
 
-        return job_id
+        return True
 
 
-    def restore_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[bool]:
+    def restore_backup(self, yaml_config:Dict[str, Any], project:str, location:str, job:int) -> Optional[bool]:
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return None
 
-        return None
+        if project != '':
+            projects = [project]
+        else:
+            projects = yaml_config['project'].keys()
+
+        for project_name in projects:
+
+            # Read DB backup
+            db:RunupDB = RunupDB(self._context, self._verbose)
+            vCall(self._verbose, f'RunupDB:select_job')
+            job_data = db.select_job(job, project_name)
+            vResponse(self._verbose, f'RunupDB:select_job', job_data)
+            # Dictionary with location of data.
+            # ------------------------------------------------------
+            # The key is the id of the job where the file is located 
+            # and the value is another dictionary where its key is 
+            # the path of the destination file and the value is the 
+            # path of the file in the job.
+            restoration_source:Dict[str, Dict[str, str]] = {}
+
+            for job_if_original, path_if_original, job_if_copy, path_if_copy in job_data:
+                if job_if_copy is not None:
+                    if job_if_copy not in restoration_source:
+                        restoration_source[job_if_copy] = {}
+                    restoration_source[job_if_copy][path_if_original] = path_if_copy
+                else:
+                    if job_if_original not in restoration_source:
+                        restoration_source[job_if_original] = {}
+                    restoration_source[job_if_original][path_if_original] = path_if_original
+
+
+            # Make context relative
+            context:str = str(self._context)
+            if not context.endswith(os.sep):
+                context += os.sep
+
+            for job_id, file_dict in restoration_source.items():
+                with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}') as myzip:
+                    for dst, src in file_dict.items():
+                        if src.startswith('./'):
+                            src = src[2:]
+                        if dst.startswith('./'):
+                            dst = dst[2:]
+
+                        src_info = myzip.getinfo(src)
+                        src_info.filename = f"{location.strip('/')}/{dst}"
+                        myzip.extract(src_info)
+
+        return True
 
 
     def missing_parameter(self, yaml_config:Dict[str, Any], search_area:Optional[List[str]]=None) -> Optional[str]:
@@ -328,7 +379,8 @@ class Interpreter_1(Interpreter):
 
 
     def _validate_prev_init(self, yaml_config:Dict[str, Any]):
-        """Validate RunUp havs been previously initialized."""
+        """Validate RunUp has been previously initialized."""
+
         if not os.path.exists(f'{self._context}/.runup'):
             click.echo(f'RunUp has not been initialized.')
             return False

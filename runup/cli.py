@@ -73,27 +73,46 @@ def init(config):
 
 @cli.command()
 @click.argument('project', type=str, default='')
-@click.option('--restore', is_flag=True,
-            help="Change execution mode to restore backup.")
 @pass_config
-def backup(config, project:str, restore:bool):
+def backup(config, project:str):
     """Create a backup based on he yaml file config."""
 
     # Take actions
     if config.interpreter is not None:
-        if restore:
-            raise NotImplementedError('Restore Backup has not been implemented.')
-            # vCall(config.verbose, 'Interpreter:restore_backup')
-            # restored:bool = config.interpreter.restore_backup(config.yaml, project)
-            # vResponse(config.verbose, 'Interpreter:restore_backup', restored)
-            # if restored:
-            #     click.echo('The backup has been restored.')
+        vCall(config.verbose, 'Interpreter:create_backup')
+        created:Optional[bool] = config.interpreter.create_backup(config.yaml, project)
+        vResponse(config.verbose, 'Interpreter:create_backup', created)
+        if created is True:
+            click.echo('New backup created.')
         else:
-            vCall(config.verbose, 'Interpreter:create_backup')
-            created:Optional[str] = config.interpreter.create_backup(config.yaml, project)
-            vResponse(config.verbose, 'Interpreter:create_backup', created)
-            if created is not None:
-                click.echo('New backup created.')
+            click.echo('The backup has NOT been created.')
+    else:
+        # click.echo('Interpreter not detected.')
+        sys.exit(1)
+
+
+@cli.command()
+@click.argument('project', type=str, default='')
+@click.option('-j', '--job', type=int, default=0,
+            help='In restoration mode, indicates the number of the job ' + \
+                 'to be restored. Zero (default) to restore the latest ' + \
+                 'job.')
+@click.option('-l', '--location', type=str, default='',
+            help='In restoration mode, indicates the location where ' + \
+                 'the backup should to be restored.')
+@pass_config
+def restore(config, project:str, location:str, job:int):
+    """Create a backup based on he yaml file config."""
+
+    # Take actions
+    if config.interpreter is not None:
+        vCall(config.verbose, 'Interpreter:restore_backup')
+        restored:bool = config.interpreter.restore_backup(config.yaml, project, location, job)
+        vResponse(config.verbose, 'Interpreter:restore_backup', restored)
+        if restored:
+            click.echo('The backup has been restored.')
+        else:
+            click.echo('The backup has NOT been restored.')
     else:
         # click.echo('Interpreter not detected.')
         sys.exit(1)

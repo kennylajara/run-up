@@ -41,6 +41,8 @@ class RunupDB:
                 return c.lastrowid
             elif query.lower().strip().startswith('insert or ignore into '):
                 return c.lastrowid
+            elif query.lower().strip().startswith('select '):
+                return c.fetchall()
             return c
         except Error as e:
             click.echo(e)
@@ -163,8 +165,7 @@ class RunupDB:
                 LIMIT 1;
             """
 
-        cursor = self.execute(f'Search file: {path_from_yaml_file}', sql)
-        result = cursor.fetchall()
+        result = self.execute(f'Search file: {path_from_yaml_file}', sql)
         inserted_new:bool
 
         if len(result) == 0:
@@ -202,3 +203,37 @@ class RunupDB:
         self.close_connection()
 
         return id
+
+
+    def select_job(self, job:int, project:str):
+        """Select a job"""
+
+        sql:str
+
+        # Select latest job from DB
+        if job == 0:
+            sql = f"""
+                SELECT MAX(files.job_id)
+                FROM files
+                JOIN jobs ON jobs.job_id = files.job_id
+                WHERE jobs.backup_name = '{project}'
+            """
+
+            self.connect()
+            job = self.execute('Select latest job', sql)[0][0]
+            self.close_connection()
+        
+        # Select data from DB
+        sql = f"""
+            SELECT A.job_id, A.path, B.job_id, B.path
+            FROM files AS A
+            JOIN jobs ON jobs.job_id = A.job_id
+            LEFT JOIN files AS B ON A.file_loc = B.file_id
+            WHERE jobs.backup_name = '{project}' AND A.job_id = {job}
+        """
+
+        self.connect()
+        data = self.execute('Get job info', sql)
+        self.close_connection()
+
+        return data
