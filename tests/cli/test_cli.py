@@ -148,4 +148,4 @@ class CLI_1_0(TestCaseExtended):
             expected_db_files.append(row[0])
         conn.close()
         
-        self.assertListEqual(expected_db_files, included_db_files)
+        self.assertEqual(expected_db_files, included_db_files)
