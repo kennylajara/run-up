@@ -361,19 +361,23 @@ class Interpreter_1(Interpreter):
         exclude_tuple_slash:Tuple = tuple(exclude_list_slash)
 
         for include in include_dict.keys():
-            # traverse root directory as root, and list directories as _ and files as files
-            for root, _, files in os.walk(include):
-                if not (root+os.sep).startswith(exclude_tuple_slash) and root not in exclude_list and not '.runup' in root.split(os.sep):
-                    vInfo(self._verbose, f'Including directory `{root}` into workspace.')
-                    # directories[root] = include_dict[root]
-                    for file in files:
-                        filepath:str = root + os.sep + file
-                        if filepath in exclude_list or file in ['runup.yml', 'runup.yaml']:
-                            vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
-                        else:
-                            vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
-                            directories[filepath] = '.' + os.sep + os.path.relpath(filepath, self._context)
-                else:
-                    vInfo(self._verbose, f'Ignoring directory `{root}` from workspace')
+            if os.path.isfile(include):
+                vInfo(self._verbose, f'`{include}` is a file. Including it into workspace.')
+                directories[include] = '.' + os.sep + os.path.relpath(include, self._context)
+            else:
+                # traverse root directory as root, and list directories as _ and files as files
+                for root, _, files in os.walk(include):
+                    if not (root+os.sep).startswith(exclude_tuple_slash) and root not in exclude_list and not '.runup' in root.split(os.sep):
+                        vInfo(self._verbose, f'Including directory `{root}` into workspace.')
+                        # directories[root] = include_dict[root]
+                        for file in files:
+                            filepath:str = root + os.sep + file
+                            if filepath in exclude_list or file in ['runup.yml', 'runup.yaml']:
+                                vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
+                            else:
+                                vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
+                                directories[filepath] = '.' + os.sep + os.path.relpath(filepath, self._context)
+                    else:
+                        vInfo(self._verbose, f'Ignoring directory `{root}` from workspace')
 
         return directories
