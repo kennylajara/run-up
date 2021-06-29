@@ -348,10 +348,14 @@ class Interpreter_1(Interpreter):
         directories:Dict[str, str] = {}
         exclude_list:List[str] = []
         exclude_list_slash:List[str] = []
-        include_dict:Dict[str, str] = { os.path.join(self._context, inc): inc for inc in config['include']}
+        include_dict:Dict[str, str] = {}
+
+        for inc in config['include']:
+            inc_os = inc.replace('/', os.sep)
+            include_dict[os.path.join(self._context, inc_os)] = inc
 
         if 'exclude' in config:
-            exclude_list = [os.path.join(self._context, exc) for exc in config['exclude']]
+            exclude_list = [os.path.join(self._context, exc.replace('/', os.sep)) for exc in config['exclude']]
             for element in exclude_list:
                 if element.endswith(os.sep):
                     exclude_list_slash.append(element)
