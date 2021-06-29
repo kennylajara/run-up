@@ -1,1 +1,0 @@
-Content of file-1.txt and file-2.txt is the same.
