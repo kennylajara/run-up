@@ -122,30 +122,36 @@ class CLI_1_0(TestCaseExtended):
 
         # Test files in job
         expected_zip_files_1:List[str] = [
-            'include.txt', 
-            'dir/file-1.txt', 
             'dir-include/file.txt',
+            'dir/file-1.txt', 
+            'include.txt', 
         ]
         expected_zip_files_2:List[str] = [
-            'include.txt', 
-            'dir/file-2.txt', 
             'dir-include/file.txt',
+            'dir/file-2.txt', 
+            'include.txt', 
         ]
         with ZipFile(context + '/.runup/jobs/1', 'r') as myzip:
-            self.assertEqual(True, myzip.namelist() == expected_zip_files_1 or myzip.namelist() == expected_zip_files_2)
+            namelist:List[str] = myzip.namelist()
+            namelist.sort()
+            try:
+                self.assertListEqual(namelist, expected_zip_files_1)
+            except AssertionError:
+                self.assertListEqual(namelist, expected_zip_files_2)
 
         # Test files in DB
         conn = sqlite3.connect(context + '/.runup/runup.db')
         cursor = conn.execute("SELECT path FROM 'files'")
         expected_db_files:List[str] = []
         included_db_files:List[str] = [
-            './include.txt', 
+            './dir-include/file.txt',
             './dir/file-1.txt', 
             './dir/file-2.txt', 
-            './dir-include/file.txt',
+            './include.txt', 
         ]
         for row in cursor:
             expected_db_files.append(row[0])
         conn.close()
+        expected_db_files.sort()
         
-        self.assertEqual(expected_db_files.sort(), included_db_files.sort())
+        self.assertListEqual(expected_db_files, included_db_files)
