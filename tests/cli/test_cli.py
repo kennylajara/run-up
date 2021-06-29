@@ -121,13 +121,18 @@ class CLI_1_0(TestCaseExtended):
         self.assertIsFile(context + '/.runup/jobs/1')
 
         # Test files in job
-        expected_zip_files:List[str] = [
+        expected_zip_files_1:List[str] = [
             'include.txt', 
             'dir/file-1.txt', 
             'dir-include/file.txt',
         ]
+        expected_zip_files_2:List[str] = [
+            'include.txt', 
+            'dir/file-2.txt', 
+            'dir-include/file.txt',
+        ]
         with ZipFile(context + '/.runup/jobs/1', 'r') as myzip:
-            self.assertListEqual(myzip.namelist(), expected_zip_files)
+            self.assertEqual(True, myzip.namelist() == expected_zip_files_1 or myzip.namelist() == expected_zip_files_2)
 
         # Test files in DB
         conn = sqlite3.connect(context + '/.runup/runup.db')
