@@ -135,9 +135,9 @@ class CLI_1_0(TestCaseExtended):
             namelist:List[str] = myzip.namelist()
             namelist.sort()
             try:
-                self.assertListEqual(namelist, [ x.replace('/', os.sep) for x in expected_zip_files_1])
+                self.assertListEqual(namelist, expected_zip_files_1)
             except AssertionError:
-                self.assertListEqual(namelist, [ x.replace('/', os.sep) for x in expected_zip_files_2])
+                self.assertListEqual(namelist, expected_zip_files_2)
 
         # Test files in DB
         conn = sqlite3.connect(context + '/.runup/runup.db')
