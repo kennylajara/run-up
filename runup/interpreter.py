@@ -352,7 +352,7 @@ class Interpreter_1(Interpreter):
 
         for inc in config['include']:
             inc_os = inc.replace('/', os.sep)
-            include_dict[os.path.join(self._context, inc_os)] = inc
+            include_dict[os.path.join(self._context, inc_os)] = inc_os
 
         if 'exclude' in config:
             exclude_list = [os.path.join(self._context, exc.replace('/', os.sep)) for exc in config['exclude']]

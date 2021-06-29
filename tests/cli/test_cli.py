@@ -154,4 +154,5 @@ class CLI_1_0(TestCaseExtended):
         conn.close()
         expected_db_files.sort()
         
-        self.assertListEqual(expected_db_files, [ x.replace('/', os.sep) for x in included_db_files])
+        # self.assertListEqual(expected_db_files, [ x.replace('/', os.sep) for x in included_db_files])
+        self.assertListEqual(expected_db_files, included_db_files)
