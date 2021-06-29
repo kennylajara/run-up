@@ -352,7 +352,7 @@ class Interpreter_1(Interpreter):
 
         for inc in config['include']:
             inc_os = inc.replace('/', os.sep)
-            include_dict[os.path.join(self._context, inc_os)] = inc_os
+            include_dict[os.path.join(self._context, inc_os)] = inc.replace(os.sep, '/')
 
         if 'exclude' in config:
             exclude_list = [os.path.join(self._context, exc.replace('/', os.sep)) for exc in config['exclude']]
@@ -367,7 +367,7 @@ class Interpreter_1(Interpreter):
         for include in include_dict.keys():
             if os.path.isfile(include):
                 vInfo(self._verbose, f'`{include}` is a file. Including it into workspace.')
-                directories[include] = '.' + os.sep + os.path.relpath(include, self._context)
+                directories[include] = str('.' + os.sep + os.path.relpath(include, self._context)).replace(os.sep, '/')
             else:
                 # traverse root directory as root, and list directories as _ and files as files
                 for root, _, files in os.walk(include):
@@ -380,7 +380,7 @@ class Interpreter_1(Interpreter):
                                 vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
                             else:
                                 vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
-                                directories[filepath] = '.' + os.sep + os.path.relpath(filepath, self._context)
+                                directories[filepath] = str('.' + os.sep + os.path.relpath(filepath, self._context)).replace(os.sep, '/')
                     else:
                         vInfo(self._verbose, f'Ignoring directory `{root}` from workspace')
 
