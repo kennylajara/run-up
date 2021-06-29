@@ -2,7 +2,10 @@
 import os
 from pathlib import Path
 from shutil import rmtree as rmdir_recursive
+import sqlite3
+from typing import List
 from unittest import mock
+from zipfile import ZipFile
 
 # 3rd party
 from click.testing import CliRunner
@@ -113,3 +116,31 @@ class CLI_1_0(TestCaseExtended):
         # Assert
         self.assertEqual(result.output, f'New backup created.\n')
         self.assertEqual(result.exit_code, 0)
+
+        # Test job created
+        self.assertIsFile(context + '/.runup/jobs/1')
+
+        # Test files in job
+        expected_zip_files:List[str] = [
+            'include.txt', 
+            'dir/file-1.txt', 
+            'dir-include/file.txt',
+        ]
+        with ZipFile(context + '/.runup/jobs/1', 'r') as myzip:
+            self.assertListEqual(myzip.namelist(), expected_zip_files)
+
+        # Test files in DB
+        conn = sqlite3.connect(context + '/.runup/runup.db')
+        cursor = conn.execute("SELECT path FROM 'files'")
+        expected_db_files:List[str] = []
+        included_db_files:List[str] = [
+            './include.txt', 
+            './dir/file-1.txt', 
+            './dir/file-2.txt', 
+            './dir-include/file.txt',
+        ]
+        for row in cursor:
+            expected_db_files.append(row[0])
+        conn.close()
+        
+        self.assertListEqual(expected_db_files, included_db_files)

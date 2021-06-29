@@ -2,11 +2,9 @@ version: '1.0'
 
 project: 
   myproject:
-    cron: '0 * * * *'
-    include: 
-      - '.'
+    include:
+      - './include.txt' 
+      - './dir'
+      - './dir-include'
     exclude:
-      - './icon_cache'
-    encrypt:
-      - './config.json'
-    password: '$ecret_P4ssW0rd'
+      - './dir/file-ignore.txt'
