@@ -1,12 +1,7 @@
 import setuptools # type: ignore
 import subprocess
 
-
-# Get version from tags
-remote_version:str = subprocess.run(
-    ['git', 'describe', '--tags'],
-    stdout=subprocess.PIPE
-).stdout.decode("utf-8").strip()
+from runup.version import runup_version
 
 # Get content of `README.md` to 
 # add it on the long description
@@ -57,5 +52,5 @@ setuptools.setup(
     },
     python_requires='>=3.6',
     url="https://github.com/kennylajara/runup",
-    version=remote_version,
+    version=runup_version,
 )
