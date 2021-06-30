@@ -1,4 +1,8 @@
 # Built-in
+import os
+from pathlib import Path
+from shutil import rmtree
+from sqlite3.dbapi2 import connect
 import sys
 from typing import Dict, Optional, Union
 
@@ -100,12 +104,27 @@ def backup(config, project:str):
 @click.option('-l', '--location', type=str, default='',
             help='In restoration mode, indicates the location where ' + \
                  'the backup should to be restored.')
+@click.option('--clear-location', is_flag=True,
+            help='Empty location before restoration.')
 @pass_config
-def restore(config, project:str, location:str, job:int):
+def restore(config, project:str, location:str, job:int, clear_location:bool):
     """Create a backup based on he yaml file config."""
 
     # Take actions
     if config.interpreter is not None:
+
+        if clear_location:
+            restored_backup_dir = f"{config.context}/{location}"
+            for f in os.listdir(restored_backup_dir):
+                if Path.is_dir(Path(f)):
+                    if f == '.runup':
+                        continue
+                    rmtree(f)
+                else:
+                    if f == 'runup.yaml':
+                        continue
+                    os.remove(os.path.join(restored_backup_dir, f))
+
         vCall(config.verbose, 'Interpreter:restore_backup')
         restored:bool = config.interpreter.restore_backup(config.yaml, project, location, job)
         vResponse(config.verbose, 'Interpreter:restore_backup', restored)

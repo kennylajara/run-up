@@ -223,6 +223,9 @@ class RunupDB:
             job = self.execute('Select latest job', sql)[0][0]
             self.close_connection()
         
+        if job is None:
+            return None
+
         # Select data from DB
         sql = f"""
             SELECT A.job_id, A.path, B.job_id, B.path

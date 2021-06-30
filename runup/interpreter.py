@@ -214,6 +214,11 @@ class Interpreter_1(Interpreter):
         else:
             projects = yaml_config['project'].keys()
 
+        # Make context relative
+        context:str = str(self._context)
+        if not context.endswith(os.sep):
+            context += os.sep
+
         for project_name in projects:
 
             # Read DB backup
@@ -221,6 +226,11 @@ class Interpreter_1(Interpreter):
             vCall(self._verbose, f'RunupDB:select_job')
             job_data = db.select_job(job, project_name)
             vResponse(self._verbose, f'RunupDB:select_job', job_data)
+
+            if job_data is None:
+                click.echo("The specified project and job combination doesn't exists.")
+                return None
+
             # Dictionary with location of data.
             # ------------------------------------------------------
             # The key is the id of the job where the file is located 
@@ -238,12 +248,6 @@ class Interpreter_1(Interpreter):
                     if job_if_original not in restoration_source:
                         restoration_source[job_if_original] = {}
                     restoration_source[job_if_original][path_if_original] = path_if_original
-
-
-            # Make context relative
-            context:str = str(self._context)
-            if not context.endswith(os.sep):
-                context += os.sep
 
             for job_id, file_dict in restoration_source.items():
                 with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}') as myzip:
