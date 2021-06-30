@@ -13,5 +13,5 @@ I will make sure this is changed in the future.
 
 | Version             | Supported          |
 | ------------------- | ------------------ |
-| v0.1.0-alpha        | :white_check_mark: |
+| v0.1.b1             | :white_check_mark: |
 | v0.1.Dev11 or lower | :x:                |
