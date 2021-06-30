@@ -152,6 +152,7 @@ class Interpreter_1(Interpreter):
 
 
     def create_backup(self, yaml_config:Dict[str, Any], project:str) -> Optional[bool]:
+        """Create a new backup"""
 
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
@@ -205,6 +206,8 @@ class Interpreter_1(Interpreter):
 
 
     def restore_backup(self, yaml_config:Dict[str, Any], project:str, location:str, job:int) -> Optional[bool]:
+        """Restore a backup"""
+
         initiated:bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return None
@@ -265,6 +268,7 @@ class Interpreter_1(Interpreter):
 
 
     def missing_parameter(self, yaml_config:Dict[str, Any], search_area:Optional[List[str]]=None) -> Optional[str]:
+        """Analyse a parameter to confirm if is missing or not"""
         
         if search_area is None:
             search_area = self._required_parameters
