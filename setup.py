@@ -19,7 +19,7 @@ setuptools.setup(
     author="Kenny Lajara",
     author_email="kennylajara@gmail.com",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 3 - Alpha",
         "Environment :: Console",
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
@@ -49,7 +49,7 @@ setuptools.setup(
     ],
     long_description=README,
     long_description_content_type="text/markdown",
-    packages=["runup"], # setuptools.find_packages(),
+    packages=["runup"],
     project_urls={
         # "Documentation": "https://readthedocs.org/",
         # 'Source': "https://github.com/kennylajara/runup",

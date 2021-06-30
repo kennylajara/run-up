@@ -4,9 +4,7 @@ from typing import List
 # ----------------------------------------------- #
 # Current version of runup                        #
 # ----------------------------------------------- #
-# Al lanzar la version 0.1.0 nos pasamos a SemVer #
-# ----------------------------------------------- #
-runup_version:str = '0.1.dev11'
+runup_version:str = '1.0a1'
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #
