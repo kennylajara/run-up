@@ -4,7 +4,7 @@ from typing import List
 # ----------------------------------------------- #
 # Current version of runup                        #
 # ----------------------------------------------- #
-runup_version:str = '0.1a1'
+runup_version:str = 'v0.1.0-alpha'
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #

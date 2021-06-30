@@ -11,7 +11,7 @@ I will make sure this is changed in the future.
 
 ## Supported Versions
 
-| Version            | Supported          |
-| ------------------ | ------------------ |
-| 0.1a1              | :white_check_mark: |
-| 0.1.Dev11 or lower | :x:                |
+| Version             | Supported          |
+| ------------------- | ------------------ |
+| v0.1.0-alpha        | :white_check_mark: |
+| v0.1.Dev11 or lower | :x:                |
