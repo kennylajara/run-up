@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # Built-in
 from abc import ABC, abstractmethod
 from collections.abc import KeysView
@@ -34,7 +39,7 @@ class Interpreter(ABC):
         raise NotImplementedError()
         
     @abstractmethod
-    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str, location:str, job:int) -> Optional[bool]:
+    def restore_backup(self, yaml_config:Dict[str, Any], backup_id:str, location:str, job:int, force:bool) -> Optional[bool]:
         """Restore the specified backup."""
         raise NotImplementedError()
 
@@ -137,14 +142,14 @@ class Interpreter_1(Interpreter):
                 'version': str,
                 'project': dict,
                 'project.*': dict,
-                'project.*.cron': str,
-                'project.*.encrypt': list,
-                'project.*.encrypt.*': str,
+                # 'project.*.cron': str,
+                # 'project.*.encrypt': list,
+                # 'project.*.encrypt.*': str,
                 'project.*.exclude': list,
                 'project.*.exclude.*': str,
                 'project.*.include': list,
                 'project.*.include.*': str,
-                'project.*.password': str,
+                # 'project.*.password': str,
             },
             verbose=verbose,
             version='1',
@@ -206,7 +211,7 @@ class Interpreter_1(Interpreter):
         return True
 
 
-    def restore_backup(self, yaml_config:Dict[str, Any], project:str, location:str, job:int) -> Optional[bool]:
+    def restore_backup(self, yaml_config:Dict[str, Any], project:str, location:str, job:int, force:bool) -> Optional[bool]:
         """Restore a backup"""
 
         initiated:bool = self._validate_prev_init(yaml_config)
@@ -231,9 +236,18 @@ class Interpreter_1(Interpreter):
             job_data = db.select_job(job, project_name)
             vResponse(self._verbose, f'RunupDB:select_job', job_data)
 
-            if job_data is None:
-                click.echo("The specified project and job combination doesn't exists.")
-                return None
+            if len(job_data) == 0:
+                click.secho(f'The project "{project_name}" is not part of the job {job}.', fg='red')
+                continue
+
+            if not force:
+                confirmation:str = ''
+                while confirmation not in ['yes', 'y', 'no', 'n']:
+                    confirmation = input(f'Are you sure you want to restore the project "{project_name}"? [Y/n] ')
+                    confirmation = confirmation.lower()
+
+                if confirmation == 'n' or confirmation == 'no':
+                    continue
 
             # Dictionary with location of data.
             # ------------------------------------------------------
@@ -264,6 +278,8 @@ class Interpreter_1(Interpreter):
                         src_info = myzip.getinfo(src)
                         src_info.filename = f"{location.strip('/')}/{dst}"
                         myzip.extract(src_info)
+
+            click.secho(f'A backup for the project "{project_name}" has been restored.', fg='green')
 
         return True
 

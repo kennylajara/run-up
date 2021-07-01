@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # Built-in
 import os
 from pathlib import Path
@@ -106,8 +111,10 @@ def backup(config, project:str):
                  'the backup should to be restored.')
 @click.option('--clear-location', is_flag=True,
             help='Empty location before restoration.')
+@click.option('-f', '--force', is_flag=True,
+            help='Make the restore without asking a confirmation.')
 @pass_config
-def restore(config, project:str, location:str, job:int, clear_location:bool):
+def restore(config, project:str, location:str, job:int, clear_location:bool, force:bool):
     """Create a backup based on he yaml file config."""
 
     # Take actions
@@ -126,11 +133,9 @@ def restore(config, project:str, location:str, job:int, clear_location:bool):
                     os.remove(os.path.join(restored_backup_dir, f))
 
         vCall(config.verbose, 'Interpreter:restore_backup')
-        restored:bool = config.interpreter.restore_backup(config.yaml, project, location, job)
+        restored:bool = config.interpreter.restore_backup(config.yaml, project, location, job, force)
         vResponse(config.verbose, 'Interpreter:restore_backup', restored)
-        if restored:
-            click.echo('The backup has been restored.')
-        else:
+        if restored is None:
             click.echo('The backup has NOT been restored.')
     else:
         # click.echo('Interpreter not detected.')
