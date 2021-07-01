@@ -34,7 +34,7 @@ Install RunUp with PIP:
 python3 -m pip install runup
 ```
 
-Then you will need to config your backup and start using it. It is very easy, visit [Getting Started](https://runup.readthedocs/latest/getting-started) section of the documentation.
+Then you will need to config your backup and start using it. It is very easy, visit [Getting Started](https://runup.readthedocs.io/en/latest/getting-started/) section of the documentation.
 
 ## Contribution
 
