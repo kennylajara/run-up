@@ -162,6 +162,7 @@ class RunupDB:
                 SELECT file_id, sha256, sha512
                 FROM files
                 WHERE sha256='{sha256}' AND sha512='{sha512}'
+                ORDER BY file_id ASC
                 LIMIT 1;
             """
 
