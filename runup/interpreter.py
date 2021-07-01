@@ -159,7 +159,7 @@ class Interpreter_1(Interpreter):
             return None
 
         backup_list:List[str] = []
-        working_directories:Dict[str, str] = {}
+        working_directories:Dict[str, str]
 
         # Make context relative
         context:str = str(self._context)
@@ -175,6 +175,7 @@ class Interpreter_1(Interpreter):
         # Create each backup
         for backup in backup_list:
 
+            working_directories = {}
             vCall(self._verbose, f'Interpreter_1:_working_directories')
             working_directories.update(self._working_directories(yaml_config['project'][backup]))
             vResponse(self._verbose, f'Interpreter_1:_working_directories', working_directories)
