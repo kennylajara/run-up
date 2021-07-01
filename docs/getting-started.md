@@ -2,10 +2,10 @@
 
 ## Requirements
 
-You have to 
+You need to have a supported Python version installed on a supported operative system.
 
-* Operative system: Linux, Windows, MacOS
-* Python version: 3.7, 3.8, 3.9
+* Supported OS: Linux, Windows, MacOS
+* Supported Python versions: 3.7, 3.8, 3.9
 
 ## Installation
 
