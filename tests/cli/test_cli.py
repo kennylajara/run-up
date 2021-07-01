@@ -1,3 +1,8 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # Built-in    
 import os
 from pathlib import Path
@@ -13,7 +18,7 @@ from click.testing import CliRunner
 
 # Own
 from dev.unittest import TestCaseExtended
-from runup.cli import cli, restore
+from runup.cli import cli
 from runup.version import runup_version
 
 
@@ -52,7 +57,12 @@ class CLI_1_0(TestCaseExtended):
         for f in os.listdir(restored_backup_dir):
             if f == '.keep':
                 continue
-            os.remove(os.path.join(restored_backup_dir, f))
+
+            path_to_delete:Path = Path(os.path.join(restored_backup_dir, f))
+            if Path.is_dir(path_to_delete):
+                rmdir_recursive(path_to_delete)
+            else:
+                os.remove(path_to_delete)
 
 
     def test_help(self):
@@ -169,15 +179,16 @@ class CLI_1_0(TestCaseExtended):
         # -------------- #
         # Restore Backup #
         # -------------- #
-        location:str = 'restore-here/'
-        result = runner.invoke(cli, ['--context', context, 'restore', '--location', location, 'myproject'])
+        location:str = context + '/restore-here'
+        result = runner.invoke(cli, ['--context', context, 'restore', '-f', '--location', location, 'myproject'])
         # Assert
-        self.assertEqual(result.output, f'The backup has been restored.\n')
+        self.assertEqual(result.output, f'A backup for the project "myproject" has been restored.\n')
         self.assertEqual(result.exit_code, 0)
 
         # Test Files has been restored
         for file in expected_db_files:
             self.assertIsFile(location + os.sep + file)
+
 
 if __name__ == "__main__":
     unittest.main()
