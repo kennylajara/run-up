@@ -42,7 +42,7 @@ Install RunUp with PIP:
 python3 -m pip install runup
 ```
 
-Create a `runup.yaml` file with the configuration of yor backups. This example to backup all the files on the same directory as the config file:
+Create a `runup.yaml` file with the configuration of your backups. This example to backup all the files on the same directory as the config file:
 
 ```
 version: '1'
