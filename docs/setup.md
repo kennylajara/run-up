@@ -10,7 +10,7 @@ To configure RunUp you need to create a [YAML](https://en.wikipedia.org/wiki/YAM
 
 #### Version
 
-`string (required)` You must always define a version. At the moment the value of the version need to be `1` or `1.0`. This won't change the behavior of the program since this definition has been introduced for future backward compatibility.
+`string (required)` You must always define a version. At the moment the value of the version need to be **"1"** or **"1.0"**. This won't change the behavior of the program since this definition has been introduced for future backward compatibility.
 
 *Example:*
 
@@ -24,18 +24,18 @@ version: '1'
 
 **Project's parameters**
 
-| Name      | Type        | Description                                                                             |
-| --------- | ----------- | --------------------------------------------------------------------------------------- |
-| `include` | `List[str]` | `(required)` List of path to directories and files to include in the backup.            |
-| `exclude` | `List[str]` | `(optional)` List of path to directories and files to exlude from the already included. |
+| Name    | Type           | Required | Description                                                                |
+| ------- | -------------- | -------- | -------------------------------------------------------------------------- |
+| include | List of string | Yes      | List of path to directories and files to include in the backup.            |
+| exclude | List of string | No       | List of path to directories and files to exlude from the already included. |
 
 > **Note:** Absolute paths are not officially supported. It is recommended to use relative paths from location of the `runup.yaml` file.
 
 ### Example
 
-Now let's see an example of a `runup.yml` file created configred to backup 2 projects. One name `app` and another named `website`.
+Now let's see an example of a `runup.yml` file created configred to backup 2 projects. One name **app** and another named **website**.
 
-For the `app` project we are going to backup all the directory `app` and its content. For the project `website` we are going to backup the directories `cronjobs` and `web` but ignoring the subdirectory `web/src/vendor` and its content.
+For the **app** project we are going to backup all the directory **app** and its content. For the project **website** we are going to backup the directories `cronjobs` and `web` but ignoring the subdirectory web/src/vendor` and its content.
 
 ```yaml
 version: '1'
