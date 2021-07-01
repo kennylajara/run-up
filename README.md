@@ -21,15 +21,15 @@ With the above information in mind, I have come up with fragmented backups, a ne
 
 ## Key features
 
-### Saves disk space
+**Saves disk space**
 
 Files are never duplicated in the backup storage, even if they are duplicated in the repository or renamed without changing the content.
 
-### Create faster backups
+**Create faster backups**
 
 Each backup contains only one copy of new or changed files. This allows us to create backups faster, saving time and memory usage.
 
-### Quick restoration of backups
+**Quick restoration of backups**
 
 When restoring data, we handle it as a full backup, so we don't have the inconvenience of tools that implement traditional partial backup strategies.
 
@@ -42,22 +42,47 @@ Install RunUp with PIP:
 python3 -m pip install runup
 ```
 
-Then you will have to [setup](https://runup.readthedocs.io/en/latest/setup/) the way the backups will be created before you are ready to start using it. Once you are ready, you can create backups with the following command:
+Create a `runup.yaml` file with the configuration of yor backups. This example to backup all the files on the same directory as the config file:
+
+```
+version: '1'
+
+project:
+  projectname:
+    include: 
+      - '.'
+```
+
+Initialize RunUp.
+
+```
+runup init
+```
+
+Create a backup
 
 ```
 runup backup
 ```
 
-For a quick tutorial, visit the [Getting Started](https://runup.readthedocs.io/en/latest/getting-started/) section of the documentation.
+Restore the latest backup
 
-## Contribution
+```
+runup restore
+```
 
-Contributions are welcome, either as an idea or as an implementation in the form of a Pull Request. Do not hesitate to open a new issue to clarify doubts that may help the development of the product.
-
-Donations are another way to contribute. If this project is of value to you, consider making a donation.
-
-[![Donate me](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=P8CT5NJ22N3UC&no_recurring=0&currency_code=USD)
+For details or more advanced options, see the [documentation](https://runup.readthedocs.io/en/latest/).
 
 ## License
 
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at [https://mozilla.org/MPL/2.0/](https://mozilla.org/MPL/2.0/).
+
+## Contribution
+
+Contributions are welcome! See the [Contributor's Guide](CONTRIBUTING.md).
+
+## Donation
+
+This is a Free Open Source Software. If this project is of value to you, consider making a donation.
+
+[![Donate me](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=P8CT5NJ22N3UC&no_recurring=0&currency_code=USD)
