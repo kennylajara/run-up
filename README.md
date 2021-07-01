@@ -5,31 +5,36 @@
 [![PyPI](https://img.shields.io/pypi/v/RunUp?style=for-the-badge&color=%230374b4&label=Version&logoColor=%23ffffff)](https://pypi.org/project/RunUp/)
 
 
-RunUp is a backup system that can be managed by command line. It is intended to be easy to use, secure and fast.
+RunUp is a backup solution that implements a new backup strategy: Fragmented Backups. This solution solves all the drawback of the traditional backup strategies.
 
-### Why yet another backup solution?
+## Framented Backup
 
-Most backup solutions are good at making full backups, but this can be time-consuming and unchanged data is replicated each time a new backup is made.
+Traditionally, there are two ways of creating backups: Full backups and partial (incremental or differential) backups. Full backups duplicates data and are very slow to create, while partial backups reduce data duplication and are created faster but are slower to restore because you seed to restore several partial backups.
 
-Some other solutions implement differential backups and incremental backups, two strategies that _partially_ solve this drawback. But that's the problem with them.... "partially". With those strategies you can create the backups faster but now restoring the data takes a longer time, so, how do you solve it? By creating full backups from time to time and partial backups thereafter (either incremental or differential).
+We have devised the fragmented backups, a new backup strategy that creates partial backups but restores full backups, getting the best of both worlds.
 
-These strategies reduce data duplication and partial backups are created faster (the full backups that you need to create every now an then still take the same), but this is not for free, data restoration would be slower than if you just make full bakups. Honestly, these are not so bad strategies, but I think we can do better.
+### Save disk space
 
-The other options are the Git based solutions. Well, Git is excellent for code versioning but when you talk about backups... let's says that this is not what it was designed for.
+We don't duplicate unchanged files in your backup storage even if is duplicated in your repository or renamed at some point in the future.
 
-Git history can't be modified, to do simple tasks like deleting older restore points or moving some files to cold storage, you'd have to resort to some dubious data manipulation. I admit that I don't know how they implement this with Git (if they do) but also that I'm afraid to find out.
+### Create faster backups
 
-And the big files! Let's quote what the creator of Git said about them:
+RunUp only copy the new or changed files. This allow us to create the backups faster, saving you time and memory usage.
 
-> And yes, then there’s the “big file” issues. I really don’t know what to do about huge files. We suck at them, I know.
-> 
-> — Linus Torvalds ([source](https://towardsdatascience.com/data-versioning-all-you-need-to-know-7077aa5ed6d1#d5e7))
+### Resore your backup faster
 
-So, back to the question: Why another backup solution? Because we have to finally solve these problems and that's what this tool does by creating "fragmented backups", a new backup strategy that not only reduces both backup creation and restore time, but avoids data duplication altogether.
+While restoring the data, we handle it as a full backup so we don't have the drawback of the the tools implementing incremental and differential backups to reduce backup creation time.
+
 
 ## Usage
 
-Unfortunately it is not ready yet, so it cannot be used. I am working hard on it.
+Install RunUp with PIP:
+
+```
+python3 -m pip install runup
+```
+
+Then you will need to config your backup and start using it. It is very easy, visit [Getting Started](https://runup.readthedocs/latest/getting-started) section of the documentation.
 
 ## Contribution
 

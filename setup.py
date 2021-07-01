@@ -47,11 +47,11 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     packages=["runup"],
     project_urls={
-        # "Documentation": "https://readthedocs.org/",
-        # 'Source': "https://github.com/kennylajara/runup",
+        "Documentation": "https://runup.readthedocs.io/",
         'Tracker': 'https://github.com/kennylajara/runup/issues',
+        'Source': "https://github.com/kennylajara/runup",
     },
     python_requires='>=3.6',
-    url="https://github.com/kennylajara/runup",
+    # url="https://github.com/kennylajara/runup",
     version=project_version,
 )

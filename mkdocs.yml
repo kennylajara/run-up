@@ -1,0 +1,36 @@
+site_name: RunUp
+site_url: https://runup.readthedocs.io/
+
+copyright: Copyright &copy; 2021 Kenny Lajara
+
+edit_uri: ''
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - 'Home': 'index.md'
+  - 'Getting Started': 'getting-started.md'
+  - 'Setup': 'setup.md'
+#  - 'Jobs': 'jobs.md'
+  - 'Backup Creation': 'backup-creation.md'
+  - 'Backup Restoration': 'backup-restoration.md'
+  - 'License': 'license.md'
+
+repo_url: https://github.com/kennylajara/RunUp
+repo_name: kennylajara/RunUp
+
+
+theme: 
+  name: material
+#  features:
+#    - navigation.tabs
+#    - navigation.sections
+  fonts: 
+    text: Roboto
+    code: Roboto Mono
+  icon: 
+    repo: fontawesome/brands/github
+  palette:
+    primary: green
+    accen: green
