@@ -1,8 +1,13 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # Built-in
 from pathlib import Path
 import sqlite3
 from sqlite3 import Error
-import time;
+import time
 from typing import Dict
 
 # 3rd Party
@@ -15,72 +20,68 @@ from runup.utils import vInfo, hashfile
 class RunupDB:
     """
     Handle the database where the data is stored.
-    
+
     The `.runup` files are SQLite3 databases containing the
     path to the file, MD5 sign, SHA256 sign and ID of the backup
     where this file was found the first time.
     """
-    
-    def __init__(self, context:Path, verbose:bool):
 
-        self._dbname:str = f'{context}/.runup/runup.db'
-        self._verbose:bool = verbose
+    def __init__(self, context: Path, verbose: bool):
+
+        self._dbname: str = f"{context}/.runup/runup.db"
+        self._verbose: bool = verbose
         self._conn = None
 
-
-    def execute(self, name:str, query:str):
+    def execute(self, name: str, query: str):
         """Execute a query."""
 
-        vInfo(self._verbose, f'Executed query: {name}')
+        vInfo(self._verbose, f"Executed query: {name}")
 
         try:
             assert self._conn is not None
             c = self._conn.cursor()
             c.execute(query)
-            if query.lower().strip().startswith('insert into '):
+            if query.lower().strip().startswith("insert into "):
                 return c.lastrowid
-            elif query.lower().strip().startswith('insert or ignore into '):
+            elif query.lower().strip().startswith("insert or ignore into "):
                 return c.lastrowid
-            elif query.lower().strip().startswith('select '):
+            elif query.lower().strip().startswith("select "):
                 return c.fetchall()
             return c
         except Error as e:
             click.echo(e)
 
-
     def close_connection(self, commit=True):
         """Close database connection"""
 
-        vInfo(self._verbose, f'Closing connection to: {self._dbname}')
+        vInfo(self._verbose, f"Closing connection to: {self._dbname}")
         if commit:
             self._conn.commit()
         self._conn.close()
-        vInfo(self._verbose, f'Connetion closed')
-
+        vInfo(self._verbose, "Connetion closed")
 
     def connect(self):
         """Create a database connection to a `runup.db`."""
-        vInfo(self._verbose, f'Creating connection to: {self._dbname}')
+        vInfo(self._verbose, f"Creating connection to: {self._dbname}")
 
         try:
             self._conn = sqlite3.connect(self._dbname)
-            vInfo(self._verbose, f'Database version: {sqlite3.version}')
+            vInfo(self._verbose, f"Database version: {sqlite3.version}")
         except Error as e:
             click.echo(e)
-        
 
     def create_database(self):
         """Create a database `runup.db`."""
 
-        sql_dict:Dict[str] = {
-        "Create backups": """
+        sql_dict: Dict[str] = {
+            "Create backups": """
             CREATE TABLE `backups` (
                 `name` TEXT PRIMARY KEY,
                 `running` INTEGER NOT NULL,
                 `execute` INTEGER NULL
             );
         """,
-        "Create jobs": """
+            "Create jobs": """
             CREATE TABLE `jobs` (
                 `job_id` INTEGER PRIMARY KEY,
                 `backup_name` TEXT NOT NULL,
@@ -93,7 +94,7 @@ class RunupDB:
                     ON DELETE CASCADE
             );
         """,
-        "Create files": """
+            "Create files": """
             CREATE TABLE `files` (
                 `file_id` INTEGER PRIMARY KEY,
                 `job_id` INTEGER NOT NULL,
@@ -111,13 +112,11 @@ class RunupDB:
                         ON DELETE CASCADE
             );
         """,
-        "Create signature index": """
-            CREATE INDEX `idx_signature` 
-            ON `files` (`sha256`, `sha512`);
+            "Create signature index": """
+            CREATE INDEX `idx_signature` ON `files` (`sha256`, `sha512`);
         """,
-        "Create job_id index": """
-            CREATE INDEX `idx_job_id` 
-            ON `files` (`job_id`);
+            "Create job_id index": """
+            CREATE INDEX `idx_job_id` ON `files` (`job_id`);
         """,
         }
 
@@ -126,36 +125,36 @@ class RunupDB:
             self.execute(name, sql)
         self.close_connection()
 
-
-    def insert_backup(self, name:str) -> None:
+    def insert_backup(self, name: str) -> None:
         """Insert a backup"""
 
-        sql:str = f"""
+        sql: str = f"""
             INSERT OR IGNORE
             INTO backups (name, running, execute)
             VALUES ('{name}', 0, NULL)
         """
 
         self.connect()
-        self.execute('Insert backup', sql)
+        self.execute("Insert backup", sql)
         self.close_connection()
 
-
-    def insert_file(self, job_id:int, path_from_pwd:str, path_from_yaml_file:str) -> bool:
+    def insert_file(
+        self, job_id: int, path_from_pwd: str, path_from_yaml_file: str
+    ) -> bool:
         """
         Insert a file into DB.
-        
+
         Returns a boolean indicatinf if the inserted
         """
 
-        sha256:str = hashfile(path_from_pwd, "sha256")
-        sha512:str = hashfile(path_from_pwd, "sha512")
-        sql:str
+        sha256: str = hashfile(path_from_pwd, "sha256")
+        sha512: str = hashfile(path_from_pwd, "sha512")
+        sql: str
 
         self.connect()
 
         # Find
-        if sha256 == 'dir' or sha512 == 'dir':
+        if sha256 == "dir" or sha512 == "dir":
             pass
         else:
             sql = f"""
@@ -166,8 +165,8 @@ class RunupDB:
                 LIMIT 1;
             """
 
-        result = self.execute(f'Search file: {path_from_yaml_file}', sql)
-        inserted_new:bool
+        result = self.execute(f"Search file: {path_from_yaml_file}", sql)
+        inserted_new: bool
 
         if len(result) == 0:
             # Insert
@@ -175,7 +174,7 @@ class RunupDB:
                 INSERT INTO files (job_id, sha256, sha512, path)
                 VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
             """
-            self.execute(f'Insert new file: {path_from_yaml_file}', sql)
+            self.execute(f"Insert new file: {path_from_yaml_file}", sql)
             inserted_new = True
         else:
             # Insert
@@ -183,33 +182,31 @@ class RunupDB:
                 INSERT INTO files (job_id, sha256, sha512, file_loc, path)
                 VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
             """
-            self.execute(f'Insert existing file: {path_from_yaml_file}', sql)
+            self.execute(f"Insert existing file: {path_from_yaml_file}", sql)
             inserted_new = False
 
         self.close_connection()
 
         return inserted_new
 
-
-    def insert_job(self, backup_name:str):
+    def insert_job(self, backup_name: str):
         """Insert a job"""
 
-        sql:str = f"""
+        sql: str = f"""
             INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)
             VALUES (NULL, '{backup_name}', {int(time.time())}, NULL, 0)
         """
 
         self.connect()
-        id:str = self.execute('Insert job', sql)
+        id: str = self.execute("Insert job", sql)
         self.close_connection()
 
         return id
 
-
-    def select_job(self, job:int, project:str):
+    def select_job(self, job: int, project: str):
         """Select a job"""
 
-        sql:str
+        sql: str
 
         # Select latest job from DB
         if job == 0:
@@ -221,9 +218,9 @@ class RunupDB:
             """
 
             self.connect()
-            job = self.execute('Select latest job', sql)[0][0]
+            job = self.execute("Select latest job", sql)[0][0]
             self.close_connection()
-        
+
         if job is None:
             return None
 
@@ -237,7 +234,7 @@ class RunupDB:
         """
 
         self.connect()
-        data = self.execute('Get job info', sql)
+        data = self.execute("Get job info", sql)
         self.close_connection()
 
         return data

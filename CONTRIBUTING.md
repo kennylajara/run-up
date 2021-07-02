@@ -17,6 +17,8 @@ Please note that this project is released with a [Contributor Code of Conduct][c
 0. Install the editable RunUp package: `python3 -m pip install --editable .` 
 0. Create a new branch: `git checkout -b my-branch-name`
 0. Make your change
+0. Format the modified files with Black: `black .`
+0. Look for any additional format errors with Flake8 `flake8 .` and fix it (manually).
 0. Commit the changes
 0. Push to your fork and [submit a pull request][pr]
 0. Pat your self on the back and wait for your pull request to be reviewed and merged.
