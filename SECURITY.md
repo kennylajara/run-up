@@ -1,3 +1,8 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+
 # Security Policy
 
 ## Reporting a Vulnerability
@@ -13,5 +18,6 @@ I will make sure this is changed in the future.
 
 | Version             | Supported          |
 | ------------------- | ------------------ |
-| v0.1.b1             | :white_check_mark: |
+| v0.1.b2             | :white_check_mark: |
+| v0.1.b1             | :x:                |
 | v0.1.Dev11 or lower | :x:                |

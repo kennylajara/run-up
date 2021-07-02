@@ -1,8 +1,14 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
+# Built-in
 import setuptools # type: ignore
 
 
 # Get version from tags
-project_version:str = '0.1.b1'
+project_version:str = '0.1.b2'
 
 # Get content of `README.md` to 
 # add it on the long description
