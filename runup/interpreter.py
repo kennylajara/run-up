@@ -193,20 +193,17 @@ class Interpreter_1(Interpreter):
 
             # Zip File
             with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}', 'w') as my_zip:
-                vInfo(self._verbose, f'ZipFile => {my_zip}')
+                
                 for path_from_pwd, path_from_yaml_file in working_directories.items():
-                    if os.path.isfile(path_from_pwd):
-                        vCall(self._verbose, f'RunupDB:insert_file')
-                        inserted_new:bool = db.insert_file(job_id, path_from_pwd, path_from_yaml_file)
-                        vResponse(self._verbose, f'RunupDB:insert_file', inserted_new)
-                        if inserted_new:
-                            vInfo(self._verbose, f'Zipping file: {path_from_pwd}')
-                            my_zip.write(path_from_pwd, path_from_yaml_file)
-                        else:
-                            vInfo(self._verbose, f'Not zipping file: {path_from_pwd}')
-                    else:
-                        vInfo(self._verbose, f'Zipping directory: {path_from_pwd}')
+                    
+                    vCall(self._verbose, f'RunupDB:insert_file')
+                    inserted_new:bool = db.insert_file(job_id, path_from_pwd, path_from_yaml_file)
+                    vResponse(self._verbose, f'RunupDB:insert_file', inserted_new)
+                    if inserted_new:
+                        vInfo(self._verbose, f'Zipping file: {path_from_pwd}')
                         my_zip.write(path_from_pwd, path_from_yaml_file)
+                    else:
+                        vInfo(self._verbose, f'Not zipping file: {path_from_pwd}')
 
         return True
 
@@ -270,14 +267,24 @@ class Interpreter_1(Interpreter):
             for job_id, file_dict in restoration_source.items():
                 with zipfile.ZipFile(f'{context}.runup/jobs/{job_id}') as myzip:
                     for dst, src in file_dict.items():
-                        if src.startswith('./'):
-                            src = src[2:]
-                        if dst.startswith('./'):
-                            dst = dst[2:]
 
-                        src_info = myzip.getinfo(src)
-                        src_info.filename = f"{location.strip('/')}/{dst}"
-                        myzip.extract(src_info)
+                        while src.startswith('./'):
+                            src = src[2:]
+
+                        while dst.startswith('./'):
+                            dst = dst[2:]
+                        dst = f"{location.strip('/')}/{dst}"
+
+                        # Try to get File info
+                        try:
+                            src_info = myzip.getinfo(src)
+                        # If is an empty directory
+                        except KeyError:
+                            os.mkdir(f'{context}{dst}')
+                        # else
+                        else:
+                            src_info.filename = dst
+                            myzip.extract(src_info)
 
             click.secho(f'A backup for the project "{project_name}" has been restored.', fg='green')
 
@@ -444,20 +451,24 @@ class Interpreter_1(Interpreter):
         for include in include_dict.keys():
             if os.path.isfile(include):
                 vInfo(self._verbose, f'`{include}` is a file. Including it into workspace.')
-                directories[include] = str('.' + os.sep + os.path.relpath(include, self._context)).replace(os.sep, '/')
+                directories[include] = os.path.relpath(include, self._context).replace(os.sep, '/')
             else:
                 # traverse root directory as root, and list directories as _ and files as files
                 for root, _, files in os.walk(include):
                     if not (root+os.sep).startswith(exclude_tuple_slash) and root not in exclude_list and not '.runup' in root.split(os.sep):
                         vInfo(self._verbose, f'Including directory `{root}` into workspace.')
                         # directories[root] = include_dict[root]
-                        for file in files:
-                            filepath:str = root + os.sep + file
-                            if filepath in exclude_list or file in ['runup.yml', 'runup.yaml']:
-                                vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
-                            else:
-                                vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
-                                directories[filepath] = str('.' + os.sep + os.path.relpath(filepath, self._context)).replace(os.sep, '/')
+                        if len(files) == 0:
+                            vInfo(self._verbose, f'Including empty directory `{root}` into workspace')
+                            directories[root] = os.path.relpath(root, self._context).replace(os.sep, '/')
+                        else:
+                            for file in files:
+                                filepath:str = root + os.sep + file
+                                if filepath in exclude_list or file in ['runup.yml', 'runup.yaml']:
+                                    vInfo(self._verbose, f'Ignoring file `{filepath}` from workspace.')
+                                else:
+                                    vInfo(self._verbose, f'Including file `{filepath}` into workspace.')
+                                    directories[filepath] = os.path.relpath(filepath, self._context).replace(os.sep, '/')
                     else:
                         vInfo(self._verbose, f'Ignoring directory `{root}` from workspace')
 

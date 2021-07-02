@@ -1,6 +1,12 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+
 # Built-in
 from typing import Any, Optional
 import hashlib
+from os.path import isdir
 
 # 3rd party
 from click import echo
@@ -51,5 +57,9 @@ def hashfile( fname, algo:str ):
         algorithm = hashlib.sha512()
     else:
         raise ValueError(f'Unsupported hash algorithm: {algo}')
+
+    if isdir(fname):
+        return ''
+        
     return hash_bytestr_iter(file_as_blockiter(open(fname, 'rb')), algorithm)
     

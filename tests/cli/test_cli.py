@@ -164,10 +164,10 @@ class CLI_1_0(TestCaseExtended):
         cursor = conn.execute("SELECT path FROM 'files'")
         included_db_files:List[str] = []
         expected_db_files:List[str] = [
-            './dir-include/file.txt',
-            './dir/file-1.txt', 
-            './dir/file-2.txt', 
-            './include.txt', 
+            'dir-include/file.txt',
+            'dir/file-1.txt', 
+            'dir/file-2.txt', 
+            'include.txt', 
         ]
         for row in cursor:
             included_db_files.append(row[0])
