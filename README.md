@@ -79,7 +79,7 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 
 ## Contribution
 
-Contributions are welcome! See the [Contributor's Guide](CONTRIBUTING.md).
+Contributions are welcome! See the [Contributor's Guide](https://github.com/kennylajara/RunUp/blob/main/CONTRIBUTING.md).
 
 ## Donation
 
