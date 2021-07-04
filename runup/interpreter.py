@@ -356,7 +356,9 @@ class Interpreter_1(Interpreter):
                             src_info = myzip.getinfo(src)
                         # If is an empty directory
                         except KeyError:
-                            os.mkdir(f"{context}{dst}")
+                            dst = f"{context}{dst}"
+                            if not os.path.exists(dst):
+                                os.mkdir(dst)
                         # else
                         else:
                             src_info.filename = dst
