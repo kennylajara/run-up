@@ -18,7 +18,7 @@ Please note that this project is released with a [Contributor Code of Conduct][c
 ## Submitting a pull request
 
 1. [Fork][fork] and clone the repository
-1. Create a virtual environment: `python3 -m venv venv && python3 -m pip install --upgrade pip`
+1. Create a virtual environment: `python3 -m venv venv && source venv/bin/activate && python3 -m pip install --upgrade pip`
 1. Configure and install the dependencies: `python3 -m pip install -r requirements-dev.txt`
 1. Install the editable RunUp package: `python3 -m pip install --editable .` 
 1. Create a new branch: `git checkout -b my-branch-name`
