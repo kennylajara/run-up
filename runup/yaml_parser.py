@@ -19,9 +19,12 @@ from typing import (
 # 3rd Pary
 import click
 import yaml
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
-from runup.version import yaml_versions
+from runup.version import YAML_VERSIONS
 from runup.utils import vCall, vInfo, vResponse
 from runup import interpreter
 
@@ -122,7 +125,7 @@ class ParserYAML:
             click.echo("The version needs to be a string.")
             return None
         # If the version is not in the list of supported versions
-        elif config["version"] not in yaml_versions:
+        elif config["version"] not in YAML_VERSIONS:
             click.echo(f"The YAML version {config['version']} is not supported.")
             return None
         # If the version is good and and nice ;-)
@@ -142,7 +145,7 @@ class ParserYAML:
                 # Use the latest minor version of this major
                 found_major: bool = False
                 latest_minor: Optional[str] = None
-                for version in yaml_versions:
+                for version in YAML_VERSIONS:
                     if version == config["version"]:
                         found_major = True
 
@@ -154,7 +157,7 @@ class ParserYAML:
 
                 # If this the execution reach this point, that means that the YAML
                 # version indicated by the user is the last major verion
-                return yaml_versions[-1]
+                return YAML_VERSIONS[-1]
 
     def _read_yaml_file(self, context: str) -> Optional[Dict[str, Union[str]]]:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""

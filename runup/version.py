@@ -11,7 +11,7 @@ from typing import List
 # ----------------------------------------------- #
 # Current version of runup                        #
 # ----------------------------------------------- #
-runup_version: str = "0.1.b2"
+RUNUP_VERSION: str = "0.1b3"
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #
@@ -25,7 +25,7 @@ runup_version: str = "0.1.b2"
 # "Update major to latest until 2.0 is released"        #
 # without quotes.                                       #
 # ----------------------------------------------------- #
-yaml_versions: List[str] = [
+YAML_VERSIONS: List[str] = [
     "1",
     "1.0",
 ]

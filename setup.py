@@ -11,7 +11,7 @@ from setuptools import setup  # type: ignore
 
 # Own
 from dev import build
-import _version
+from runup.version import RUNUP_VERSION
 
 
 # Validate Python version
@@ -36,25 +36,18 @@ if USE_CYTHON:
         else:
             raise
 
-cmdclass = {}
-ext_modules = []
-
 
 if USE_CYTHON:
-    ext_modules += build.get_modules(ext="py")
-    cmdclass.update({"build_ext": build_ext})
+    ext_modules = build.get_modules(ext="py")
+    cmdclass = {"build_ext": build_ext}
 else:
-    ext_modules += build.get_modules(ext="c")
+    ext_modules = build.get_modules(ext="c")
 
 
 # Get content of `README.md` to
 # add it on the long description
 with open("README.md", "r", encoding="utf-8") as f:
     README: str = f.read()
-
-
-# Define version
-VERSION = _version.__version__
 
 
 # Define setup
@@ -97,10 +90,9 @@ setup(
     ],
     long_description=README,
     long_description_content_type="text/markdown",
-    packages=["runup", "runup._version"],
+    packages=["runup"],
     package_dir={
         "runup": "runup",
-        "runup._version": "_version",
     },
     project_urls={
         "Documentation": "https://runup.readthedocs.io/",
@@ -109,5 +101,5 @@ setup(
     },
     python_requires=">=3.6",
     # url='https://github.com/kennylajara/runup',
-    version=VERSION,
+    version=RUNUP_VERSION,
 )

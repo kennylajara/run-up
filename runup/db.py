@@ -14,6 +14,9 @@ from typing import Dict
 
 # 3rd Party
 import click
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from runup.utils import vInfo, hashfile

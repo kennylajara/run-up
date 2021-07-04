@@ -14,24 +14,25 @@ import pyximport  # type: ignore
 pyximport.install()
 
 # Own
-from runup.version import runup_version, yaml_versions
+from runup.version import RUNUP_VERSION, YAML_VERSIONS
 
 
-class TestParserYAML(unittest.TestCase):
+class TestVersion(unittest.TestCase):
+
     def test_runup_version(self):
         """Confirm that the verion is well formated."""
-        self.assertIsInstance(runup_version, str)
-        self.assertNotEqual(runup_version, "")
-        # semver = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)' + \
-        # '(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?' + \
-        # '(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$')
+        self.assertIsInstance(RUNUP_VERSION, str)
+        self.assertNotEqual(RUNUP_VERSION, "")
+        # semver = re.compile(r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)' \
+        # + '(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?' \
+        # + '(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$')
 
-        # self.assertRegex(runup_version, semver)
+        # self.assertRegex(RUNUP_VERSION, semver)
 
     def test_yaml_versions(self):
         """Test valid versions of YAML files"""
-        self.assertIsInstance(yaml_versions, List)
-        for version in yaml_versions:
+        self.assertIsInstance(YAML_VERSIONS, List)
+        for version in YAML_VERSIONS:
             self.assertIsInstance(version, str)
             format: Pattern[str] = re.compile(r"^(0|[1-9]\d*)(\.(0|[1-9]\d*))?$")
             self.assertRegex(version, format)

@@ -1031,24 +1031,24 @@ static const char __pyx_k_List[] = "List";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_0_1_b2[] = "0.1.b2";
+static const char __pyx_k_0_1b3[] = "0.1b3";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_typing[] = "typing";
-static const char __pyx_k_runup_version[] = "runup_version";
-static const char __pyx_k_yaml_versions[] = "yaml_versions";
+static const char __pyx_k_RUNUP_VERSION[] = "RUNUP_VERSION";
+static const char __pyx_k_YAML_VERSIONS[] = "YAML_VERSIONS";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static PyObject *__pyx_kp_u_0_1_b2;
+static PyObject *__pyx_kp_u_0_1b3;
 static PyObject *__pyx_kp_u_1;
 static PyObject *__pyx_kp_u_1_0;
 static PyObject *__pyx_n_s_List;
+static PyObject *__pyx_n_s_RUNUP_VERSION;
+static PyObject *__pyx_n_s_YAML_VERSIONS;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_runup_version;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_typing;
-static PyObject *__pyx_n_s_yaml_versions;
 /* Late includes */
 
 static PyMethodDef __pyx_methods[] = {
@@ -1097,18 +1097,18 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_u_0_1_b2, __pyx_k_0_1_b2, sizeof(__pyx_k_0_1_b2), 0, 1, 0, 0},
+  {&__pyx_kp_u_0_1b3, __pyx_k_0_1b3, sizeof(__pyx_k_0_1b3), 0, 1, 0, 0},
   {&__pyx_kp_u_1, __pyx_k_1, sizeof(__pyx_k_1), 0, 1, 0, 0},
   {&__pyx_kp_u_1_0, __pyx_k_1_0, sizeof(__pyx_k_1_0), 0, 1, 0, 0},
   {&__pyx_n_s_List, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
+  {&__pyx_n_s_RUNUP_VERSION, __pyx_k_RUNUP_VERSION, sizeof(__pyx_k_RUNUP_VERSION), 0, 0, 1, 1},
+  {&__pyx_n_s_YAML_VERSIONS, __pyx_k_YAML_VERSIONS, sizeof(__pyx_k_YAML_VERSIONS), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_runup_version, __pyx_k_runup_version, sizeof(__pyx_k_runup_version), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
-  {&__pyx_n_s_yaml_versions, __pyx_k_yaml_versions, sizeof(__pyx_k_yaml_versions), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
@@ -1420,16 +1420,16 @@ if (!__Pyx_RefNanny) {
   /* "runup/version.py":14
  * # Current version of runup                        #
  * # ----------------------------------------------- #
- * runup_version: str = "0.1.b2"             # <<<<<<<<<<<<<<
+ * RUNUP_VERSION: str = "0.1b3"             # <<<<<<<<<<<<<<
  * 
  * # ----------------------------------------------------- #
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_runup_version, __pyx_kp_u_0_1_b2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RUNUP_VERSION, __pyx_kp_u_0_1b3) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
 
   /* "runup/version.py":28
  * # without quotes.                                       #
  * # ----------------------------------------------------- #
- * yaml_versions: List[str] = [             # <<<<<<<<<<<<<<
+ * YAML_VERSIONS: List[str] = [             # <<<<<<<<<<<<<<
  *     "1",
  *     "1.0",
  */
@@ -1441,7 +1441,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_kp_u_1_0);
   __Pyx_GIVEREF(__pyx_kp_u_1_0);
   PyList_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u_1_0);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_yaml_versions, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_YAML_VERSIONS, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "runup/version.py":1

@@ -14,10 +14,13 @@ from typing import Dict, Optional, Union
 
 # 3rd Party
 import click
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from runup.interpreter import Interpreter
-from runup.version import runup_version
+from runup.version import RUNUP_VERSION
 from runup.yaml_parser import ParserYAML
 from runup.utils import vCall, vResponse
 
@@ -45,7 +48,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 @click.option(
     "--verbose", is_flag=True, help="Show more information about the internal process."
 )
-@click.version_option(version=runup_version, prog_name="RunUp")
+@click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
 @pass_config
 def cli(config: Config, context: str, verbose: bool):
     """A simple backup system that only saves the files that has changed."""
@@ -55,7 +58,7 @@ def cli(config: Config, context: str, verbose: bool):
 
     if verbose:
         click.echo("-" * 10)
-        click.echo(f"RunUp, version {runup_version}")
+        click.echo(f"RunUp, version {RUNUP_VERSION}")
         click.echo("-" * 10)
         click.echo(f"verbose: {verbose}")
         click.echo(f"Context: {context}")

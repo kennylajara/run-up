@@ -15,6 +15,9 @@ import zipfile
 
 # 3rd party
 import click
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from runup.db import RunupDB
