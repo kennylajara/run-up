@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -28,14 +30,14 @@ class RunupDB:
 
     def __init__(self, context: Path, verbose: bool):
 
-        self._dbname: str = f"{context}/.runup/runup.db"
+        self._dbname: str = str(f"{context}/.runup/runup.db")
         self._verbose: bool = verbose
         self._conn = None
 
     def execute(self, name: str, query: str):
         """Execute a query."""
 
-        vInfo(self._verbose, f"Executed query: {name}")
+        vInfo(self._verbose, str(f"Executed query: {name}"))
 
         try:
             assert self._conn is not None
@@ -128,11 +130,13 @@ class RunupDB:
     def insert_backup(self, name: str) -> None:
         """Insert a backup"""
 
-        sql: str = f"""
+        sql: str = str(
+            f"""
             INSERT OR IGNORE
             INTO backups (name, running, execute)
             VALUES ('{name}', 0, NULL)
         """
+        )
 
         self.connect()
         self.execute("Insert backup", sql)
@@ -157,31 +161,37 @@ class RunupDB:
         if sha256 == "dir" or sha512 == "dir":
             pass
         else:
-            sql = f"""
+            sql = str(
+                f"""
                 SELECT file_id, sha256, sha512
                 FROM files
                 WHERE sha256='{sha256}' AND sha512='{sha512}'
                 ORDER BY file_id ASC
                 LIMIT 1;
             """
+            )
 
         result = self.execute(f"Search file: {path_from_yaml_file}", sql)
         inserted_new: bool
 
         if len(result) == 0:
             # Insert
-            sql = f"""
+            sql = str(
+                f"""
                 INSERT INTO files (job_id, sha256, sha512, path)
                 VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
             """
+            )
             self.execute(f"Insert new file: {path_from_yaml_file}", sql)
             inserted_new = True
         else:
             # Insert
-            sql = f"""
+            sql = str(
+                f"""
                 INSERT INTO files (job_id, sha256, sha512, file_loc, path)
                 VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
             """
+            )
             self.execute(f"Insert existing file: {path_from_yaml_file}", sql)
             inserted_new = False
 
@@ -192,13 +202,15 @@ class RunupDB:
     def insert_job(self, backup_name: str):
         """Insert a job"""
 
-        sql: str = f"""
+        sql: str = str(
+            f"""
             INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)
             VALUES (NULL, '{backup_name}', {int(time.time())}, NULL, 0)
         """
+        )
 
         self.connect()
-        id: str = self.execute("Insert job", sql)
+        id: int = self.execute("Insert job", sql)
         self.close_connection()
 
         return id
@@ -210,12 +222,14 @@ class RunupDB:
 
         # Select latest job from DB
         if job == 0:
-            sql = f"""
+            sql = str(
+                f"""
                 SELECT MAX(files.job_id)
                 FROM files
                 JOIN jobs ON jobs.job_id = files.job_id
                 WHERE jobs.backup_name = '{project}'
             """
+            )
 
             self.connect()
             job = self.execute("Select latest job", sql)[0][0]
@@ -225,13 +239,15 @@ class RunupDB:
             return None
 
         # Select data from DB
-        sql = f"""
+        sql = str(
+            f"""
             SELECT A.job_id, A.path, B.job_id, B.path
             FROM files AS A
             JOIN jobs ON jobs.job_id = A.job_id
             LEFT JOIN files AS B ON A.file_loc = B.file_id
             WHERE jobs.backup_name = '{project}' AND A.job_id = {job}
         """
+        )
 
         self.connect()
         data = self.execute("Get job info", sql)

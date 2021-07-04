@@ -10,6 +10,11 @@ from shutil import rmtree as rmdir_recursive
 from typing import List
 from unittest import mock
 
+# 3rd party
+import pyximport  # type: ignore
+
+pyximport.install()
+
 # Own
 from dev.unittest import TestCaseExtended
 from runup.interpreter import Interpreter_1

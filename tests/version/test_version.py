@@ -8,6 +8,11 @@ import re
 from typing import List, Pattern
 import unittest
 
+# 3rd party
+import pyximport  # type: ignore
+
+pyximport.install()
+
 # Own
 from runup.version import runup_version, yaml_versions
 

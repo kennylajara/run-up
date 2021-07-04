@@ -15,6 +15,9 @@ from zipfile import ZipFile
 
 # 3rd party
 from click.testing import CliRunner
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from dev.unittest import TestCaseExtended

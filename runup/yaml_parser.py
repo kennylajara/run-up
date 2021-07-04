@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -159,7 +161,7 @@ class ParserYAML:
 
         # Ensure context ends with /
         if not context.endswith(os.sep):
-            context = f"{context}{os.sep}"
+            context = str(f"{context}{os.sep}")
 
         # Valid names for the YAML files
         supported_names: List[str] = ["runup.yaml", "runup.yml"]
@@ -191,12 +193,12 @@ class ParserYAML:
 
             except yaml.parser.ParserError as error:
                 where = str(error.args[3]).strip()
-                msg = f"ParserError {error.args[0]} {where}"
+                msg = str(f"ParserError {error.args[0]} {where}")
                 click.echo(msg)
                 return None
 
             except yaml.scanner.ScannerError as error:
                 where = str(error.args[3]).strip()
-                msg = f"ScannerError {error.args[0]} {where}"
+                msg = str(f"ScannerError {error.args[0]} {where}")
                 click.echo(msg)
                 return None

@@ -6,6 +6,11 @@
 # Built-in
 from unittest import TestCase
 
+# 3rd party
+import pyximport  # type: ignore
+
+pyximport.install()
+
 # Own
 from runup.utils import hashfile
 

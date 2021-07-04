@@ -9,7 +9,10 @@ import unittest
 from unittest import mock
 
 # 3rd party
+import pyximport  # type: ignore
 import yaml
+
+pyximport.install()
 
 # Own
 from runup.yaml_parser import ParserYAML

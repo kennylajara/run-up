@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -80,7 +82,7 @@ def init(config):
         vResponse(config.verbose, "Interpreter:set_environment", env_set)
 
         if env_set:
-            click.echo("RunUp has been initialized successfully.")
+            click.secho("RunUp has been initialized successfully.", fg="green")
     else:
         # click.echo('Interpreter not detected.')
         sys.exit(1)
@@ -98,9 +100,9 @@ def backup(config, project: str):
         created: Optional[bool] = config.interpreter.create_backup(config.yaml, project)
         vResponse(config.verbose, "Interpreter:create_backup", created)
         if created is True:
-            click.echo("New backup created.")
+            click.secho("New backup created.", fg="green")
         else:
-            click.echo("The backup has NOT been created.")
+            click.secho("The backup has NOT been created.", fg="red")
     else:
         # click.echo('Interpreter not detected.')
         sys.exit(1)
@@ -144,7 +146,7 @@ def restore(
     if config.interpreter is not None:
 
         if clear_location:
-            restored_backup_dir = f"{config.context}/{location}"
+            restored_backup_dir = str(f"{config.context}/{location}")
             for f in os.listdir(restored_backup_dir):
                 if Path.is_dir(Path(f)):
                     if f == ".runup":
@@ -161,7 +163,7 @@ def restore(
         )
         vResponse(config.verbose, "Interpreter:restore_backup", restored)
         if restored is None:
-            click.echo("The backup has NOT been restored.")
+            click.secho("The backup has NOT been restored.", fg="red")
     else:
         # click.echo('Interpreter not detected.')
         sys.exit(1)

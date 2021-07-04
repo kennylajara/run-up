@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -15,7 +17,7 @@ import zipfile
 import click
 
 # Own
-from runup.runupdb import RunupDB
+from runup.db import RunupDB
 from runup.utils import vCall, vInfo, vResponse
 
 
@@ -77,7 +79,7 @@ class Interpreter(ABC):
         full_key: str = ""
 
         if prefix != "":
-            prefix = f"{prefix}."
+            prefix = str(f"{prefix}.")
             vInfo(self._verbose, f"New prefix `{prefix}`")
 
         if type(search_area) == list:
@@ -86,9 +88,9 @@ class Interpreter(ABC):
                 vInfo(self._verbose, f"Testing parameter `{value}`")
                 if f"{prefix}*" in valid_parameters:
                     vInfo(self._verbose, f"`{value}` has been found as `{prefix}*`")
-                    full_key = f"{prefix}*"
+                    full_key = str(f"{prefix}*")
                 elif f"{prefix}{value}" in valid_parameters:
-                    full_key = f"{prefix}{value}"
+                    full_key = str(f"{prefix}{value}")
                     vInfo(
                         self._verbose, f"`{value}` has been found as `{prefix}{value}`"
                     )
@@ -119,9 +121,9 @@ class Interpreter(ABC):
                 vInfo(self._verbose, f"Testing parameter `{key}`")
                 if f"{prefix}*" in valid_parameters:
                     vInfo(self._verbose, f"`{key}` has been found as `{prefix}*`")
-                    full_key = f"{prefix}*"
+                    full_key = str(f"{prefix}*")
                 elif f"{prefix}{key}" in valid_parameters:
-                    full_key = f"{prefix}{key}"
+                    full_key = str(f"{prefix}{key}")
                     vInfo(self._verbose, f"`{key}` has been found as `{prefix}{key}`")
 
                 if len(full_key) > 0:
@@ -144,7 +146,7 @@ class Interpreter(ABC):
                     if type(values) == dict or type(values) == list:
                         vInfo(self._verbose, f"Analysing subparameters of `{key}`")
                         vCall(self._verbose, "Interpreter:validate_parameters")
-                        next_prefix: str = (
+                        next_prefix: str = str(
                             f"{prefix}*"
                             if f"{prefix}*" in valid_parameters
                             else f"{prefix}{key}"
@@ -344,7 +346,7 @@ class Interpreter_1(Interpreter):
 
                         while dst.startswith("./"):
                             dst = dst[2:]
-                        dst = f"{location.strip('/')}/{dst}"
+                        dst = str(f"{location.strip('/')}/{dst}")
 
                         # Try to get File info
                         try:
@@ -563,18 +565,18 @@ class Interpreter_1(Interpreter):
 
         exclude_tuple_slash: Tuple = tuple(exclude_list_slash)
 
-        for include in include_dict.keys():
-            if os.path.isfile(include):
+        for include_str in include_dict.keys():
+            if os.path.isfile(include_str):
                 vInfo(
                     self._verbose,
-                    f"`{include}` is a file. Including it into workspace.",
+                    f"`{include_str}` is a file. Including it into workspace.",
                 )
-                directories[include] = os.path.relpath(include, self._context).replace(
-                    os.sep, "/"
-                )
+                directories[include_str] = os.path.relpath(
+                    include_str, self._context
+                ).replace(os.sep, "/")
             else:
                 # traverse root directory as root, and list directories as _ and files as files
-                for root, _, files in os.walk(include):
+                for root, _, files in os.walk(include_str):
                     if (
                         not (root + os.sep).startswith(exclude_tuple_slash)
                         and root not in exclude_list
