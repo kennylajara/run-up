@@ -6,8 +6,13 @@
 
 
 # Built-in
-from sys import version_info
+from sys import version_info as python_version
 from setuptools import setup  # type: ignore
+
+# 3rd party
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from dev import build
@@ -15,7 +20,7 @@ from runup.version import RUNUP_VERSION
 
 
 # Validate Python version
-if version_info[0] != 3 and version_info[1] not in [7, 8, 9]:
+if python_version[0] != 3 and python_version[1] not in [7, 8, 9]:
     raise Exception("Python version not supported")
 
 
@@ -38,10 +43,10 @@ if USE_CYTHON:
 
 
 if USE_CYTHON:
-    ext_modules = build.get_modules(ext="py")
+    ext_modules = build.get_modules(exts=['py', 'pyx'])
     cmdclass = {"build_ext": build_ext}
 else:
-    ext_modules = build.get_modules(ext="c")
+    ext_modules = build.get_modules(exts=['c'])
 
 
 # Get content of `README.md` to
@@ -102,4 +107,5 @@ setup(
     python_requires=">=3.6",
     # url='https://github.com/kennylajara/runup',
     version=RUNUP_VERSION,
+    zip_safe=False, # Prevent create a zipped egg file which will not work with cimport for pxd files
 )

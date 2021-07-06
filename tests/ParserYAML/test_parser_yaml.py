@@ -39,7 +39,7 @@ class TestParserYAML(unittest.TestCase):
         for directory, expected_success in dir_tests.items():
 
             result = ParserYAML(
-                context=".", verbose=True  # Can be anything in this test
+                context='.', verbose=True  # Can be anything in this test
             )._read_yaml_file(f"./tests/ParserYAML/read/{directory}")
 
             # Assertions
@@ -70,6 +70,6 @@ class TestParserYAML(unittest.TestCase):
         for filename, expected_value in expected_values.items():
             with open(f"{context}/{filename}.yaml") as stream:
                 yaml_content: Dict = yaml.safe_load(stream)
-                real_value = ParserYAML(".", True)._get_version(yaml_content)
+                real_value = ParserYAML('.', True)._get_version(yaml_content)
 
             self.assertEqual(expected_value, real_value)

@@ -24,33 +24,29 @@ from runup.db import RunupDB
 from runup.utils import vCall, vInfo, vResponse
 
 
-class Interpreter(ABC):
+cdef class Interpreter:
     """Interpreters' abstract class."""
 
-    @abstractmethod
     def __init__(
         self,
         context: Path,
-        verbose: bool,
-        version: str,
+        bint verbose,
+        char* version,
         required_parameters: List[str],
         valid_parameters: Dict[str, Any],
-    ) -> None:
+    ):
         """Set interpreter variables."""
-        self._context: Path = context
-        self._required_parameters: List[str] = required_parameters
-        self._valid_parameters: Dict[str, Any] = valid_parameters
-        self._verbose: bool = verbose
-        self._version: str = version
+        self._context:Path = context
+        self._required_parameters:List[str] = required_parameters
+        self._valid_parameters:Dict[str, Any] = valid_parameters
+        self._verbose:bint = verbose
+        self._version = version
 
-    @abstractmethod
-    def create_backup(
-        self, yaml_config: Dict[str, Any], backup_id: str
-    ) -> Optional[bool]:
+    cpdef bint create_backup(self, yaml_config, project):
         """Create a new backup."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def restore_backup(
         self,
         yaml_config: Dict[str, Any],
@@ -62,17 +58,17 @@ class Interpreter(ABC):
         """Restore the specified backup."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def set_environment(self) -> bool:
         """Create the backup enviroment."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def missing_parameter(self, yaml_config: Dict[str, Any]) -> Optional[str]:
         """Find the required parameters missing on YAML file"""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def validate_parameters(
         self, search_area: Union[Dict[Any, Any], List[Any]], prefix: str = ""
     ) -> Optional[str]:
@@ -173,7 +169,7 @@ class Interpreter(ABC):
         return None
 
 
-class Interpreter_1(Interpreter):
+cdef class Interpreter_1(Interpreter):
     """Interpreter that implements the rules for YAML version 1.0"""
 
     def __init__(self, context: Path, verbose: bool):
@@ -201,17 +197,15 @@ class Interpreter_1(Interpreter):
                 # 'project.*.password': str,
             },
             verbose=verbose,
-            version="1",
+            version= b'1',
         )
 
-    def create_backup(
-        self, yaml_config: Dict[str, Any], project: str
-    ) -> Optional[bool]:
+    cpdef bint create_backup(self, yaml_config, project):
         """Create a new backup"""
 
         initiated: bool = self._validate_prev_init(yaml_config)
         if not initiated:
-            return None
+            return False
 
         backup_list: List[str] = []
         working_directories: Dict[str, str]
@@ -501,8 +495,9 @@ class Interpreter_1(Interpreter):
             return False
 
         # Create file `.version`
-        with open(f"{self._context}/.runup/.version", "w") as file:
-            file.write(self._version)
+        # TODO: Convert this into a function the `version.pyx` file.
+        with open(f"{str(self._context)}/.runup/.version", "w") as file:
+            file.write(self._version.decode())
         vInfo(self._verbose, f"Created file `{self._context}/.runup/.version`")
 
         # Create the directory `.runup`

@@ -18,29 +18,29 @@ from typing import (
 
 # 3rd Pary
 import click
-import yaml
 import pyximport  # type: ignore
+import yaml
 
 pyximport.install()
 
 # Own
 from runup.version import YAML_VERSIONS
 from runup.utils import vCall, vInfo, vResponse
-from runup import interpreter
+from runup.interpreter cimport Interpreter, Interpreter_1
 
 
-class ParserYAML:
+cdef class ParserYAML:
     """Analizer of the `runup.yml` or `runup.yaml` file."""
 
-    def __init__(self, context: str, verbose: bool):
+    def __init__(self, context:str, bint verbose):
         """Define the properties of the class."""
-        self._context: str = context
-        self._interpreter: Optional[interpreter.Interpreter] = None
-        self._verbose: bool = verbose
+        self._context:str = context
+        self._interpreter: Interpreter = None
+        self._verbose:bint = verbose
 
-    def parse(
-        self,
-    ) -> Tuple[Optional[Dict[str, Union[str]]], Optional[interpreter.Interpreter]]:
+    cpdef parse(
+        self
+    ): # -> Tuple[Optional[Dict[str, Union[str]]], Optional[interpreter.Interpreter]]:
         """
         It parse the YAML file and sends the data to the interpreter.
 
@@ -60,7 +60,7 @@ class ParserYAML:
 
         vCall(self._verbose, "ParserYAML:_get_version")
         version = self._get_version(yaml_config)
-        vResponse(self._verbose, " ParserYAML:_get_version", version)
+        vResponse(self._verbose, "ParserYAML:_get_version", version)
 
         if version is None:
             vInfo(self._verbose, "Version not detected")
@@ -69,11 +69,11 @@ class ParserYAML:
         # Select correct interpreter
         if version.split(".")[0] == "1":
             # Initialize interpreter
-            vCall(self._verbose, " interpreter.Interpreter_1")
-            my_interpreter = interpreter.Interpreter_1(
+            vCall(self._verbose, " Interpreter_1")
+            my_interpreter = Interpreter_1(
                 context=Path(self._context), verbose=self._verbose
             )
-            vResponse(self._verbose, "interpreter.Interpreter_1", my_interpreter)
+            vResponse(self._verbose, "Interpreter_1", my_interpreter)
 
             # Find missing parameter
             vCall(self._verbose, "my_interpreter.missing_parameter")
@@ -113,7 +113,7 @@ class ParserYAML:
 
         return yaml_config, my_interpreter
 
-    def _get_version(self, config) -> Union[str, None]:
+    def _get_version(self, config): # -> Union[str, None]:
         """Get the version of the runup.yaml file."""
 
         # If the version is not declared on the YAML file
@@ -159,25 +159,28 @@ class ParserYAML:
                 # version indicated by the user is the last major verion
                 return YAML_VERSIONS[-1]
 
-    def _read_yaml_file(self, context: str) -> Optional[Dict[str, Union[str]]]:
+    cpdef _read_yaml_file(self, context): # -> Optional[Dict[str, Union[str]]]:
         """Automatically detect a `runup.yml` or `runup.yaml` in the given context."""
 
         # Ensure context ends with /
         if not context.endswith(os.sep):
-            context = str(f"{context}{os.sep}")
+            context += os.sep
 
         # Valid names for the YAML files
         supported_names: List[str] = ["runup.yaml", "runup.yml"]
         # Look for the files in the given context
         file_found: bool = False
         for filename in supported_names:
-            yaml_path: Path = Path(f"{context}{filename}")
+            yaml_path: Path = Path(f"{context}{os.sep}{filename}")
             if yaml_path.is_file():
                 file_found = True
                 break
 
         # Raise error if the file has not been found.
         if not file_found:
+            # TODO: Replace click.echo by click.secho with parameter fg='red' as soon
+            # as the following bug in the click library is solved.
+            # Bug report: https://github.com/pallets/click/issues/1996
             click.echo(
                 f"No `runup.yaml` file has been found in the given context: {context}"
             )

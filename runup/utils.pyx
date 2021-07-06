@@ -19,19 +19,19 @@ from click import echo
 # ------- #
 
 
-def vInfo(verbose: bool, msg: str) -> None:
+cpdef vInfo(verbose: bool, msg: str): # -> None:
     """Print verbose Info"""
     if verbose:
         echo(f"Info: {msg}")
 
 
-def vCall(verbose: bool, func: str) -> None:
+cpdef vCall(verbose: bool, func: str): # -> None:
     """Print verbose Call"""
     if verbose:
         echo(f"Call: {func}")
 
 
-def vResponse(verbose: bool, func: str, res: Optional[Any]) -> None:
+cpdef vResponse(verbose: bool, func: str, res: Optional[Any]): # -> None:
     """Print verbose Response"""
     if verbose:
         echo(f"Response: {func} => {res}")
@@ -42,7 +42,7 @@ def vResponse(verbose: bool, func: str, res: Optional[Any]) -> None:
 # -------------- #
 
 
-def hash_bytestr_iter(bytesiter, hasher):
+cpdef hash_bytestr_iter(bytesiter, hasher):
     for block in bytesiter:
         hasher.update(block)
     return hasher.hexdigest()
@@ -56,7 +56,7 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 
-def hashfile(fname, algo: str):
+cpdef hashfile(fname, algo: str):
     algorithm: hashlib._Hash
 
     if algo == "sha256":

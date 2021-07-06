@@ -5,7 +5,7 @@
 
 # Built-in
 import re
-from typing import List, Pattern
+from typing import Tuple, Pattern
 import unittest
 
 # 3rd party
@@ -31,7 +31,7 @@ class TestVersion(unittest.TestCase):
 
     def test_yaml_versions(self):
         """Test valid versions of YAML files"""
-        self.assertIsInstance(YAML_VERSIONS, List)
+        self.assertIsInstance(YAML_VERSIONS, Tuple)
         for version in YAML_VERSIONS:
             self.assertIsInstance(version, str)
             format: Pattern[str] = re.compile(r"^(0|[1-9]\d*)(\.(0|[1-9]\d*))?$")

@@ -815,7 +815,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "runup/version.py",
+  "runup/version.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -1027,11 +1027,11 @@ int __pyx_module_is_main_runup__version = 0;
 /* Implementation of 'runup.version' */
 static const char __pyx_k_1[] = "1";
 static const char __pyx_k_1_0[] = "1.0";
-static const char __pyx_k_List[] = "List";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_0_1b3[] = "0.1b3";
+static const char __pyx_k_Tuple[] = "Tuple";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_RUNUP_VERSION[] = "RUNUP_VERSION";
@@ -1040,8 +1040,8 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_kp_u_0_1b3;
 static PyObject *__pyx_kp_u_1;
 static PyObject *__pyx_kp_u_1_0;
-static PyObject *__pyx_n_s_List;
 static PyObject *__pyx_n_s_RUNUP_VERSION;
+static PyObject *__pyx_n_s_Tuple;
 static PyObject *__pyx_n_s_YAML_VERSIONS;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_import;
@@ -1049,6 +1049,7 @@ static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_typing;
+static PyObject *__pyx_tuple_;
 /* Late includes */
 
 static PyMethodDef __pyx_methods[] = {
@@ -1100,8 +1101,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_0_1b3, __pyx_k_0_1b3, sizeof(__pyx_k_0_1b3), 0, 1, 0, 0},
   {&__pyx_kp_u_1, __pyx_k_1, sizeof(__pyx_k_1), 0, 1, 0, 0},
   {&__pyx_kp_u_1_0, __pyx_k_1_0, sizeof(__pyx_k_1_0), 0, 1, 0, 0},
-  {&__pyx_n_s_List, __pyx_k_List, sizeof(__pyx_k_List), 0, 0, 1, 1},
   {&__pyx_n_s_RUNUP_VERSION, __pyx_k_RUNUP_VERSION, sizeof(__pyx_k_RUNUP_VERSION), 0, 0, 1, 1},
+  {&__pyx_n_s_Tuple, __pyx_k_Tuple, sizeof(__pyx_k_Tuple), 0, 0, 1, 1},
   {&__pyx_n_s_YAML_VERSIONS, __pyx_k_YAML_VERSIONS, sizeof(__pyx_k_YAML_VERSIONS), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -1118,8 +1119,22 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
+
+  /* "runup/version.pyx":29
+ * # ----------------------------------------------------- #
+ * YAML_VERSIONS: Tuple[str] = (
+ *     "1",             # <<<<<<<<<<<<<<
+ *     "1.0",
+ * )
+ */
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_kp_u_1, __pyx_kp_u_1_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple_);
+  __Pyx_GIVEREF(__pyx_tuple_);
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
@@ -1396,28 +1411,28 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "runup/version.py":9
+  /* "runup/version.pyx":9
  * 
  * # Built-in
- * from typing import List             # <<<<<<<<<<<<<<
+ * from typing import Tuple             # <<<<<<<<<<<<<<
  * 
  * # ----------------------------------------------- #
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_List);
-  __Pyx_GIVEREF(__pyx_n_s_List);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_List);
+  __Pyx_INCREF(__pyx_n_s_Tuple);
+  __Pyx_GIVEREF(__pyx_n_s_Tuple);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Tuple);
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_typing, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_List); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Tuple); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_List, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Tuple, __pyx_t_1) < 0) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/version.py":14
+  /* "runup/version.pyx":14
  * # Current version of runup                        #
  * # ----------------------------------------------- #
  * RUNUP_VERSION: str = "0.1b3"             # <<<<<<<<<<<<<<
@@ -1426,25 +1441,16 @@ if (!__Pyx_RefNanny) {
  */
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_RUNUP_VERSION, __pyx_kp_u_0_1b3) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
 
-  /* "runup/version.py":28
- * # without quotes.                                       #
+  /* "runup/version.pyx":29
  * # ----------------------------------------------------- #
- * YAML_VERSIONS: List[str] = [             # <<<<<<<<<<<<<<
- *     "1",
+ * YAML_VERSIONS: Tuple[str] = (
+ *     "1",             # <<<<<<<<<<<<<<
  *     "1.0",
+ * )
  */
-  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_kp_u_1);
-  __Pyx_GIVEREF(__pyx_kp_u_1);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_kp_u_1);
-  __Pyx_INCREF(__pyx_kp_u_1_0);
-  __Pyx_GIVEREF(__pyx_kp_u_1_0);
-  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_kp_u_1_0);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_YAML_VERSIONS, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_YAML_VERSIONS, __pyx_tuple_) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
 
-  /* "runup/version.py":1
+  /* "runup/version.pyx":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
  * 
  * # This Source Code Form is subject to the terms of the Mozilla Public

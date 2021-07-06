@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from shutil import rmtree
 import sys
-from typing import Dict, Optional, Union
+from typing import Dict, Optional, Union, Any
 
 # 3rd Party
 import click
@@ -19,19 +19,11 @@ import pyximport  # type: ignore
 pyximport.install()
 
 # Own
-from runup.interpreter import Interpreter
-from runup.version import RUNUP_VERSION
-from runup.yaml_parser import ParserYAML
+from runup.config cimport Config
+from runup.interpreter cimport Interpreter
 from runup.utils import vCall, vResponse
-
-
-class Config(object):
-    """Default config of the "Global" args and kwargs."""
-
-    context: str = "."
-    interpreter: Optional[Interpreter] = None
-    verbose: bool = False
-    yaml: Optional[Dict[str, Union[str]]] = None
+from runup.version import RUNUP_VERSION
+from runup.yaml_parser cimport ParserYAML
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -42,7 +34,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
     "-c",
     "--context",
     type=click.Path(),
-    default=Config.context,
+    default=Config().context,
     help="Directory where the runup.yaml is located.",
 )
 @click.option(
@@ -50,7 +42,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 )
 @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
 @pass_config
-def cli(config: Config, context: str, verbose: bool):
+def cli(Config config: Dict[str, Any], context: str, bint verbose):
     """A simple backup system that only saves the files that has changed."""
 
     config.context = context
@@ -75,7 +67,7 @@ def cli(config: Config, context: str, verbose: bool):
 
 @cli.command()
 @pass_config
-def init(config):
+def init(Config config):
     """Initialize the backup system."""
 
     # Take actions
@@ -87,14 +79,14 @@ def init(config):
         if env_set:
             click.secho("RunUp has been initialized successfully.", fg="green")
     else:
-        # click.echo('Interpreter not detected.')
+        # click.echo('Interpreter not detected on Initialization.')
         sys.exit(1)
 
 
 @cli.command()
 @click.argument("project", type=str, default="")
 @pass_config
-def backup(config, project: str):
+def backup(Config config, project: str):
     """Create a backup based on he yaml file config."""
 
     # Take actions
@@ -107,7 +99,7 @@ def backup(config, project: str):
         else:
             click.secho("The backup has NOT been created.", fg="red")
     else:
-        # click.echo('Interpreter not detected.')
+        # click.echo('Interpreter not detected on backup creation.')
         sys.exit(1)
 
 
@@ -141,7 +133,7 @@ def backup(config, project: str):
 )
 @pass_config
 def restore(
-    config, project: str, location: str, job: int, clear_location: bool, force: bool
+    Config config, project: str, location: str, job: int, clear_location: bool, force: bool
 ):
     """Create a backup based on he yaml file config."""
 
@@ -168,8 +160,8 @@ def restore(
         if restored is None:
             click.secho("The backup has NOT been restored.", fg="red")
     else:
-        # click.echo('Interpreter not detected.')
-        sys.exit(1)
+        # click.secho('Interpreter not detected on backup restore.', fg="red")
+        sys.exit(0)
 
 
 if __name__ == "__main__":

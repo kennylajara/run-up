@@ -6,7 +6,7 @@
 
 
 # Built-in
-from typing import List
+from typing import Tuple
 
 # ----------------------------------------------- #
 # Current version of runup                        #
@@ -25,7 +25,7 @@ RUNUP_VERSION: str = "0.1b3"
 # "Update major to latest until 2.0 is released"        #
 # without quotes.                                       #
 # ----------------------------------------------------- #
-YAML_VERSIONS: List[str] = [
+YAML_VERSIONS: Tuple[str] = (
     "1",
     "1.0",
-]
+)
