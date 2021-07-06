@@ -815,7 +815,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "runup/db.py",
+  "runup/db.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -985,56 +985,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 #define __Pyx_PyObject_GetAttrStr(o,n) PyObject_GetAttr(o,n)
 #endif
 
-/* GetBuiltinName.proto */
-static PyObject *__Pyx_GetBuiltinName(PyObject *name);
-
-/* PyDictVersioning.proto */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
-#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
-    (version_var) = __PYX_GET_DICT_VERSION(dict);\
-    (cache_var) = (value);
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
-        (VAR) = __pyx_dict_cached_value;\
-    } else {\
-        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
-        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
-    }\
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
-#else
-#define __PYX_GET_DICT_VERSION(dict)  (0)
-#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
-#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
-#endif
-
-/* GetModuleGlobalName.proto */
-#if CYTHON_USE_DICT_VERSIONS
-#define __Pyx_GetModuleGlobalName(var, name)  {\
-    static PY_UINT64_T __pyx_dict_version = 0;\
-    static PyObject *__pyx_dict_cached_value = NULL;\
-    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
-        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
-        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
-    PY_UINT64_T __pyx_dict_version;\
-    PyObject *__pyx_dict_cached_value;\
-    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
-}
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
-#else
-#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
-#endif
-
 /* PyUnicode_Unicode.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj);
 
@@ -1112,6 +1062,56 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 #define __Pyx_PyErr_GivenExceptionMatches2(err, type1, type2) (PyErr_GivenExceptionMatches(err, type1) || PyErr_GivenExceptionMatches(err, type2))
 #endif
 #define __Pyx_PyException_Check(obj) __Pyx_TypeCheck(obj, PyExc_Exception)
+
+/* GetBuiltinName.proto */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name);
+
+/* PyDictVersioning.proto */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+#define __PYX_DICT_VERSION_INIT  ((PY_UINT64_T) -1)
+#define __PYX_GET_DICT_VERSION(dict)  (((PyDictObject*)(dict))->ma_version_tag)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)\
+    (version_var) = __PYX_GET_DICT_VERSION(dict);\
+    (cache_var) = (value);
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP) {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    if (likely(__PYX_GET_DICT_VERSION(DICT) == __pyx_dict_version)) {\
+        (VAR) = __pyx_dict_cached_value;\
+    } else {\
+        (VAR) = __pyx_dict_cached_value = (LOOKUP);\
+        __pyx_dict_version = __PYX_GET_DICT_VERSION(DICT);\
+    }\
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj);
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj);
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version);
+#else
+#define __PYX_GET_DICT_VERSION(dict)  (0)
+#define __PYX_UPDATE_DICT_CACHE(dict, value, cache_var, version_var)
+#define __PYX_PY_DICT_LOOKUP_IF_MODIFIED(VAR, DICT, LOOKUP)  (VAR) = (LOOKUP);
+#endif
+
+/* GetModuleGlobalName.proto */
+#if CYTHON_USE_DICT_VERSIONS
+#define __Pyx_GetModuleGlobalName(var, name)  {\
+    static PY_UINT64_T __pyx_dict_version = 0;\
+    static PyObject *__pyx_dict_cached_value = NULL;\
+    (var) = (likely(__pyx_dict_version == __PYX_GET_DICT_VERSION(__pyx_d))) ?\
+        (likely(__pyx_dict_cached_value) ? __Pyx_NewRef(__pyx_dict_cached_value) : __Pyx_GetBuiltinName(name)) :\
+        __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  {\
+    PY_UINT64_T __pyx_dict_version;\
+    PyObject *__pyx_dict_cached_value;\
+    (var) = __Pyx__GetModuleGlobalName(name, &__pyx_dict_version, &__pyx_dict_cached_value);\
+}
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value);
+#else
+#define __Pyx_GetModuleGlobalName(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+#define __Pyx_GetModuleGlobalNameUncached(var, name)  (var) = __Pyx__GetModuleGlobalName(name)
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
+#endif
 
 /* GetException.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1344,9 +1344,16 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 /* CheckBinaryVersion.proto */
 static int __Pyx_check_binary_version(void);
 
+/* FunctionImport.proto */
+static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig);
+
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+
+/* Module declarations from 'runup.utils' */
+static PyObject *(*__pyx_f_5runup_5utils_vInfo)(PyObject *, PyObject *); /*proto*/
+static PyObject *(*__pyx_f_5runup_5utils_hashfile)(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 
 /* Module declarations from 'runup.db' */
 #define __Pyx_MODULE_NAME "runup.db"
@@ -1387,7 +1394,6 @@ static const char __pyx_k_items[] = "items";
 static const char __pyx_k_lower[] = "lower";
 static const char __pyx_k_query[] = "query";
 static const char __pyx_k_strip[] = "strip";
-static const char __pyx_k_vInfo[] = "vInfo";
 static const char __pyx_k_0_NULL[] = "', 0, NULL)\n        ";
 static const char __pyx_k_NULL_0[] = ", NULL, 0)\n        ";
 static const char __pyx_k_commit[] = "commit";
@@ -1416,7 +1422,6 @@ static const char __pyx_k_unicode[] = "unicode";
 static const char __pyx_k_verbose[] = "verbose";
 static const char __pyx_k_version[] = "version";
 static const char __pyx_k_fetchall[] = "fetchall";
-static const char __pyx_k_hashfile[] = "hashfile";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_runup_db[] = "runup.db";
 static const char __pyx_k_sql_dict[] = "sql_dict";
@@ -1434,12 +1439,11 @@ static const char __pyx_k_Search_file[] = "Search file: ";
 static const char __pyx_k_backup_name[] = "backup_name";
 static const char __pyx_k_insert_file[] = "insert_file";
 static const char __pyx_k_insert_into[] = "insert into ";
-static const char __pyx_k_runup_db_py[] = "runup/db.py";
-static const char __pyx_k_runup_utils[] = "runup.utils";
 static const char __pyx_k_AND_A_job_id[] = "' AND A.job_id = ";
 static const char __pyx_k_Create_files[] = "Create files";
 static const char __pyx_k_Get_job_info[] = "Get job info";
 static const char __pyx_k_inserted_new[] = "inserted_new";
+static const char __pyx_k_runup_db_pyx[] = "runup/db.pyx";
 static const char __pyx_k_Insert_backup[] = "Insert backup";
 static const char __pyx_k_insert_backup[] = "insert_backup";
 static const char __pyx_k_path_from_pwd[] = "path_from_pwd";
@@ -1558,7 +1562,6 @@ static PyObject *__pyx_n_s_e;
 static PyObject *__pyx_n_s_echo;
 static PyObject *__pyx_n_s_execute;
 static PyObject *__pyx_n_s_fetchall;
-static PyObject *__pyx_n_s_hashfile;
 static PyObject *__pyx_n_s_id;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_init;
@@ -1591,9 +1594,8 @@ static PyObject *__pyx_n_s_query;
 static PyObject *__pyx_n_s_result;
 static PyObject *__pyx_n_s_return;
 static PyObject *__pyx_n_s_runup_db;
-static PyObject *__pyx_kp_s_runup_db_py;
+static PyObject *__pyx_kp_s_runup_db_pyx;
 static PyObject *__pyx_kp_u_runup_runup_db;
-static PyObject *__pyx_n_s_runup_utils;
 static PyObject *__pyx_kp_u_select;
 static PyObject *__pyx_n_s_select_job;
 static PyObject *__pyx_n_s_self;
@@ -1610,7 +1612,6 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_n_s_typing;
 static PyObject *__pyx_n_u_unicode;
-static PyObject *__pyx_n_s_vInfo;
 static PyObject *__pyx_n_s_verbose;
 static PyObject *__pyx_n_s_verbose_2;
 static PyObject *__pyx_n_s_version;
@@ -1645,7 +1646,7 @@ static PyObject *__pyx_codeobj__23;
 static PyObject *__pyx_codeobj__25;
 /* Late includes */
 
-/* "runup/db.py":34
+/* "runup/db.pyx":34
  *     """
  * 
  *     def __init__(self, context: Path, verbose: bool):             # <<<<<<<<<<<<<<
@@ -1739,7 +1740,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB___init__(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "runup/db.py":36
+  /* "runup/db.pyx":36
  *     def __init__(self, context: Path, verbose: bool):
  * 
  *         self._dbname: str = str(f"{context}/.runup/runup.db")             # <<<<<<<<<<<<<<
@@ -1757,7 +1758,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB___init__(CYTHON_UNUSED PyObject *_
   if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_dbname, __pyx_t_1) < 0) __PYX_ERR(0, 36, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":37
+  /* "runup/db.pyx":37
  * 
  *         self._dbname: str = str(f"{context}/.runup/runup.db")
  *         self._verbose: bool = verbose             # <<<<<<<<<<<<<<
@@ -1766,7 +1767,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB___init__(CYTHON_UNUSED PyObject *_
  */
   if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2, __pyx_v_verbose) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
 
-  /* "runup/db.py":38
+  /* "runup/db.pyx":38
  *         self._dbname: str = str(f"{context}/.runup/runup.db")
  *         self._verbose: bool = verbose
  *         self._conn = None             # <<<<<<<<<<<<<<
@@ -1775,7 +1776,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB___init__(CYTHON_UNUSED PyObject *_
  */
   if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_conn, Py_None) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
 
-  /* "runup/db.py":34
+  /* "runup/db.pyx":34
  *     """
  * 
  *     def __init__(self, context: Path, verbose: bool):             # <<<<<<<<<<<<<<
@@ -1797,7 +1798,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB___init__(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "runup/db.py":40
+/* "runup/db.pyx":40
  *         self._conn = None
  * 
  *     def execute(self, name: str, query: str):             # <<<<<<<<<<<<<<
@@ -1898,12 +1899,12 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
   PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  int __pyx_t_11;
+  int __pyx_t_10;
+  PyObject *__pyx_t_11 = NULL;
   int __pyx_t_12;
   char const *__pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
@@ -1917,77 +1918,30 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("execute", 0);
 
-  /* "runup/db.py":43
+  /* "runup/db.pyx":43
  *         """Execute a query."""
  * 
  *         vInfo(self._verbose, str(f"Executed query: {name}"))             # <<<<<<<<<<<<<<
  * 
  *         try:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Executed_query, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyUnicode_Unicode(__pyx_v_name); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Executed_query, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 43, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = NULL;
-  __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_6 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (__pyx_t_5) {
-      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
-    }
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
-    __pyx_t_3 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyUnicode_Type)), __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __pyx_f_5runup_5utils_vInfo(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":45
+  /* "runup/db.pyx":45
  *         vInfo(self._verbose, str(f"Executed query: {name}"))
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -1997,13 +1951,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
   {
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
-    __Pyx_ExceptionSave(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
-    __Pyx_XGOTREF(__pyx_t_8);
-    __Pyx_XGOTREF(__pyx_t_9);
-    __Pyx_XGOTREF(__pyx_t_10);
+    __Pyx_ExceptionSave(&__pyx_t_4, &__pyx_t_5, &__pyx_t_6);
+    __Pyx_XGOTREF(__pyx_t_4);
+    __Pyx_XGOTREF(__pyx_t_5);
+    __Pyx_XGOTREF(__pyx_t_6);
     /*try:*/ {
 
-      /* "runup/db.py":46
+      /* "runup/db.pyx":46
  * 
  *         try:
  *             assert self._conn is not None             # <<<<<<<<<<<<<<
@@ -2012,18 +1966,18 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       #ifndef CYTHON_WITHOUT_ASSERTIONS
       if (unlikely(!Py_OptimizeFlag)) {
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_11 = (__pyx_t_1 != Py_None);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(!(__pyx_t_11 != 0))) {
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_t_7 = (__pyx_t_3 != Py_None);
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        if (unlikely(!(__pyx_t_7 != 0))) {
           PyErr_SetNone(PyExc_AssertionError);
           __PYX_ERR(0, 46, __pyx_L3_error)
         }
       }
       #endif
 
-      /* "runup/db.py":47
+      /* "runup/db.pyx":47
  *         try:
  *             assert self._conn is not None
  *             c = self._conn.cursor()             # <<<<<<<<<<<<<<
@@ -2032,118 +1986,118 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cursor); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_cursor); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
         if (likely(__pyx_t_2)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
           __Pyx_INCREF(__pyx_t_2);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
+      __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_v_c = __pyx_t_1;
-      __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_v_c = __pyx_t_3;
+      __pyx_t_3 = 0;
 
-      /* "runup/db.py":48
+      /* "runup/db.pyx":48
  *             assert self._conn is not None
  *             c = self._conn.cursor()
  *             c.execute(query)             # <<<<<<<<<<<<<<
  *             if query.lower().strip().startswith("insert into "):
  *                 return c.lastrowid
  */
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_execute); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 48, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_execute); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_2 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
         if (likely(__pyx_t_2)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
           __Pyx_INCREF(__pyx_t_2);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_2, __pyx_v_query) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_v_query);
+      __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_v_query) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_query);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 48, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "runup/db.py":49
+      /* "runup/db.pyx":49
  *             c = self._conn.cursor()
  *             c.execute(query)
  *             if query.lower().strip().startswith("insert into "):             # <<<<<<<<<<<<<<
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("insert or ignore into "):
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_query, __pyx_n_s_lower); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_3)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_3);
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_query, __pyx_n_s_lower); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __pyx_t_9 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+        __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_8);
+        if (likely(__pyx_t_9)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+          __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
+          __Pyx_DECREF_SET(__pyx_t_8, function);
         }
       }
-      __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_2 = (__pyx_t_9) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_strip); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_strip); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_4);
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_8);
         if (likely(__pyx_t_2)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
           __Pyx_INCREF(__pyx_t_2);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
+          __Pyx_DECREF_SET(__pyx_t_8, function);
         }
       }
-      __pyx_t_7 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
+      __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_8);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 49, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_startswith); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 49, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_7)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_7);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_kp_u_insert_into) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_kp_u_insert_into);
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_startswith); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__pyx_t_11) {
+      __pyx_t_1 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_8))) {
+        __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_8);
+        if (likely(__pyx_t_1)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+          __Pyx_INCREF(__pyx_t_1);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_8, function);
+        }
+      }
+      __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_1, __pyx_kp_u_insert_into) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_kp_u_insert_into);
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 49, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (__pyx_t_7) {
 
-        /* "runup/db.py":50
+        /* "runup/db.pyx":50
  *             c.execute(query)
  *             if query.lower().strip().startswith("insert into "):
  *                 return c.lastrowid             # <<<<<<<<<<<<<<
@@ -2151,13 +2105,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  *                 return c.lastrowid
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_lastrowid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_r = __pyx_t_1;
-        __pyx_t_1 = 0;
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_lastrowid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_r = __pyx_t_3;
+        __pyx_t_3 = 0;
         goto __pyx_L7_try_return;
 
-        /* "runup/db.py":49
+        /* "runup/db.pyx":49
  *             c = self._conn.cursor()
  *             c.execute(query)
  *             if query.lower().strip().startswith("insert into "):             # <<<<<<<<<<<<<<
@@ -2166,7 +2120,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       }
 
-      /* "runup/db.py":51
+      /* "runup/db.pyx":51
  *             if query.lower().strip().startswith("insert into "):
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("insert or ignore into "):             # <<<<<<<<<<<<<<
@@ -2175,62 +2129,62 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_query, __pyx_n_s_lower); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = NULL;
+      __pyx_t_9 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-        if (likely(__pyx_t_3)) {
+        __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_2);
+        if (likely(__pyx_t_9)) {
           PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-          __Pyx_INCREF(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(function);
           __Pyx_DECREF_SET(__pyx_t_2, function);
         }
       }
-      __pyx_t_7 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_strip); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
-        if (likely(__pyx_t_7)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-          __Pyx_INCREF(__pyx_t_7);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_2, function);
-        }
-      }
-      __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_startswith); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-          __Pyx_INCREF(__pyx_t_4);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_2, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_kp_u_insert_or_ignore_into) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u_insert_or_ignore_into);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_1 = (__pyx_t_9) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_9) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_strip); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__pyx_t_11) {
+      __pyx_t_1 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+        __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+        if (likely(__pyx_t_1)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+          __Pyx_INCREF(__pyx_t_1);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_2, function);
+        }
+      }
+      __pyx_t_8 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_startswith); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_8 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_2);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+          __Pyx_INCREF(__pyx_t_8);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_2, function);
+        }
+      }
+      __pyx_t_3 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_8, __pyx_kp_u_insert_or_ignore_into) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u_insert_or_ignore_into);
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (__pyx_t_7) {
 
-        /* "runup/db.py":52
+        /* "runup/db.pyx":52
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("insert or ignore into "):
  *                 return c.lastrowid             # <<<<<<<<<<<<<<
@@ -2238,13 +2192,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  *                 return c.fetchall()
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_lastrowid); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __pyx_r = __pyx_t_1;
-        __pyx_t_1 = 0;
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_lastrowid); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __pyx_r = __pyx_t_3;
+        __pyx_t_3 = 0;
         goto __pyx_L7_try_return;
 
-        /* "runup/db.py":51
+        /* "runup/db.pyx":51
  *             if query.lower().strip().startswith("insert into "):
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("insert or ignore into "):             # <<<<<<<<<<<<<<
@@ -2253,71 +2207,71 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       }
 
-      /* "runup/db.py":53
+      /* "runup/db.pyx":53
  *             elif query.lower().strip().startswith("insert or ignore into "):
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("select "):             # <<<<<<<<<<<<<<
  *                 return c.fetchall()
  *             return c
  */
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_query, __pyx_n_s_lower); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 53, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_3 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_7);
-        if (likely(__pyx_t_3)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-          __Pyx_INCREF(__pyx_t_3);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_query, __pyx_n_s_lower); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_9 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_9)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 53, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_strip); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 53, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_7);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-          __Pyx_INCREF(__pyx_t_4);
+      __pyx_t_8 = (__pyx_t_9) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_9) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+      __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+      if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_strip); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+      __pyx_t_8 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_8)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_8);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_2 = (__pyx_t_8) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_8) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+      __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_startswith); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 53, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_startswith); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
         if (likely(__pyx_t_2)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
           __Pyx_INCREF(__pyx_t_2);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_2, __pyx_kp_u_select) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_kp_u_select);
+      __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_kp_u_select) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_u_select);
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_11 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 53, __pyx_L3_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (__pyx_t_11) {
+      __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 53, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (__pyx_t_7) {
 
-        /* "runup/db.py":54
+        /* "runup/db.pyx":54
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("select "):
  *                 return c.fetchall()             # <<<<<<<<<<<<<<
@@ -2325,28 +2279,28 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  *         except Error as e:
  */
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_fetchall); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_c, __pyx_n_s_fetchall); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_2 = NULL;
-        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-          __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
+        if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+          __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
           if (likely(__pyx_t_2)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
             __Pyx_INCREF(__pyx_t_2);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_7, function);
+            __Pyx_DECREF_SET(__pyx_t_1, function);
           }
         }
-        __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
+        __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_r = __pyx_t_1;
-        __pyx_t_1 = 0;
+        if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L3_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_r = __pyx_t_3;
+        __pyx_t_3 = 0;
         goto __pyx_L7_try_return;
 
-        /* "runup/db.py":53
+        /* "runup/db.pyx":53
  *             elif query.lower().strip().startswith("insert or ignore into "):
  *                 return c.lastrowid
  *             elif query.lower().strip().startswith("select "):             # <<<<<<<<<<<<<<
@@ -2355,7 +2309,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
  */
       }
 
-      /* "runup/db.py":55
+      /* "runup/db.pyx":55
  *             elif query.lower().strip().startswith("select "):
  *                 return c.fetchall()
  *             return c             # <<<<<<<<<<<<<<
@@ -2367,7 +2321,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
       __pyx_r = __pyx_v_c;
       goto __pyx_L7_try_return;
 
-      /* "runup/db.py":45
+      /* "runup/db.pyx":45
  *         vInfo(self._verbose, str(f"Executed query: {name}"))
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -2379,65 +2333,64 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
 
-    /* "runup/db.py":56
+    /* "runup/db.pyx":56
  *                 return c.fetchall()
  *             return c
  *         except Error as e:             # <<<<<<<<<<<<<<
  *             click.echo(e)
  * 
  */
-    __Pyx_ErrFetch(&__pyx_t_1, &__pyx_t_7, &__pyx_t_2);
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_Error); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L5_except_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_1, __pyx_t_4);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_ErrRestore(__pyx_t_1, __pyx_t_7, __pyx_t_2);
-    __pyx_t_1 = 0; __pyx_t_7 = 0; __pyx_t_2 = 0;
-    if (__pyx_t_6) {
+    __Pyx_ErrFetch(&__pyx_t_3, &__pyx_t_1, &__pyx_t_2);
+    __Pyx_GetModuleGlobalName(__pyx_t_8, __pyx_n_s_Error); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L5_except_error)
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_10 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_3, __pyx_t_8);
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    __Pyx_ErrRestore(__pyx_t_3, __pyx_t_1, __pyx_t_2);
+    __pyx_t_3 = 0; __pyx_t_1 = 0; __pyx_t_2 = 0;
+    if (__pyx_t_10) {
       __Pyx_AddTraceback("runup.db.RunupDB.execute", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_7, &__pyx_t_1) < 0) __PYX_ERR(0, 56, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_2, &__pyx_t_1, &__pyx_t_3) < 0) __PYX_ERR(0, 56, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_7);
-      __pyx_v_e = __pyx_t_7;
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_v_e = __pyx_t_1;
       /*try:*/ {
 
-        /* "runup/db.py":57
+        /* "runup/db.pyx":57
  *             return c
  *         except Error as e:
  *             click.echo(e)             # <<<<<<<<<<<<<<
  * 
  *     def close_connection(self, commit=True):
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_click); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L15_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_echo); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L15_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = NULL;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-          __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_5);
-          if (likely(__pyx_t_3)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-            __Pyx_INCREF(__pyx_t_3);
+        __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_click); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 57, __pyx_L15_error)
+        __Pyx_GOTREF(__pyx_t_9);
+        __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_echo); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 57, __pyx_L15_error)
+        __Pyx_GOTREF(__pyx_t_11);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_t_9 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
+          __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_11);
+          if (likely(__pyx_t_9)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
+            __Pyx_INCREF(__pyx_t_9);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_5, function);
+            __Pyx_DECREF_SET(__pyx_t_11, function);
           }
         }
-        __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_v_e) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_e);
-        __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L15_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+        __pyx_t_8 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_9, __pyx_v_e) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_v_e);
+        __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+        if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 57, __pyx_L15_error)
+        __Pyx_GOTREF(__pyx_t_8);
+        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
 
-      /* "runup/db.py":56
+      /* "runup/db.pyx":56
  *                 return c.fetchall()
  *             return c
  *         except Error as e:             # <<<<<<<<<<<<<<
@@ -2455,9 +2408,9 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
           __Pyx_PyThreadState_declare
           __Pyx_PyThreadState_assign
           __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0;
-          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
+          __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
+          __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
           if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_17, &__pyx_t_18, &__pyx_t_19);
           if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16) < 0)) __Pyx_ErrFetch(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16);
           __Pyx_XGOTREF(__pyx_t_14);
@@ -2466,7 +2419,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
           __Pyx_XGOTREF(__pyx_t_17);
           __Pyx_XGOTREF(__pyx_t_18);
           __Pyx_XGOTREF(__pyx_t_19);
-          __pyx_t_6 = __pyx_lineno; __pyx_t_12 = __pyx_clineno; __pyx_t_13 = __pyx_filename;
+          __pyx_t_10 = __pyx_lineno; __pyx_t_12 = __pyx_clineno; __pyx_t_13 = __pyx_filename;
           {
             __Pyx_DECREF(__pyx_v_e);
             __pyx_v_e = NULL;
@@ -2482,45 +2435,45 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
           __Pyx_XGIVEREF(__pyx_t_16);
           __Pyx_ErrRestore(__pyx_t_14, __pyx_t_15, __pyx_t_16);
           __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0;
-          __pyx_lineno = __pyx_t_6; __pyx_clineno = __pyx_t_12; __pyx_filename = __pyx_t_13;
+          __pyx_lineno = __pyx_t_10; __pyx_clineno = __pyx_t_12; __pyx_filename = __pyx_t_13;
           goto __pyx_L5_except_error;
         }
         __pyx_L16:;
       }
       __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       goto __pyx_L4_exception_handled;
     }
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "runup/db.py":45
+    /* "runup/db.pyx":45
  *         vInfo(self._verbose, str(f"Executed query: {name}"))
  * 
  *         try:             # <<<<<<<<<<<<<<
  *             assert self._conn is not None
  *             c = self._conn.cursor()
  */
-    __Pyx_XGIVEREF(__pyx_t_8);
-    __Pyx_XGIVEREF(__pyx_t_9);
-    __Pyx_XGIVEREF(__pyx_t_10);
-    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_XGIVEREF(__pyx_t_6);
+    __Pyx_ExceptionReset(__pyx_t_4, __pyx_t_5, __pyx_t_6);
     goto __pyx_L1_error;
     __pyx_L7_try_return:;
-    __Pyx_XGIVEREF(__pyx_t_8);
-    __Pyx_XGIVEREF(__pyx_t_9);
-    __Pyx_XGIVEREF(__pyx_t_10);
-    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_XGIVEREF(__pyx_t_6);
+    __Pyx_ExceptionReset(__pyx_t_4, __pyx_t_5, __pyx_t_6);
     goto __pyx_L0;
     __pyx_L4_exception_handled:;
-    __Pyx_XGIVEREF(__pyx_t_8);
-    __Pyx_XGIVEREF(__pyx_t_9);
-    __Pyx_XGIVEREF(__pyx_t_10);
-    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_XGIVEREF(__pyx_t_6);
+    __Pyx_ExceptionReset(__pyx_t_4, __pyx_t_5, __pyx_t_6);
   }
 
-  /* "runup/db.py":40
+  /* "runup/db.pyx":40
  *         self._conn = None
  * 
  *     def execute(self, name: str, query: str):             # <<<<<<<<<<<<<<
@@ -2535,9 +2488,9 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_11);
   __Pyx_AddTraceback("runup.db.RunupDB.execute", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -2548,7 +2501,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_2execute(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "runup/db.py":59
+/* "runup/db.pyx":59
  *             click.echo(e)
  * 
  *     def close_connection(self, commit=True):             # <<<<<<<<<<<<<<
@@ -2632,97 +2585,46 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_4close_connection(CYTHON_UNUSED Py
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
+  int __pyx_t_4;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("close_connection", 0);
 
-  /* "runup/db.py":62
+  /* "runup/db.pyx":62
  *         """Close database connection"""
  * 
  *         vInfo(self._verbose, f"Closing connection to: {self._dbname}")             # <<<<<<<<<<<<<<
  *         if commit:
  *             self._conn.commit()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dbname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dbname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Closing_connection_to, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = NULL;
-  __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_6 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (__pyx_t_5) {
-      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
-    }
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
-    __pyx_t_3 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Closing_connection_to, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __pyx_f_5runup_5utils_vInfo(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":63
+  /* "runup/db.pyx":63
  * 
  *         vInfo(self._verbose, f"Closing connection to: {self._dbname}")
  *         if commit:             # <<<<<<<<<<<<<<
  *             self._conn.commit()
  *         self._conn.close()
  */
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_commit); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
-  if (__pyx_t_8) {
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_commit); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (__pyx_t_4) {
 
-    /* "runup/db.py":64
+    /* "runup/db.pyx":64
  *         vInfo(self._verbose, f"Closing connection to: {self._dbname}")
  *         if commit:
  *             self._conn.commit()             # <<<<<<<<<<<<<<
@@ -2731,27 +2633,27 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_4close_connection(CYTHON_UNUSED Py
  */
     __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_commit); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_commit); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_2 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_7);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
       if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
         __Pyx_INCREF(__pyx_t_2);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
       }
     }
-    __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
+    __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "runup/db.py":63
+    /* "runup/db.pyx":63
  * 
  *         vInfo(self._verbose, f"Closing connection to: {self._dbname}")
  *         if commit:             # <<<<<<<<<<<<<<
@@ -2760,96 +2662,50 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_4close_connection(CYTHON_UNUSED Py
  */
   }
 
-  /* "runup/db.py":65
+  /* "runup/db.pyx":65
  *         if commit:
  *             self._conn.commit()
  *         self._conn.close()             # <<<<<<<<<<<<<<
  *         vInfo(self._verbose, "Connetion closed")
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_close); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_conn); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_close); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = NULL;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_7)) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_1)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":66
+  /* "runup/db.pyx":66
  *             self._conn.commit()
  *         self._conn.close()
  *         vInfo(self._verbose, "Connetion closed")             # <<<<<<<<<<<<<<
  * 
  *     def connect(self):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = __pyx_f_5runup_5utils_vInfo(__pyx_t_3, __pyx_kp_u_Connetion_closed); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 66, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_4 = NULL;
-  __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_6 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_7, __pyx_kp_u_Connetion_closed};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_7, __pyx_kp_u_Connetion_closed};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  } else
-  #endif
-  {
-    __pyx_t_3 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    if (__pyx_t_4) {
-      __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4); __pyx_t_4 = NULL;
-    }
-    __Pyx_GIVEREF(__pyx_t_7);
-    PyTuple_SET_ITEM(__pyx_t_3, 0+__pyx_t_6, __pyx_t_7);
-    __Pyx_INCREF(__pyx_kp_u_Connetion_closed);
-    __Pyx_GIVEREF(__pyx_kp_u_Connetion_closed);
-    PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_6, __pyx_kp_u_Connetion_closed);
-    __pyx_t_7 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":59
+  /* "runup/db.pyx":59
  *             click.echo(e)
  * 
  *     def close_connection(self, commit=True):             # <<<<<<<<<<<<<<
@@ -2864,9 +2720,6 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_4close_connection(CYTHON_UNUSED Py
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("runup.db.RunupDB.close_connection", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -2875,7 +2728,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_4close_connection(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "runup/db.py":68
+/* "runup/db.pyx":68
  *         vInfo(self._verbose, "Connetion closed")
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
@@ -2907,9 +2760,9 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
+  PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_8;
   PyObject *__pyx_t_9 = NULL;
   PyObject *__pyx_t_10 = NULL;
   int __pyx_t_11;
@@ -2925,77 +2778,30 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("connect", 0);
 
-  /* "runup/db.py":70
+  /* "runup/db.pyx":70
  *     def connect(self):
  *         """Create a database connection to a `runup.db`."""
  *         vInfo(self._verbose, f"Creating connection to: {self._dbname}")             # <<<<<<<<<<<<<<
  * 
  *         try:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dbname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dbname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Creating_connection_to, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = NULL;
-  __pyx_t_6 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_6 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else
-  #endif
-  {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    if (__pyx_t_5) {
-      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
-    }
-    __Pyx_GIVEREF(__pyx_t_3);
-    PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_t_3);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
-    __pyx_t_3 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Creating_connection_to, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __pyx_f_5runup_5utils_vInfo(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":72
+  /* "runup/db.pyx":72
  *         vInfo(self._verbose, f"Creating connection to: {self._dbname}")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -3005,13 +2811,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
   {
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
-    __Pyx_ExceptionSave(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
-    __Pyx_XGOTREF(__pyx_t_8);
-    __Pyx_XGOTREF(__pyx_t_9);
-    __Pyx_XGOTREF(__pyx_t_10);
+    __Pyx_ExceptionSave(&__pyx_t_4, &__pyx_t_5, &__pyx_t_6);
+    __Pyx_XGOTREF(__pyx_t_4);
+    __Pyx_XGOTREF(__pyx_t_5);
+    __Pyx_XGOTREF(__pyx_t_6);
     /*try:*/ {
 
-      /* "runup/db.py":73
+      /* "runup/db.pyx":73
  * 
  *         try:
  *             self._conn = sqlite3.connect(self._dbname)             # <<<<<<<<<<<<<<
@@ -3020,104 +2826,57 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
  */
       __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_sqlite3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_connect); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 73, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_connect); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_dbname); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_7);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-          __Pyx_INCREF(__pyx_t_4);
+      __pyx_t_7 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_7)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_7);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_conn, __pyx_t_1) < 0) __PYX_ERR(0, 73, __pyx_L3_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_conn, __pyx_t_3) < 0) __PYX_ERR(0, 73, __pyx_L3_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "runup/db.py":74
+      /* "runup/db.pyx":74
  *         try:
  *             self._conn = sqlite3.connect(self._dbname)
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")             # <<<<<<<<<<<<<<
  *         except Error as e:
  *             click.echo(e)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 74, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_verbose_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_sqlite3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_version); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_sqlite3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_version); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_t_2, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Database_version, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __pyx_f_5runup_5utils_vInfo(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Database_version, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L3_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = NULL;
-      __pyx_t_6 = 0;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_7);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-          __Pyx_INCREF(__pyx_t_4);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_7, function);
-          __pyx_t_6 = 1;
-        }
-      }
-      #if CYTHON_FAST_PYCALL
-      if (PyFunction_Check(__pyx_t_7)) {
-        PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_2, __pyx_t_3};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      } else
-      #endif
-      #if CYTHON_FAST_PYCCALL
-      if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
-        PyObject *__pyx_temp[3] = {__pyx_t_4, __pyx_t_2, __pyx_t_3};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
-        __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      } else
-      #endif
-      {
-        __pyx_t_5 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        if (__pyx_t_4) {
-          __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
-        }
-        __Pyx_GIVEREF(__pyx_t_2);
-        PyTuple_SET_ITEM(__pyx_t_5, 0+__pyx_t_6, __pyx_t_2);
-        __Pyx_GIVEREF(__pyx_t_3);
-        PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_6, __pyx_t_3);
-        __pyx_t_2 = 0;
-        __pyx_t_3 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L3_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      }
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "runup/db.py":72
+      /* "runup/db.pyx":72
  *         vInfo(self._verbose, f"Creating connection to: {self._dbname}")
  * 
  *         try:             # <<<<<<<<<<<<<<
@@ -3125,73 +2884,71 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")
  */
     }
-    __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     goto __pyx_L8_try_end;
     __pyx_L3_error:;
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "runup/db.py":75
+    /* "runup/db.pyx":75
  *             self._conn = sqlite3.connect(self._dbname)
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")
  *         except Error as e:             # <<<<<<<<<<<<<<
  *             click.echo(e)
  * 
  */
-    __Pyx_ErrFetch(&__pyx_t_1, &__pyx_t_7, &__pyx_t_5);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_Error); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L5_except_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_1, __pyx_t_3);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_ErrRestore(__pyx_t_1, __pyx_t_7, __pyx_t_5);
-    __pyx_t_1 = 0; __pyx_t_7 = 0; __pyx_t_5 = 0;
-    if (__pyx_t_6) {
+    __Pyx_ErrFetch(&__pyx_t_1, &__pyx_t_2, &__pyx_t_3);
+    __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_Error); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 75, __pyx_L5_except_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_1, __pyx_t_7);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_ErrRestore(__pyx_t_1, __pyx_t_2, __pyx_t_3);
+    __pyx_t_1 = 0; __pyx_t_2 = 0; __pyx_t_3 = 0;
+    if (__pyx_t_8) {
       __Pyx_AddTraceback("runup.db.RunupDB.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_5, &__pyx_t_7, &__pyx_t_1) < 0) __PYX_ERR(0, 75, __pyx_L5_except_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_GOTREF(__pyx_t_7);
+      if (__Pyx_GetException(&__pyx_t_3, &__pyx_t_2, &__pyx_t_1) < 0) __PYX_ERR(0, 75, __pyx_L5_except_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_7);
-      __pyx_v_e = __pyx_t_7;
+      __Pyx_INCREF(__pyx_t_2);
+      __pyx_v_e = __pyx_t_2;
       /*try:*/ {
 
-        /* "runup/db.py":76
+        /* "runup/db.pyx":76
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")
  *         except Error as e:
  *             click.echo(e)             # <<<<<<<<<<<<<<
  * 
  *     def create_database(self):
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_click); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L14_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_echo); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L14_error)
-        __Pyx_GOTREF(__pyx_t_4);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = NULL;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-          __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_4);
-          if (likely(__pyx_t_2)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-            __Pyx_INCREF(__pyx_t_2);
+        __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_click); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 76, __pyx_L14_error)
+        __Pyx_GOTREF(__pyx_t_9);
+        __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_echo); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 76, __pyx_L14_error)
+        __Pyx_GOTREF(__pyx_t_10);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_t_9 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
+          __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_10);
+          if (likely(__pyx_t_9)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+            __Pyx_INCREF(__pyx_t_9);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_4, function);
+            __Pyx_DECREF_SET(__pyx_t_10, function);
           }
         }
-        __pyx_t_3 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_2, __pyx_v_e) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_e);
-        __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-        if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L14_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __pyx_t_7 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_9, __pyx_v_e) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_v_e);
+        __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
+        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L14_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
 
-      /* "runup/db.py":75
+      /* "runup/db.pyx":75
  *             self._conn = sqlite3.connect(self._dbname)
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")
  *         except Error as e:             # <<<<<<<<<<<<<<
@@ -3209,9 +2966,9 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
           __Pyx_PyThreadState_declare
           __Pyx_PyThreadState_assign
           __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
-          __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-          __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+          __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
           if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_16, &__pyx_t_17, &__pyx_t_18);
           if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15) < 0)) __Pyx_ErrFetch(&__pyx_t_13, &__pyx_t_14, &__pyx_t_15);
           __Pyx_XGOTREF(__pyx_t_13);
@@ -3220,7 +2977,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
           __Pyx_XGOTREF(__pyx_t_16);
           __Pyx_XGOTREF(__pyx_t_17);
           __Pyx_XGOTREF(__pyx_t_18);
-          __pyx_t_6 = __pyx_lineno; __pyx_t_11 = __pyx_clineno; __pyx_t_12 = __pyx_filename;
+          __pyx_t_8 = __pyx_lineno; __pyx_t_11 = __pyx_clineno; __pyx_t_12 = __pyx_filename;
           {
             __Pyx_DECREF(__pyx_v_e);
             __pyx_v_e = NULL;
@@ -3236,40 +2993,40 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
           __Pyx_XGIVEREF(__pyx_t_15);
           __Pyx_ErrRestore(__pyx_t_13, __pyx_t_14, __pyx_t_15);
           __pyx_t_13 = 0; __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0;
-          __pyx_lineno = __pyx_t_6; __pyx_clineno = __pyx_t_11; __pyx_filename = __pyx_t_12;
+          __pyx_lineno = __pyx_t_8; __pyx_clineno = __pyx_t_11; __pyx_filename = __pyx_t_12;
           goto __pyx_L5_except_error;
         }
         __pyx_L15:;
       }
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       goto __pyx_L4_exception_handled;
     }
     goto __pyx_L5_except_error;
     __pyx_L5_except_error:;
 
-    /* "runup/db.py":72
+    /* "runup/db.pyx":72
  *         vInfo(self._verbose, f"Creating connection to: {self._dbname}")
  * 
  *         try:             # <<<<<<<<<<<<<<
  *             self._conn = sqlite3.connect(self._dbname)
  *             vInfo(self._verbose, f"Database version: {sqlite3.version}")
  */
-    __Pyx_XGIVEREF(__pyx_t_8);
-    __Pyx_XGIVEREF(__pyx_t_9);
-    __Pyx_XGIVEREF(__pyx_t_10);
-    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_XGIVEREF(__pyx_t_6);
+    __Pyx_ExceptionReset(__pyx_t_4, __pyx_t_5, __pyx_t_6);
     goto __pyx_L1_error;
     __pyx_L4_exception_handled:;
-    __Pyx_XGIVEREF(__pyx_t_8);
-    __Pyx_XGIVEREF(__pyx_t_9);
-    __Pyx_XGIVEREF(__pyx_t_10);
-    __Pyx_ExceptionReset(__pyx_t_8, __pyx_t_9, __pyx_t_10);
+    __Pyx_XGIVEREF(__pyx_t_4);
+    __Pyx_XGIVEREF(__pyx_t_5);
+    __Pyx_XGIVEREF(__pyx_t_6);
+    __Pyx_ExceptionReset(__pyx_t_4, __pyx_t_5, __pyx_t_6);
     __pyx_L8_try_end:;
   }
 
-  /* "runup/db.py":68
+  /* "runup/db.pyx":68
  *         vInfo(self._verbose, "Connetion closed")
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
@@ -3284,9 +3041,9 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_AddTraceback("runup.db.RunupDB.connect", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -3296,7 +3053,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_6connect(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "runup/db.py":78
+/* "runup/db.pyx":78
  *             click.echo(e)
  * 
  *     def create_database(self):             # <<<<<<<<<<<<<<
@@ -3339,7 +3096,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("create_database", 0);
 
-  /* "runup/db.py":82
+  /* "runup/db.pyx":82
  * 
  *         sql_dict: Dict[str] = {
  *             "Create backups": """             # <<<<<<<<<<<<<<
@@ -3356,7 +3113,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   __pyx_v_sql_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":128
+  /* "runup/db.pyx":128
  *         }
  * 
  *         self.connect()             # <<<<<<<<<<<<<<
@@ -3382,7 +3139,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":129
+  /* "runup/db.pyx":129
  * 
  *         self.connect()
  *         for name, sql in sql_dict.items():             # <<<<<<<<<<<<<<
@@ -3406,7 +3163,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
     __Pyx_XDECREF_SET(__pyx_v_sql, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "runup/db.py":130
+    /* "runup/db.pyx":130
  *         self.connect()
  *         for name, sql in sql_dict.items():
  *             self.execute(name, sql)             # <<<<<<<<<<<<<<
@@ -3464,7 +3221,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":131
+  /* "runup/db.pyx":131
  *         for name, sql in sql_dict.items():
  *             self.execute(name, sql)
  *         self.close_connection()             # <<<<<<<<<<<<<<
@@ -3490,7 +3247,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":78
+  /* "runup/db.pyx":78
  *             click.echo(e)
  * 
  *     def create_database(self):             # <<<<<<<<<<<<<<
@@ -3518,7 +3275,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_8create_database(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "runup/db.py":133
+/* "runup/db.pyx":133
  *         self.close_connection()
  * 
  *     def insert_backup(self, name: str) -> None:             # <<<<<<<<<<<<<<
@@ -3613,7 +3370,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("insert_backup", 0);
 
-  /* "runup/db.py":137
+  /* "runup/db.pyx":137
  * 
  *         sql: str = str(
  *             f"""             # <<<<<<<<<<<<<<
@@ -3643,7 +3400,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":136
+  /* "runup/db.pyx":136
  *         """Insert a backup"""
  * 
  *         sql: str = str(             # <<<<<<<<<<<<<<
@@ -3656,7 +3413,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   __pyx_v_sql = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":144
+  /* "runup/db.pyx":144
  *         )
  * 
  *         self.connect()             # <<<<<<<<<<<<<<
@@ -3682,7 +3439,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":145
+  /* "runup/db.pyx":145
  * 
  *         self.connect()
  *         self.execute("Insert backup", sql)             # <<<<<<<<<<<<<<
@@ -3738,7 +3495,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":146
+  /* "runup/db.pyx":146
  *         self.connect()
  *         self.execute("Insert backup", sql)
  *         self.close_connection()             # <<<<<<<<<<<<<<
@@ -3764,7 +3521,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":133
+  /* "runup/db.pyx":133
  *         self.close_connection()
  * 
  *     def insert_backup(self, name: str) -> None:             # <<<<<<<<<<<<<<
@@ -3789,7 +3546,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_10insert_backup(CYTHON_UNUSED PyOb
   return __pyx_r;
 }
 
-/* "runup/db.py":148
+/* "runup/db.pyx":148
  *         self.close_connection()
  * 
  *     def insert_file(             # <<<<<<<<<<<<<<
@@ -3903,135 +3660,45 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_5;
   int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  Py_UCS4 __pyx_t_10;
+  Py_ssize_t __pyx_t_7;
+  Py_UCS4 __pyx_t_8;
+  PyObject *__pyx_t_9 = NULL;
+  int __pyx_t_10;
   PyObject *__pyx_t_11 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("insert_file", 0);
 
-  /* "runup/db.py":157
+  /* "runup/db.pyx":157
  *         """
  * 
  *         sha256: str = hashfile(path_from_pwd, "sha256")             # <<<<<<<<<<<<<<
  *         sha512: str = hashfile(path_from_pwd, "sha512")
  *         sql: str
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_hashfile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 157, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_path_from_pwd, __pyx_n_u_sha256};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_path_from_pwd, __pyx_n_u_sha256};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else
-  #endif
-  {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 157, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (__pyx_t_3) {
-      __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
-    }
-    __Pyx_INCREF(__pyx_v_path_from_pwd);
-    __Pyx_GIVEREF(__pyx_v_path_from_pwd);
-    PyTuple_SET_ITEM(__pyx_t_5, 0+__pyx_t_4, __pyx_v_path_from_pwd);
-    __Pyx_INCREF(__pyx_n_u_sha256);
-    __Pyx_GIVEREF(__pyx_n_u_sha256);
-    PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_n_u_sha256);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_f_5runup_5utils_hashfile(__pyx_v_path_from_pwd, __pyx_n_u_sha256, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 157, __pyx_L1_error)
   __pyx_v_sha256 = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":158
+  /* "runup/db.pyx":158
  * 
  *         sha256: str = hashfile(path_from_pwd, "sha256")
  *         sha512: str = hashfile(path_from_pwd, "sha512")             # <<<<<<<<<<<<<<
  *         sql: str
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_hashfile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = NULL;
-  __pyx_t_4 = 0;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_5);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_path_from_pwd, __pyx_n_u_sha512};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else
-  #endif
-  #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_v_path_from_pwd, __pyx_n_u_sha512};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_GOTREF(__pyx_t_1);
-  } else
-  #endif
-  {
-    __pyx_t_3 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    if (__pyx_t_5) {
-      __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
-    }
-    __Pyx_INCREF(__pyx_v_path_from_pwd);
-    __Pyx_GIVEREF(__pyx_v_path_from_pwd);
-    PyTuple_SET_ITEM(__pyx_t_3, 0+__pyx_t_4, __pyx_v_path_from_pwd);
-    __Pyx_INCREF(__pyx_n_u_sha512);
-    __Pyx_GIVEREF(__pyx_n_u_sha512);
-    PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_4, __pyx_n_u_sha512);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __pyx_f_5runup_5utils_hashfile(__pyx_v_path_from_pwd, __pyx_n_u_sha512, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 158, __pyx_L1_error)
   __pyx_v_sha512 = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":161
+  /* "runup/db.pyx":161
  *         sql: str
  * 
  *         self.connect()             # <<<<<<<<<<<<<<
@@ -4057,29 +3724,29 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":164
+  /* "runup/db.pyx":164
  * 
  *         # Find
  *         if sha256 == "dir" or sha512 == "dir":             # <<<<<<<<<<<<<<
  *             pass
  *         else:
  */
-  __pyx_t_7 = (__Pyx_PyUnicode_Equals(__pyx_v_sha256, __pyx_n_u_dir, Py_EQ)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_t_8 = (__pyx_t_7 != 0);
-  if (!__pyx_t_8) {
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_v_sha256, __pyx_n_u_dir, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_6 = (__pyx_t_5 != 0);
+  if (!__pyx_t_6) {
   } else {
-    __pyx_t_6 = __pyx_t_8;
+    __pyx_t_4 = __pyx_t_6;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_8 = (__Pyx_PyUnicode_Equals(__pyx_v_sha512, __pyx_n_u_dir, Py_EQ)); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_t_7 = (__pyx_t_8 != 0);
-  __pyx_t_6 = __pyx_t_7;
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_sha512, __pyx_n_u_dir, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_5 = (__pyx_t_6 != 0);
+  __pyx_t_4 = __pyx_t_5;
   __pyx_L4_bool_binop_done:;
-  if (__pyx_t_6) {
+  if (__pyx_t_4) {
     goto __pyx_L3;
   }
 
-  /* "runup/db.py":167
+  /* "runup/db.pyx":167
  *             pass
  *         else:
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -4088,7 +3755,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
  */
   /*else*/ {
 
-    /* "runup/db.py":168
+    /* "runup/db.pyx":168
  *         else:
  *             sql = str(
  *                 f"""             # <<<<<<<<<<<<<<
@@ -4097,39 +3764,39 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
  */
     __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = 0;
-    __pyx_t_10 = 127;
+    __pyx_t_7 = 0;
+    __pyx_t_8 = 127;
     __Pyx_INCREF(__pyx_kp_u_SELECT_file_id_sha256_sha512_FR);
-    __pyx_t_9 += 105;
+    __pyx_t_7 += 105;
     __Pyx_GIVEREF(__pyx_kp_u_SELECT_file_id_sha256_sha512_FR);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_SELECT_file_id_sha256_sha512_FR);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_sha256); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_AND_sha512);
-    __pyx_t_9 += 14;
+    __pyx_t_7 += 14;
     __Pyx_GIVEREF(__pyx_kp_u_AND_sha512);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_AND_sha512);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_sha512); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_ORDER_BY_file_id_ASC_LIMIT_1);
-    __pyx_t_9 += 76;
+    __pyx_t_7 += 76;
     __Pyx_GIVEREF(__pyx_kp_u_ORDER_BY_file_id_ASC_LIMIT_1);
     PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u_ORDER_BY_file_id_ASC_LIMIT_1);
-    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 5, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":167
+    /* "runup/db.pyx":167
  *             pass
  *         else:
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -4144,7 +3811,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   }
   __pyx_L3:;
 
-  /* "runup/db.py":177
+  /* "runup/db.pyx":177
  *             )
  * 
  *         result = self.execute(f"Search file: {path_from_yaml_file}", sql)             # <<<<<<<<<<<<<<
@@ -4155,12 +3822,12 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyUnicode_Unicode(__pyx_v_path_from_yaml_file); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Search_file, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 177, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_9 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Search_file, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (unlikely(!__pyx_v_sql)) { __Pyx_RaiseUnboundLocalError("sql"); __PYX_ERR(0, 177, __pyx_L1_error) }
   __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
+  __pyx_t_10 = 0;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
     __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_3)) {
@@ -4168,39 +3835,39 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
+      __pyx_t_10 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_v_sql};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_9, __pyx_v_sql};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_v_sql};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+    PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_9, __pyx_v_sql};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   } else
   #endif
   {
-    __pyx_t_11 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 177, __pyx_L1_error)
+    __pyx_t_11 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_3); __pyx_t_3 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_4, __pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_9);
+    PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_10, __pyx_t_9);
     __Pyx_INCREF(__pyx_v_sql);
     __Pyx_GIVEREF(__pyx_v_sql);
-    PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_4, __pyx_v_sql);
-    __pyx_t_5 = 0;
+    PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_10, __pyx_v_sql);
+    __pyx_t_9 = 0;
     __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -4209,18 +3876,18 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __pyx_v_result = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":180
+  /* "runup/db.pyx":180
  *         inserted_new: bool
  * 
  *         if len(result) == 0:             # <<<<<<<<<<<<<<
  *             # Insert
  *             sql = str(
  */
-  __pyx_t_9 = PyObject_Length(__pyx_v_result); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 180, __pyx_L1_error)
-  __pyx_t_6 = ((__pyx_t_9 == 0) != 0);
-  if (__pyx_t_6) {
+  __pyx_t_7 = PyObject_Length(__pyx_v_result); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_4 = ((__pyx_t_7 == 0) != 0);
+  if (__pyx_t_4) {
 
-    /* "runup/db.py":183
+    /* "runup/db.pyx":183
  *             # Insert
  *             sql = str(
  *                 f"""             # <<<<<<<<<<<<<<
@@ -4229,61 +3896,61 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
  */
     __pyx_t_1 = PyTuple_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = 0;
-    __pyx_t_10 = 127;
+    __pyx_t_7 = 0;
+    __pyx_t_8 = 127;
     __Pyx_INCREF(__pyx_kp_u_INSERT_INTO_files_job_id_sha256);
-    __pyx_t_9 += 90;
+    __pyx_t_7 += 90;
     __Pyx_GIVEREF(__pyx_kp_u_INSERT_INTO_files_job_id_sha256);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_INSERT_INTO_files_job_id_sha256);
     __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_job_id, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_);
-    __pyx_t_9 += 3;
+    __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u_);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_sha256); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__2);
-    __pyx_t_9 += 4;
+    __pyx_t_7 += 4;
     __Pyx_GIVEREF(__pyx_kp_u__2);
     PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__2);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_sha512); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 5, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__2);
-    __pyx_t_9 += 4;
+    __pyx_t_7 += 4;
     __Pyx_GIVEREF(__pyx_kp_u__2);
     PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__2);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_path_from_yaml_file); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 7, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__3);
-    __pyx_t_9 += 15;
+    __pyx_t_7 += 15;
     __Pyx_GIVEREF(__pyx_kp_u__3);
     PyTuple_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u__3);
-    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 9, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 9, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":182
+    /* "runup/db.pyx":182
  *         if len(result) == 0:
  *             # Insert
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -4296,7 +3963,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_XDECREF_SET(__pyx_v_sql, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "runup/db.py":188
+    /* "runup/db.pyx":188
  *             """
  *             )
  *             self.execute(f"Insert new file: {path_from_yaml_file}", sql)             # <<<<<<<<<<<<<<
@@ -4307,11 +3974,11 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_11 = __Pyx_PyUnicode_Unicode(__pyx_v_path_from_yaml_file); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_5 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Insert_new_file, __pyx_t_11); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_9 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Insert_new_file, __pyx_t_11); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __pyx_t_11 = NULL;
-    __pyx_t_4 = 0;
+    __pyx_t_10 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
       __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_2);
       if (likely(__pyx_t_11)) {
@@ -4319,39 +3986,39 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
         __Pyx_INCREF(__pyx_t_11);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_2, function);
-        __pyx_t_4 = 1;
+        __pyx_t_10 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_5, __pyx_v_sql};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+      PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_9, __pyx_v_sql};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_5, __pyx_v_sql};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
+      PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_9, __pyx_v_sql};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     {
-      __pyx_t_3 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+      __pyx_t_3 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       if (__pyx_t_11) {
         __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_11); __pyx_t_11 = NULL;
       }
-      __Pyx_GIVEREF(__pyx_t_5);
-      PyTuple_SET_ITEM(__pyx_t_3, 0+__pyx_t_4, __pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_9);
+      PyTuple_SET_ITEM(__pyx_t_3, 0+__pyx_t_10, __pyx_t_9);
       __Pyx_INCREF(__pyx_v_sql);
       __Pyx_GIVEREF(__pyx_v_sql);
-      PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_4, __pyx_v_sql);
-      __pyx_t_5 = 0;
+      PyTuple_SET_ITEM(__pyx_t_3, 1+__pyx_t_10, __pyx_v_sql);
+      __pyx_t_9 = 0;
       __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4359,7 +4026,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":189
+    /* "runup/db.pyx":189
  *             )
  *             self.execute(f"Insert new file: {path_from_yaml_file}", sql)
  *             inserted_new = True             # <<<<<<<<<<<<<<
@@ -4369,7 +4036,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_INCREF(Py_True);
     __pyx_v_inserted_new = Py_True;
 
-    /* "runup/db.py":180
+    /* "runup/db.pyx":180
  *         inserted_new: bool
  * 
  *         if len(result) == 0:             # <<<<<<<<<<<<<<
@@ -4379,7 +4046,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     goto __pyx_L6;
   }
 
-  /* "runup/db.py":192
+  /* "runup/db.pyx":192
  *         else:
  *             # Insert
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -4388,7 +4055,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
  */
   /*else*/ {
 
-    /* "runup/db.py":193
+    /* "runup/db.pyx":193
  *             # Insert
  *             sql = str(
  *                 f"""             # <<<<<<<<<<<<<<
@@ -4397,21 +4064,21 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
  */
     __pyx_t_1 = PyTuple_New(11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = 0;
-    __pyx_t_10 = 127;
+    __pyx_t_7 = 0;
+    __pyx_t_8 = 127;
     __Pyx_INCREF(__pyx_kp_u_INSERT_INTO_files_job_id_sha256_2);
-    __pyx_t_9 += 100;
+    __pyx_t_7 += 100;
     __Pyx_GIVEREF(__pyx_kp_u_INSERT_INTO_files_job_id_sha256_2);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_INSERT_INTO_files_job_id_sha256_2);
     __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_job_id, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_);
-    __pyx_t_9 += 3;
+    __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u_);
     PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_);
     __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_result, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
@@ -4422,13 +4089,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__2);
-    __pyx_t_9 += 4;
+    __pyx_t_7 += 4;
     __Pyx_GIVEREF(__pyx_kp_u__2);
     PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_kp_u__2);
     __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_result, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
@@ -4439,13 +4106,13 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 5, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__4);
-    __pyx_t_9 += 3;
+    __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u__4);
     PyTuple_SET_ITEM(__pyx_t_1, 6, __pyx_kp_u__4);
     __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_result, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
@@ -4456,31 +4123,31 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 7, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u_);
-    __pyx_t_9 += 3;
+    __pyx_t_7 += 3;
     __Pyx_GIVEREF(__pyx_kp_u_);
     PyTuple_SET_ITEM(__pyx_t_1, 8, __pyx_kp_u_);
     __pyx_t_2 = __Pyx_PyUnicode_Unicode(__pyx_v_path_from_yaml_file); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_10) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_10;
-    __pyx_t_9 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
+    __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_1, 9, __pyx_t_2);
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_kp_u__3);
-    __pyx_t_9 += 15;
+    __pyx_t_7 += 15;
     __Pyx_GIVEREF(__pyx_kp_u__3);
     PyTuple_SET_ITEM(__pyx_t_1, 10, __pyx_kp_u__3);
-    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 11, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_1, 11, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":192
+    /* "runup/db.pyx":192
  *         else:
  *             # Insert
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -4493,7 +4160,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_XDECREF_SET(__pyx_v_sql, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "runup/db.py":198
+    /* "runup/db.pyx":198
  *             """
  *             )
  *             self.execute(f"Insert existing file: {path_from_yaml_file}", sql)             # <<<<<<<<<<<<<<
@@ -4504,11 +4171,11 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = __Pyx_PyUnicode_Unicode(__pyx_v_path_from_yaml_file); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Insert_existing_file, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 198, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_9 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Insert_existing_file, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 198, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
-    __pyx_t_4 = 0;
+    __pyx_t_10 = 0;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
       __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
       if (likely(__pyx_t_3)) {
@@ -4516,39 +4183,39 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
         __Pyx_INCREF(__pyx_t_3);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_2, function);
-        __pyx_t_4 = 1;
+        __pyx_t_10 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_v_sql};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_9, __pyx_v_sql};
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_5, __pyx_v_sql};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+      PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_t_9, __pyx_v_sql};
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     } else
     #endif
     {
-      __pyx_t_11 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 198, __pyx_L1_error)
+      __pyx_t_11 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 198, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       if (__pyx_t_3) {
         __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_3); __pyx_t_3 = NULL;
       }
-      __Pyx_GIVEREF(__pyx_t_5);
-      PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_4, __pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_9);
+      PyTuple_SET_ITEM(__pyx_t_11, 0+__pyx_t_10, __pyx_t_9);
       __Pyx_INCREF(__pyx_v_sql);
       __Pyx_GIVEREF(__pyx_v_sql);
-      PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_4, __pyx_v_sql);
-      __pyx_t_5 = 0;
+      PyTuple_SET_ITEM(__pyx_t_11, 1+__pyx_t_10, __pyx_v_sql);
+      __pyx_t_9 = 0;
       __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
@@ -4556,7 +4223,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":199
+    /* "runup/db.pyx":199
  *             )
  *             self.execute(f"Insert existing file: {path_from_yaml_file}", sql)
  *             inserted_new = False             # <<<<<<<<<<<<<<
@@ -4568,7 +4235,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   }
   __pyx_L6:;
 
-  /* "runup/db.py":201
+  /* "runup/db.pyx":201
  *             inserted_new = False
  * 
  *         self.close_connection()             # <<<<<<<<<<<<<<
@@ -4594,7 +4261,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":203
+  /* "runup/db.pyx":203
  *         self.close_connection()
  * 
  *         return inserted_new             # <<<<<<<<<<<<<<
@@ -4606,7 +4273,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __pyx_r = __pyx_v_inserted_new;
   goto __pyx_L0;
 
-  /* "runup/db.py":148
+  /* "runup/db.pyx":148
  *         self.close_connection()
  * 
  *     def insert_file(             # <<<<<<<<<<<<<<
@@ -4619,7 +4286,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_AddTraceback("runup.db.RunupDB.insert_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
@@ -4634,7 +4301,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_12insert_file(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "runup/db.py":205
+/* "runup/db.pyx":205
  *         return inserted_new
  * 
  *     def insert_job(self, backup_name: str):             # <<<<<<<<<<<<<<
@@ -4730,7 +4397,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("insert_job", 0);
 
-  /* "runup/db.py":209
+  /* "runup/db.pyx":209
  * 
  *         sql: str = str(
  *             f"""             # <<<<<<<<<<<<<<
@@ -4795,7 +4462,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":208
+  /* "runup/db.pyx":208
  *         """Insert a job"""
  * 
  *         sql: str = str(             # <<<<<<<<<<<<<<
@@ -4808,7 +4475,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __pyx_v_sql = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":215
+  /* "runup/db.pyx":215
  *         )
  * 
  *         self.connect()             # <<<<<<<<<<<<<<
@@ -4834,7 +4501,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":216
+  /* "runup/db.pyx":216
  * 
  *         self.connect()
  *         id: int = self.execute("Insert job", sql)             # <<<<<<<<<<<<<<
@@ -4891,7 +4558,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __pyx_v_id = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":217
+  /* "runup/db.pyx":217
  *         self.connect()
  *         id: int = self.execute("Insert job", sql)
  *         self.close_connection()             # <<<<<<<<<<<<<<
@@ -4917,7 +4584,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":219
+  /* "runup/db.pyx":219
  *         self.close_connection()
  * 
  *         return id             # <<<<<<<<<<<<<<
@@ -4929,7 +4596,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   __pyx_r = __pyx_v_id;
   goto __pyx_L0;
 
-  /* "runup/db.py":205
+  /* "runup/db.pyx":205
  *         return inserted_new
  * 
  *     def insert_job(self, backup_name: str):             # <<<<<<<<<<<<<<
@@ -4953,7 +4620,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_14insert_job(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "runup/db.py":221
+/* "runup/db.pyx":221
  *         return id
  * 
  *     def select_job(self, job: int, project: str):             # <<<<<<<<<<<<<<
@@ -5063,7 +4730,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_RefNannySetupContext("select_job", 0);
   __Pyx_INCREF(__pyx_v_job);
 
-  /* "runup/db.py":227
+  /* "runup/db.pyx":227
  * 
  *         # Select latest job from DB
  *         if job == 0:             # <<<<<<<<<<<<<<
@@ -5076,7 +4743,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "runup/db.py":229
+    /* "runup/db.pyx":229
  *         if job == 0:
  *             sql = str(
  *                 f"""             # <<<<<<<<<<<<<<
@@ -5106,7 +4773,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":228
+    /* "runup/db.pyx":228
  *         # Select latest job from DB
  *         if job == 0:
  *             sql = str(             # <<<<<<<<<<<<<<
@@ -5119,7 +4786,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __pyx_v_sql = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "runup/db.py":237
+    /* "runup/db.pyx":237
  *             )
  * 
  *             self.connect()             # <<<<<<<<<<<<<<
@@ -5145,7 +4812,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":238
+    /* "runup/db.pyx":238
  * 
  *             self.connect()
  *             job = self.execute("Select latest job", sql)[0][0]             # <<<<<<<<<<<<<<
@@ -5208,7 +4875,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __Pyx_DECREF_SET(__pyx_v_job, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "runup/db.py":239
+    /* "runup/db.pyx":239
  *             self.connect()
  *             job = self.execute("Select latest job", sql)[0][0]
  *             self.close_connection()             # <<<<<<<<<<<<<<
@@ -5234,7 +4901,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "runup/db.py":227
+    /* "runup/db.pyx":227
  * 
  *         # Select latest job from DB
  *         if job == 0:             # <<<<<<<<<<<<<<
@@ -5243,7 +4910,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "runup/db.py":241
+  /* "runup/db.pyx":241
  *             self.close_connection()
  * 
  *         if job is None:             # <<<<<<<<<<<<<<
@@ -5254,7 +4921,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __pyx_t_9 = (__pyx_t_2 != 0);
   if (__pyx_t_9) {
 
-    /* "runup/db.py":242
+    /* "runup/db.pyx":242
  * 
  *         if job is None:
  *             return None             # <<<<<<<<<<<<<<
@@ -5265,7 +4932,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "runup/db.py":241
+    /* "runup/db.pyx":241
  *             self.close_connection()
  * 
  *         if job is None:             # <<<<<<<<<<<<<<
@@ -5274,7 +4941,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
  */
   }
 
-  /* "runup/db.py":246
+  /* "runup/db.pyx":246
  *         # Select data from DB
  *         sql = str(
  *             f"""             # <<<<<<<<<<<<<<
@@ -5315,7 +4982,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":245
+  /* "runup/db.pyx":245
  * 
  *         # Select data from DB
  *         sql = str(             # <<<<<<<<<<<<<<
@@ -5328,7 +4995,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_XDECREF_SET(__pyx_v_sql, ((PyObject*)__pyx_t_1));
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":255
+  /* "runup/db.pyx":255
  *         )
  * 
  *         self.connect()             # <<<<<<<<<<<<<<
@@ -5354,7 +5021,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":256
+  /* "runup/db.pyx":256
  * 
  *         self.connect()
  *         data = self.execute("Get job info", sql)             # <<<<<<<<<<<<<<
@@ -5411,7 +5078,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __pyx_v_data = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "runup/db.py":257
+  /* "runup/db.pyx":257
  *         self.connect()
  *         data = self.execute("Get job info", sql)
  *         self.close_connection()             # <<<<<<<<<<<<<<
@@ -5437,7 +5104,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":259
+  /* "runup/db.pyx":259
  *         self.close_connection()
  * 
  *         return data             # <<<<<<<<<<<<<<
@@ -5447,7 +5114,7 @@ static PyObject *__pyx_pf_5runup_2db_7RunupDB_16select_job(CYTHON_UNUSED PyObjec
   __pyx_r = __pyx_v_data;
   goto __pyx_L0;
 
-  /* "runup/db.py":221
+  /* "runup/db.pyx":221
  *         return id
  * 
  *     def select_job(self, job: int, project: str):             # <<<<<<<<<<<<<<
@@ -5593,7 +5260,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_echo, __pyx_k_echo, sizeof(__pyx_k_echo), 0, 0, 1, 1},
   {&__pyx_n_s_execute, __pyx_k_execute, sizeof(__pyx_k_execute), 0, 0, 1, 1},
   {&__pyx_n_s_fetchall, __pyx_k_fetchall, sizeof(__pyx_k_fetchall), 0, 0, 1, 1},
-  {&__pyx_n_s_hashfile, __pyx_k_hashfile, sizeof(__pyx_k_hashfile), 0, 0, 1, 1},
   {&__pyx_n_s_id, __pyx_k_id, sizeof(__pyx_k_id), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
@@ -5626,9 +5292,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_result, __pyx_k_result, sizeof(__pyx_k_result), 0, 0, 1, 1},
   {&__pyx_n_s_return, __pyx_k_return, sizeof(__pyx_k_return), 0, 0, 1, 1},
   {&__pyx_n_s_runup_db, __pyx_k_runup_db, sizeof(__pyx_k_runup_db), 0, 0, 1, 1},
-  {&__pyx_kp_s_runup_db_py, __pyx_k_runup_db_py, sizeof(__pyx_k_runup_db_py), 0, 0, 1, 0},
+  {&__pyx_kp_s_runup_db_pyx, __pyx_k_runup_db_pyx, sizeof(__pyx_k_runup_db_pyx), 0, 0, 1, 0},
   {&__pyx_kp_u_runup_runup_db, __pyx_k_runup_runup_db, sizeof(__pyx_k_runup_runup_db), 0, 1, 0, 0},
-  {&__pyx_n_s_runup_utils, __pyx_k_runup_utils, sizeof(__pyx_k_runup_utils), 0, 0, 1, 1},
   {&__pyx_kp_u_select, __pyx_k_select, sizeof(__pyx_k_select), 0, 1, 0, 0},
   {&__pyx_n_s_select_job, __pyx_k_select_job, sizeof(__pyx_k_select_job), 0, 0, 1, 1},
   {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
@@ -5645,7 +5310,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
   {&__pyx_n_u_unicode, __pyx_k_unicode, sizeof(__pyx_k_unicode), 0, 1, 0, 1},
-  {&__pyx_n_s_vInfo, __pyx_k_vInfo, sizeof(__pyx_k_vInfo), 0, 0, 1, 1},
   {&__pyx_n_s_verbose, __pyx_k_verbose, sizeof(__pyx_k_verbose), 0, 0, 1, 1},
   {&__pyx_n_s_verbose_2, __pyx_k_verbose_2, sizeof(__pyx_k_verbose_2), 0, 0, 1, 1},
   {&__pyx_n_s_version, __pyx_k_version, sizeof(__pyx_k_version), 0, 0, 1, 1},
@@ -5659,7 +5323,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "runup/db.py":34
+  /* "runup/db.pyx":34
  *     """
  * 
  *     def __init__(self, context: Path, verbose: bool):             # <<<<<<<<<<<<<<
@@ -5669,9 +5333,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_context, __pyx_n_s_verbose); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_init, 34, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_init, 34, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 34, __pyx_L1_error)
 
-  /* "runup/db.py":40
+  /* "runup/db.pyx":40
  *         self._conn = None
  * 
  *     def execute(self, name: str, query: str):             # <<<<<<<<<<<<<<
@@ -5681,9 +5345,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__9 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_name, __pyx_n_s_query, __pyx_n_s_c, __pyx_n_s_e); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_execute, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_execute, 40, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 40, __pyx_L1_error)
 
-  /* "runup/db.py":59
+  /* "runup/db.pyx":59
  *             click.echo(e)
  * 
  *     def close_connection(self, commit=True):             # <<<<<<<<<<<<<<
@@ -5693,12 +5357,12 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_commit); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_close_connection, 59, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_close_connection, 59, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 59, __pyx_L1_error)
   __pyx_tuple__13 = PyTuple_Pack(1, ((PyObject *)Py_True)); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "runup/db.py":68
+  /* "runup/db.pyx":68
  *         vInfo(self._verbose, "Connetion closed")
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
@@ -5708,9 +5372,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__14 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_e); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__14);
   __Pyx_GIVEREF(__pyx_tuple__14);
-  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_connect, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_connect, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 68, __pyx_L1_error)
 
-  /* "runup/db.py":78
+  /* "runup/db.pyx":78
  *             click.echo(e)
  * 
  *     def create_database(self):             # <<<<<<<<<<<<<<
@@ -5720,9 +5384,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__16 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_sql_dict, __pyx_n_s_name, __pyx_n_s_sql); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__16);
   __Pyx_GIVEREF(__pyx_tuple__16);
-  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_create_database, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_create_database, 78, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 78, __pyx_L1_error)
 
-  /* "runup/db.py":133
+  /* "runup/db.pyx":133
  *         self.close_connection()
  * 
  *     def insert_backup(self, name: str) -> None:             # <<<<<<<<<<<<<<
@@ -5732,9 +5396,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__18 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_name, __pyx_n_s_sql); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
-  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_insert_backup, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_codeobj__19 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__18, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_insert_backup, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__19)) __PYX_ERR(0, 133, __pyx_L1_error)
 
-  /* "runup/db.py":148
+  /* "runup/db.pyx":148
  *         self.close_connection()
  * 
  *     def insert_file(             # <<<<<<<<<<<<<<
@@ -5744,9 +5408,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__20 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_job_id, __pyx_n_s_path_from_pwd, __pyx_n_s_path_from_yaml_file, __pyx_n_s_sha256, __pyx_n_s_sha512, __pyx_n_s_sql, __pyx_n_s_result, __pyx_n_s_inserted_new); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 148, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__20);
   __Pyx_GIVEREF(__pyx_tuple__20);
-  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_insert_file, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(4, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_insert_file, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "runup/db.py":205
+  /* "runup/db.pyx":205
  *         return inserted_new
  * 
  *     def insert_job(self, backup_name: str):             # <<<<<<<<<<<<<<
@@ -5756,9 +5420,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__22 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_backup_name, __pyx_n_s_sql, __pyx_n_s_id); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_insert_job, 205, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_insert_job, 205, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 205, __pyx_L1_error)
 
-  /* "runup/db.py":221
+  /* "runup/db.pyx":221
  *         return id
  * 
  *     def select_job(self, job: int, project: str):             # <<<<<<<<<<<<<<
@@ -5768,7 +5432,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__24 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_job, __pyx_n_s_project, __pyx_n_s_sql, __pyx_n_s_data); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__24);
   __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_py, __pyx_n_s_select_job, 221, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_db_pyx, __pyx_n_s_select_job, 221, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -5842,10 +5506,23 @@ static int __Pyx_modinit_variable_import_code(void) {
 
 static int __Pyx_modinit_function_import_code(void) {
   __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_import_code", 0);
   /*--- Function import code ---*/
+  __pyx_t_1 = PyImport_ImportModule("runup.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_ImportFunction(__pyx_t_1, "vInfo", (void (**)(void))&__pyx_f_5runup_5utils_vInfo, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "hashfile", (void (**)(void))&__pyx_f_5runup_5utils_hashfile, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_RefNannyFinishContext();
+  return -1;
 }
 
 
@@ -6046,13 +5723,13 @@ if (!__Pyx_RefNanny) {
   (void)__Pyx_modinit_type_init_code();
   (void)__Pyx_modinit_type_import_code();
   (void)__Pyx_modinit_variable_import_code();
-  (void)__Pyx_modinit_function_import_code();
+  if (unlikely(__Pyx_modinit_function_import_code() < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Execution code ---*/
   #if defined(__Pyx_Generator_USED) || defined(__Pyx_Coroutine_USED)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "runup/db.py":9
+  /* "runup/db.pyx":9
  * 
  * # Built-in
  * from pathlib import Path             # <<<<<<<<<<<<<<
@@ -6073,7 +5750,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":10
+  /* "runup/db.pyx":10
  * # Built-in
  * from pathlib import Path
  * import sqlite3             # <<<<<<<<<<<<<<
@@ -6085,7 +5762,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_sqlite3, __pyx_t_2) < 0) __PYX_ERR(0, 10, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":11
+  /* "runup/db.pyx":11
  * from pathlib import Path
  * import sqlite3
  * from sqlite3 import Error             # <<<<<<<<<<<<<<
@@ -6106,7 +5783,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":12
+  /* "runup/db.pyx":12
  * import sqlite3
  * from sqlite3 import Error
  * import time             # <<<<<<<<<<<<<<
@@ -6118,7 +5795,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_time, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":13
+  /* "runup/db.pyx":13
  * from sqlite3 import Error
  * import time
  * from typing import Dict             # <<<<<<<<<<<<<<
@@ -6139,7 +5816,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":16
+  /* "runup/db.pyx":16
  * 
  * # 3rd Party
  * import click             # <<<<<<<<<<<<<<
@@ -6151,7 +5828,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_click, __pyx_t_2) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":17
+  /* "runup/db.pyx":17
  * # 3rd Party
  * import click
  * import pyximport  # type: ignore             # <<<<<<<<<<<<<<
@@ -6163,7 +5840,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyximport, __pyx_t_2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":19
+  /* "runup/db.pyx":19
  * import pyximport  # type: ignore
  * 
  * pyximport.install()             # <<<<<<<<<<<<<<
@@ -6180,66 +5857,38 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":22
- * 
- * # Own
- * from runup.utils import vInfo, hashfile             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(__pyx_n_s_vInfo);
-  __Pyx_GIVEREF(__pyx_n_s_vInfo);
-  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_vInfo);
-  __Pyx_INCREF(__pyx_n_s_hashfile);
-  __Pyx_GIVEREF(__pyx_n_s_hashfile);
-  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_hashfile);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_runup_utils, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_vInfo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_vInfo, __pyx_t_2) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_hashfile); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_hashfile, __pyx_t_2) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-  /* "runup/db.py":25
+  /* "runup/db.pyx":25
  * 
  * 
  * class RunupDB:             # <<<<<<<<<<<<<<
  *     """
  *     Handle the database where the data is stored.
  */
-  __pyx_t_1 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_RunupDB, __pyx_n_s_RunupDB, (PyObject *) NULL, __pyx_n_s_runup_db, __pyx_kp_s_Handle_the_database_where_the_d); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_RunupDB, __pyx_n_s_RunupDB, (PyObject *) NULL, __pyx_n_s_runup_db, __pyx_kp_s_Handle_the_database_where_the_d); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
 
-  /* "runup/db.py":34
+  /* "runup/db.pyx":34
  *     """
  * 
  *     def __init__(self, context: Path, verbose: bool):             # <<<<<<<<<<<<<<
  * 
  *         self._dbname: str = str(f"{context}/.runup/runup.db")
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_Path); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_context, __pyx_t_3) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_context, __pyx_t_3) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_verbose, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_verbose, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_1__init__, 0, __pyx_n_s_RunupDB___init, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_3) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_init, __pyx_t_3) < 0) __PYX_ERR(0, 34, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":40
+  /* "runup/db.pyx":40
  *         self._conn = None
  * 
  *     def execute(self, name: str, query: str):             # <<<<<<<<<<<<<<
@@ -6250,69 +5899,69 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_name, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_query, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_3execute, 0, __pyx_n_s_RunupDB_execute, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_3execute, 0, __pyx_n_s_RunupDB_execute, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_execute, __pyx_t_2) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_execute, __pyx_t_1) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":59
+  /* "runup/db.pyx":59
  *             click.echo(e)
  * 
  *     def close_connection(self, commit=True):             # <<<<<<<<<<<<<<
  *         """Close database connection"""
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_5close_connection, 0, __pyx_n_s_RunupDB_close_connection, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__13);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_close_connection, __pyx_t_2) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_5close_connection, 0, __pyx_n_s_RunupDB_close_connection, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_1, __pyx_tuple__13);
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_close_connection, __pyx_t_1) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":68
+  /* "runup/db.pyx":68
  *         vInfo(self._verbose, "Connetion closed")
  * 
  *     def connect(self):             # <<<<<<<<<<<<<<
  *         """Create a database connection to a `runup.db`."""
  *         vInfo(self._verbose, f"Creating connection to: {self._dbname}")
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_7connect, 0, __pyx_n_s_RunupDB_connect, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_connect, __pyx_t_2) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_7connect, 0, __pyx_n_s_RunupDB_connect, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_connect, __pyx_t_1) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":78
+  /* "runup/db.pyx":78
  *             click.echo(e)
  * 
  *     def create_database(self):             # <<<<<<<<<<<<<<
  *         """Create a database `runup.db`."""
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_9create_database, 0, __pyx_n_s_RunupDB_create_database, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_create_database, __pyx_t_2) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_9create_database, 0, __pyx_n_s_RunupDB_create_database, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_create_database, __pyx_t_1) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":133
+  /* "runup/db.pyx":133
  *         self.close_connection()
  * 
  *     def insert_backup(self, name: str) -> None:             # <<<<<<<<<<<<<<
  *         """Insert a backup"""
  * 
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_name, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_return, Py_None) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_name, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_return, Py_None) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_11insert_backup, 0, __pyx_n_s_RunupDB_insert_backup, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__19)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_insert_backup, __pyx_t_3) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_insert_backup, __pyx_t_3) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":148
+  /* "runup/db.pyx":148
  *         self.close_connection()
  * 
  *     def insert_file(             # <<<<<<<<<<<<<<
@@ -6325,7 +5974,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_path_from_pwd, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_path_from_yaml_file, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "runup/db.py":150
+  /* "runup/db.pyx":150
  *     def insert_file(
  *         self, job_id: int, path_from_pwd: str, path_from_yaml_file: str
  *     ) -> bool:             # <<<<<<<<<<<<<<
@@ -6334,38 +5983,38 @@ if (!__Pyx_RefNanny) {
  */
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_return, ((PyObject*)&PyBool_Type)) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "runup/db.py":148
+  /* "runup/db.pyx":148
  *         self.close_connection()
  * 
  *     def insert_file(             # <<<<<<<<<<<<<<
  *         self, job_id: int, path_from_pwd: str, path_from_yaml_file: str
  *     ) -> bool:
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_13insert_file, 0, __pyx_n_s_RunupDB_insert_file, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_13insert_file, 0, __pyx_n_s_RunupDB_insert_file, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_insert_file, __pyx_t_2) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_insert_file, __pyx_t_1) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":205
+  /* "runup/db.pyx":205
  *         return inserted_new
  * 
  *     def insert_job(self, backup_name: str):             # <<<<<<<<<<<<<<
  *         """Insert a job"""
  * 
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_backup_name, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_backup_name, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_15insert_job, 0, __pyx_n_s_RunupDB_insert_job, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_2);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_insert_job, __pyx_t_3) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_3, __pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_insert_job, __pyx_t_3) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "runup/db.py":221
+  /* "runup/db.pyx":221
  *         return id
  * 
  *     def select_job(self, job: int, project: str):             # <<<<<<<<<<<<<<
@@ -6376,35 +6025,35 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_3);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_job, __pyx_n_u_int) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_project, __pyx_n_u_unicode) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_17select_job, 0, __pyx_n_s_RunupDB_select_job, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_2, __pyx_t_3);
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5runup_2db_7RunupDB_17select_job, 0, __pyx_n_s_RunupDB_select_job, NULL, __pyx_n_s_runup_db, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_3);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_select_job, __pyx_t_2) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_select_job, __pyx_t_1) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/db.py":25
+  /* "runup/db.pyx":25
  * 
  * 
  * class RunupDB:             # <<<<<<<<<<<<<<
  *     """
  *     Handle the database where the data is stored.
  */
-  __pyx_t_2 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_RunupDB, __pyx_empty_tuple, __pyx_t_1, NULL, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RunupDB, __pyx_t_2) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_RunupDB, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RunupDB, __pyx_t_1) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/db.py":1
+  /* "runup/db.pyx":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
  * 
  * # This Source Code Form is subject to the terms of the Mozilla Public
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /*--- Wrapped vars code ---*/
 
@@ -6863,81 +6512,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 }
 #endif
 
-/* GetBuiltinName */
-static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
-    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
-    if (unlikely(!result)) {
-        PyErr_Format(PyExc_NameError,
-#if PY_MAJOR_VERSION >= 3
-            "name '%U' is not defined", name);
-#else
-            "name '%.200s' is not defined", PyString_AS_STRING(name));
-#endif
-    }
-    return result;
-}
-
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
-}
-#endif
-
-/* GetModuleGlobalName */
-#if CYTHON_USE_DICT_VERSIONS
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
-#else
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
-#endif
-{
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
-    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    } else if (unlikely(PyErr_Occurred())) {
-        return NULL;
-    }
-#else
-    result = PyDict_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-#endif
-#else
-    result = PyObject_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-    PyErr_Clear();
-#endif
-    return __Pyx_GetBuiltinName(name);
-}
-
 /* PyUnicode_Unicode */
 static CYTHON_INLINE PyObject* __Pyx_PyUnicode_Unicode(PyObject *obj) {
     if (unlikely(obj == Py_None))
@@ -7175,6 +6749,81 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
     return (PyErr_GivenExceptionMatches(err, exc_type1) || PyErr_GivenExceptionMatches(err, exc_type2));
 }
 #endif
+
+/* GetBuiltinName */
+static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
+    PyObject* result = __Pyx_PyObject_GetAttrStr(__pyx_b, name);
+    if (unlikely(!result)) {
+        PyErr_Format(PyExc_NameError,
+#if PY_MAJOR_VERSION >= 3
+            "name '%U' is not defined", name);
+#else
+            "name '%.200s' is not defined", PyString_AS_STRING(name));
+#endif
+    }
+    return result;
+}
+
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
+
+/* GetModuleGlobalName */
+#if CYTHON_USE_DICT_VERSIONS
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+#else
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+#endif
+{
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    } else if (unlikely(PyErr_Occurred())) {
+        return NULL;
+    }
+#else
+    result = PyDict_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+#endif
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+    PyErr_Clear();
+#endif
+    return __Pyx_GetBuiltinName(name);
+}
 
 /* GetException */
 #if CYTHON_FAST_THREAD_STATE
@@ -9523,6 +9172,60 @@ static int __Pyx_check_binary_version(void) {
     }
     return 0;
 }
+
+/* FunctionImport */
+#ifndef __PYX_HAVE_RT_ImportFunction
+#define __PYX_HAVE_RT_ImportFunction
+static int __Pyx_ImportFunction(PyObject *module, const char *funcname, void (**f)(void), const char *sig) {
+    PyObject *d = 0;
+    PyObject *cobj = 0;
+    union {
+        void (*fp)(void);
+        void *p;
+    } tmp;
+    d = PyObject_GetAttrString(module, (char *)"__pyx_capi__");
+    if (!d)
+        goto bad;
+    cobj = PyDict_GetItemString(d, funcname);
+    if (!cobj) {
+        PyErr_Format(PyExc_ImportError,
+            "%.200s does not export expected C function %.200s",
+                PyModule_GetName(module), funcname);
+        goto bad;
+    }
+#if PY_VERSION_HEX >= 0x02070000
+    if (!PyCapsule_IsValid(cobj, sig)) {
+        PyErr_Format(PyExc_TypeError,
+            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
+             PyModule_GetName(module), funcname, sig, PyCapsule_GetName(cobj));
+        goto bad;
+    }
+    tmp.p = PyCapsule_GetPointer(cobj, sig);
+#else
+    {const char *desc, *s1, *s2;
+    desc = (const char *)PyCObject_GetDesc(cobj);
+    if (!desc)
+        goto bad;
+    s1 = desc; s2 = sig;
+    while (*s1 != '\0' && *s1 == *s2) { s1++; s2++; }
+    if (*s1 != *s2) {
+        PyErr_Format(PyExc_TypeError,
+            "C function %.200s.%.200s has wrong signature (expected %.500s, got %.500s)",
+             PyModule_GetName(module), funcname, sig, desc);
+        goto bad;
+    }
+    tmp.p = PyCObject_AsVoidPtr(cobj);}
+#endif
+    *f = tmp.fp;
+    if (!(*f))
+        goto bad;
+    Py_DECREF(d);
+    return 0;
+bad:
+    Py_XDECREF(d);
+    return -1;
+}
+#endif
 
 /* InitStrings */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {

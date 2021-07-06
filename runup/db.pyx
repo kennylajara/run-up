@@ -19,7 +19,7 @@ import pyximport  # type: ignore
 pyximport.install()
 
 # Own
-from runup.utils import vInfo, hashfile
+from runup.utils cimport vInfo, hashfile
 
 
 class RunupDB:

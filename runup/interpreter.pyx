@@ -21,7 +21,7 @@ pyximport.install()
 
 # Own
 from runup.db import RunupDB
-from runup.utils import vCall, vInfo, vResponse
+from runup.utils cimport vCall, vInfo, vResponse
 
 
 cdef class Interpreter:

@@ -21,7 +21,7 @@ pyximport.install()
 # Own
 from runup.config cimport Config
 from runup.interpreter cimport Interpreter
-from runup.utils import vCall, vResponse
+from runup.utils cimport vCall, vResponse
 from runup.version import RUNUP_VERSION
 from runup.yaml_parser cimport ParserYAML
 

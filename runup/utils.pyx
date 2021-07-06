@@ -6,7 +6,6 @@
 
 
 # Built-in
-from typing import Any, Optional
 import hashlib
 from os.path import isdir
 
@@ -19,19 +18,19 @@ from click import echo
 # ------- #
 
 
-cpdef vInfo(verbose: bool, msg: str): # -> None:
+cdef vInfo(verbose, msg): # -> None:
     """Print verbose Info"""
     if verbose:
         echo(f"Info: {msg}")
 
 
-cpdef vCall(verbose: bool, func: str): # -> None:
+cdef vCall(verbose, func): # -> None:
     """Print verbose Call"""
     if verbose:
         echo(f"Call: {func}")
 
 
-cpdef vResponse(verbose: bool, func: str, res: Optional[Any]): # -> None:
+cdef vResponse(verbose, func, res): # -> None:
     """Print verbose Response"""
     if verbose:
         echo(f"Response: {func} => {res}")
@@ -56,7 +55,7 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 
-cpdef hashfile(fname, algo: str):
+cpdef hashfile(fname, algo):
     algorithm: hashlib._Hash
 
     if algo == "sha256":
