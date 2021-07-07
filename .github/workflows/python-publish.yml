@@ -33,7 +33,7 @@ jobs:
     - name: Build package
       run: |
         python3 setup.py sdist bdist_wheel
-        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_86_64.whl
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl
         mv wheelhouse/* dist
         rm dist/*-cp38-cp38-linux_x86_64.whl
     - name: Publish package
