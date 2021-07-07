@@ -1030,14 +1030,14 @@ static const char __pyx_k_1_0[] = "1.0";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_0_1b3[] = "0.1b3";
 static const char __pyx_k_Tuple[] = "Tuple";
-static const char __pyx_k_0_1_b3[] = "0.1.b3";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_RUNUP_VERSION[] = "RUNUP_VERSION";
 static const char __pyx_k_YAML_VERSIONS[] = "YAML_VERSIONS";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static PyObject *__pyx_kp_u_0_1_b3;
+static PyObject *__pyx_kp_u_0_1b3;
 static PyObject *__pyx_kp_u_1;
 static PyObject *__pyx_kp_u_1_0;
 static PyObject *__pyx_n_s_RUNUP_VERSION;
@@ -1098,7 +1098,7 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
-  {&__pyx_kp_u_0_1_b3, __pyx_k_0_1_b3, sizeof(__pyx_k_0_1_b3), 0, 1, 0, 0},
+  {&__pyx_kp_u_0_1b3, __pyx_k_0_1b3, sizeof(__pyx_k_0_1b3), 0, 1, 0, 0},
   {&__pyx_kp_u_1, __pyx_k_1, sizeof(__pyx_k_1), 0, 1, 0, 0},
   {&__pyx_kp_u_1_0, __pyx_k_1_0, sizeof(__pyx_k_1_0), 0, 1, 0, 0},
   {&__pyx_n_s_RUNUP_VERSION, __pyx_k_RUNUP_VERSION, sizeof(__pyx_k_RUNUP_VERSION), 0, 0, 1, 1},
@@ -1435,11 +1435,11 @@ if (!__Pyx_RefNanny) {
   /* "runup/version.pyx":14
  * # Current version of runup                        #
  * # ----------------------------------------------- #
- * RUNUP_VERSION: str = "0.1.b3"             # <<<<<<<<<<<<<<
+ * RUNUP_VERSION: str = "0.1b3"             # <<<<<<<<<<<<<<
  * 
  * # ----------------------------------------------------- #
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RUNUP_VERSION, __pyx_kp_u_0_1_b3) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_RUNUP_VERSION, __pyx_kp_u_0_1b3) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
 
   /* "runup/version.pyx":29
  * # ----------------------------------------------------- #
