@@ -16,8 +16,8 @@ I will make sure this is changed in the future.
 
 ## Supported Versions
 
-| Version             | Supported          |
-| ------------------- | ------------------ |
-| v0.1.b2             | :white_check_mark: |
-| v0.1.b1             | :x:                |
-| v0.1.Dev11 or lower | :x:                |
+| Version            | Supported          |
+| ------------------ | ------------------ |
+| v0.1b3             | :white_check_mark: |
+| v0.1b2 or lower    | :x:                |
+| v0.1dev11 or lower | :x:                |
