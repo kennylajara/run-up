@@ -26,6 +26,7 @@ jobs:
         python-version: '3.9'
     - name: Install dependencies
       run: |
+        apt-get install -y patchelf
         python -m pip install --upgrade pip
         pip install cython
         pip install wheel
@@ -33,7 +34,7 @@ jobs:
     - name: Build package
       run: |
         python3 setup.py sdist bdist_wheel
-        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_x86_64
         mv wheelhouse/* dist
         rm dist/*-cp39-cp39-linux_x86_64.whl
     - name: Publish package
