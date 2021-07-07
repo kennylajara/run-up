@@ -18,19 +18,19 @@ from click import echo
 # ------- #
 
 
-cdef vInfo(verbose, msg): # -> None:
+cdef void vInfo(bint verbose, msg):
     """Print verbose Info"""
     if verbose:
         echo(f"Info: {msg}")
 
 
-cdef vCall(verbose, func): # -> None:
+cdef void vCall(bint verbose, func):
     """Print verbose Call"""
     if verbose:
         echo(f"Call: {func}")
 
 
-cdef vResponse(verbose, func, res): # -> None:
+cdef void vResponse(bint verbose, func, res):
     """Print verbose Response"""
     if verbose:
         echo(f"Response: {func} => {res}")
@@ -47,7 +47,7 @@ cpdef hash_bytestr_iter(bytesiter, hasher):
     return hasher.hexdigest()
 
 
-def file_as_blockiter(afile, blocksize=65536):
+def file_as_blockiter(afile, blocksize: int=65536):
     with afile:
         block = afile.read(blocksize)
         while len(block) > 0:
@@ -55,12 +55,12 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 
-cpdef hashfile(fname, algo):
+cpdef hashfile(char* fname, char* algo):
     algorithm: hashlib._Hash
 
-    if algo == "sha256":
+    if algo == b"sha256":
         algorithm = hashlib.sha256()
-    elif algo == "sha512":
+    elif algo == b"sha512":
         algorithm = hashlib.sha512()
     else:
         raise ValueError(f"Unsupported hash algorithm: {algo}")

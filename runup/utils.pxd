@@ -5,16 +5,12 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
-# Built-in
-from typing import Any, Optional
+cdef void vInfo(bint verbose, msg)
 
+cdef void vCall(bint verbose, func)
 
-cdef vInfo(verbose: bool, msg: str)
-
-cdef vCall(verbose: bool, func: str)
-
-cdef vResponse(verbose: bool, func: str, res: Optional[Any])
+cdef void vResponse(bint verbose, func, res)
 
 cpdef hash_bytestr_iter(bytesiter, hasher)
 
-cpdef hashfile(fname, algo: str)
+cpdef hashfile(char* fname, char* algo)

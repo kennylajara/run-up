@@ -827,7 +827,7 @@ struct __pyx_obj_5runup_11interpreter_Interpreter_1;
 struct __pyx_obj_5runup_6config_Config;
 struct __pyx_obj_5runup_11yaml_parser_ParserYAML;
 
-/* "runup/interpreter.pxd":8
+/* "runup/interpreter.pxd":17
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -845,7 +845,7 @@ struct __pyx_obj_5runup_11interpreter_Interpreter {
 };
 
 
-/* "runup/interpreter.pxd":19
+/* "runup/interpreter.pxd":28
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -877,8 +877,8 @@ struct __pyx_obj_5runup_6config_Config {
  * 
  * 
  * cdef class ParserYAML:             # <<<<<<<<<<<<<<
- *     """Analizer of the `runup.yml` or `runup.yaml` file."""
  * 
+ *     cdef _context
  */
 struct __pyx_obj_5runup_11yaml_parser_ParserYAML {
   PyObject_HEAD
@@ -890,7 +890,7 @@ struct __pyx_obj_5runup_11yaml_parser_ParserYAML {
 
 
 
-/* "runup/interpreter.pxd":8
+/* "runup/interpreter.pxd":17
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -904,7 +904,7 @@ struct __pyx_vtabstruct_5runup_11interpreter_Interpreter {
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5runup_11interpreter_Interpreter;
 
 
-/* "runup/interpreter.pxd":19
+/* "runup/interpreter.pxd":28
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -914,6 +914,7 @@ static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5
 
 struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 {
   struct __pyx_vtabstruct_5runup_11interpreter_Interpreter __pyx_base;
+  PyObject *(*_working_directories)(struct __pyx_obj_5runup_11interpreter_Interpreter_1 *, PyObject *);
 };
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 *__pyx_vtabptr_5runup_11interpreter_Interpreter_1;
 
@@ -922,8 +923,8 @@ static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 *__pyx_vtabptr
  * 
  * 
  * cdef class ParserYAML:             # <<<<<<<<<<<<<<
- *     """Analizer of the `runup.yml` or `runup.yaml` file."""
  * 
+ *     cdef _context
  */
 
 struct __pyx_vtabstruct_5runup_11yaml_parser_ParserYAML {
@@ -1310,8 +1311,8 @@ static PyTypeObject *__pyx_ptype_5runup_11interpreter_Interpreter_1 = 0;
 static PyTypeObject *__pyx_ptype_5runup_6config_Config = 0;
 
 /* Module declarations from 'runup.utils' */
-static PyObject *(*__pyx_f_5runup_5utils_vCall)(PyObject *, PyObject *); /*proto*/
-static PyObject *(*__pyx_f_5runup_5utils_vResponse)(PyObject *, PyObject *, PyObject *); /*proto*/
+static void (*__pyx_f_5runup_5utils_vCall)(int, PyObject *); /*proto*/
+static void (*__pyx_f_5runup_5utils_vResponse)(int, PyObject *, PyObject *); /*proto*/
 
 /* Module declarations from 'runup.yaml_parser' */
 static PyTypeObject *__pyx_ptype_5runup_11yaml_parser_ParserYAML = 0;
@@ -1562,7 +1563,7 @@ static PyObject *__pyx_codeobj__22;
 /* "runup/cli.pyx":45
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):             # <<<<<<<<<<<<<<
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):             # <<<<<<<<<<<<<<
  *     """A simple backup system that only saves the files that has changed."""
  * 
  */
@@ -1907,12 +1908,7 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *     config.yaml, config.interpreter = ParserYAML(
  *         context=config.context,
  */
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_f_5runup_5utils_vCall(__pyx_t_2, __pyx_kp_u_ParserYAML_parse); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_f_5runup_5utils_vCall(__pyx_v_config->verbose, __pyx_kp_u_ParserYAML_parse);
 
   /* "runup/cli.pyx":62
  *     vCall(config.verbose, "ParserYAML.parse")
@@ -1921,9 +1917,9 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *         verbose=config.verbose,
  *     ).parse()
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_context, __pyx_v_config->context) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_context, __pyx_v_config->context) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
 
   /* "runup/cli.pyx":63
  *     config.yaml, config.interpreter = ParserYAML(
@@ -1932,10 +1928,10 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *     ).parse()
  *     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
  */
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_verbose, __pyx_t_2) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_verbose, __pyx_t_4) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "runup/cli.pyx":61
  *     # Parse YAML file
@@ -1944,9 +1940,9 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *         context=config.context,
  *         verbose=config.verbose,
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5runup_11yaml_parser_ParserYAML), __pyx_empty_tuple, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5runup_11yaml_parser_ParserYAML), __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "runup/cli.pyx":64
  *         context=config.context,
@@ -1955,11 +1951,11 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
  * 
  */
-  __pyx_t_4 = ((struct __pyx_vtabstruct_5runup_11yaml_parser_ParserYAML *)((struct __pyx_obj_5runup_11yaml_parser_ParserYAML *)__pyx_t_2)->__pyx_vtab)->parse(((struct __pyx_obj_5runup_11yaml_parser_ParserYAML *)__pyx_t_2), 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if ((likely(PyTuple_CheckExact(__pyx_t_4))) || (PyList_CheckExact(__pyx_t_4))) {
-    PyObject* sequence = __pyx_t_4;
+  __pyx_t_2 = ((struct __pyx_vtabstruct_5runup_11yaml_parser_ParserYAML *)((struct __pyx_obj_5runup_11yaml_parser_ParserYAML *)__pyx_t_4)->__pyx_vtab)->parse(((struct __pyx_obj_5runup_11yaml_parser_ParserYAML *)__pyx_t_4), 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
+    PyObject* sequence = __pyx_t_2;
     Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
@@ -1968,29 +1964,29 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
-      __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
+      __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
       __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
     } else {
-      __pyx_t_2 = PyList_GET_ITEM(sequence, 0); 
+      __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
       __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
     }
-    __Pyx_INCREF(__pyx_t_2);
+    __Pyx_INCREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_t_5);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     #endif
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_3 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
+    __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext;
-    index = 0; __pyx_t_2 = __pyx_t_6(__pyx_t_3); if (unlikely(!__pyx_t_2)) goto __pyx_L4_unpacking_failed;
-    __Pyx_GOTREF(__pyx_t_2);
+    index = 0; __pyx_t_4 = __pyx_t_6(__pyx_t_3); if (unlikely(!__pyx_t_4)) goto __pyx_L4_unpacking_failed;
+    __Pyx_GOTREF(__pyx_t_4);
     index = 1; __pyx_t_5 = __pyx_t_6(__pyx_t_3); if (unlikely(!__pyx_t_5)) goto __pyx_L4_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_5);
     if (__Pyx_IternextUnpackEndCheck(__pyx_t_6(__pyx_t_3), 2) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
@@ -2013,11 +2009,11 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *         verbose=config.verbose,
  */
   if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_5runup_11interpreter_Interpreter))))) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GIVEREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_4);
   __Pyx_GOTREF(__pyx_v_config->yaml);
   __Pyx_DECREF(__pyx_v_config->yaml);
-  __pyx_v_config->yaml = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_config->yaml = __pyx_t_4;
+  __pyx_t_4 = 0;
   __Pyx_GIVEREF(__pyx_t_5);
   __Pyx_GOTREF(__pyx_v_config->interpreter);
   __Pyx_DECREF(((PyObject *)__pyx_v_config->interpreter));
@@ -2029,22 +2025,17 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
  *     ).parse()
  *     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)             # <<<<<<<<<<<<<<
  * 
- * 
+ * @cli.command()
  */
-  __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = ((PyObject *)__pyx_v_config->interpreter);
-  __Pyx_INCREF(__pyx_t_5);
-  __pyx_t_2 = __pyx_f_5runup_5utils_vResponse(__pyx_t_4, __pyx_kp_u_ParserYAML_parse, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_2 = ((PyObject *)__pyx_v_config->interpreter);
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_f_5runup_5utils_vResponse(__pyx_v_config->verbose, __pyx_kp_u_ParserYAML_parse, __pyx_t_2);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "runup/cli.pyx":45
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):             # <<<<<<<<<<<<<<
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):             # <<<<<<<<<<<<<<
  *     """A simple backup system that only saves the files that has changed."""
  * 
  */
@@ -2065,7 +2056,7 @@ static PyObject *__pyx_pf_5runup_3cli_cli(CYTHON_UNUSED PyObject *__pyx_self, st
   return __pyx_r;
 }
 
-/* "runup/cli.pyx":70
+/* "runup/cli.pyx":69
  * @cli.command()
  * @pass_config
  * def init(Config config):             # <<<<<<<<<<<<<<
@@ -2084,7 +2075,7 @@ static PyObject *__pyx_pw_5runup_3cli_3init(PyObject *__pyx_self, PyObject *__py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("init (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_config), __pyx_ptype_5runup_6config_Config, 1, "config", 0))) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_config), __pyx_ptype_5runup_6config_Config, 1, "config", 0))) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_r = __pyx_pf_5runup_3cli_2init(__pyx_self, ((struct __pyx_obj_5runup_6config_Config *)__pyx_v_config));
 
   /* function exit code */
@@ -2110,7 +2101,7 @@ static PyObject *__pyx_pf_5runup_3cli_2init(CYTHON_UNUSED PyObject *__pyx_self, 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("init", 0);
 
-  /* "runup/cli.pyx":74
+  /* "runup/cli.pyx":73
  * 
  *     # Take actions
  *     if config.interpreter is not None:             # <<<<<<<<<<<<<<
@@ -2121,102 +2112,92 @@ static PyObject *__pyx_pf_5runup_3cli_2init(CYTHON_UNUSED PyObject *__pyx_self, 
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "runup/cli.pyx":75
+    /* "runup/cli.pyx":74
  *     # Take actions
  *     if config.interpreter is not None:
  *         vCall(config.verbose, "Interpreter:set_environment")             # <<<<<<<<<<<<<<
  *         env_set: bool = config.interpreter.set_environment()
  *         vResponse(config.verbose, "Interpreter:set_environment", env_set)
  */
-    __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __pyx_f_5runup_5utils_vCall(__pyx_t_3, __pyx_kp_u_Interpreter_set_environment); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_set_environment);
 
-    /* "runup/cli.pyx":76
+    /* "runup/cli.pyx":75
  *     if config.interpreter is not None:
  *         vCall(config.verbose, "Interpreter:set_environment")
  *         env_set: bool = config.interpreter.set_environment()             # <<<<<<<<<<<<<<
  *         vResponse(config.verbose, "Interpreter:set_environment", env_set)
  * 
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_config->interpreter), __pyx_n_s_set_environment); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_config->interpreter), __pyx_n_s_set_environment); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
       if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+    __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_v_env_set = __pyx_t_4;
-    __pyx_t_4 = 0;
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_env_set = __pyx_t_3;
+    __pyx_t_3 = 0;
 
-    /* "runup/cli.pyx":77
+    /* "runup/cli.pyx":76
  *         vCall(config.verbose, "Interpreter:set_environment")
  *         env_set: bool = config.interpreter.set_environment()
  *         vResponse(config.verbose, "Interpreter:set_environment", env_set)             # <<<<<<<<<<<<<<
  * 
  *         if env_set:
  */
-    __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = __pyx_f_5runup_5utils_vResponse(__pyx_t_4, __pyx_kp_u_Interpreter_set_environment, __pyx_v_env_set); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_set_environment, __pyx_v_env_set);
 
-    /* "runup/cli.pyx":79
+    /* "runup/cli.pyx":78
  *         vResponse(config.verbose, "Interpreter:set_environment", env_set)
  * 
  *         if env_set:             # <<<<<<<<<<<<<<
  *             click.secho("RunUp has been initialized successfully.", fg="green")
- *     else:
+ * 
  */
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_env_set); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 79, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_v_env_set); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 78, __pyx_L1_error)
     if (__pyx_t_2) {
 
-      /* "runup/cli.pyx":80
+      /* "runup/cli.pyx":79
  * 
  *         if env_set:
  *             click.secho("RunUp has been initialized successfully.", fg="green")             # <<<<<<<<<<<<<<
+ * 
  *     else:
- *         # click.echo('Interpreter not detected on Initialization.')
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_click); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_click); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_secho); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_secho); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_fg, __pyx_n_u_green) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__2, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 80, __pyx_L1_error)
+      if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_fg, __pyx_n_u_green) < 0) __PYX_ERR(0, 79, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__2, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-      /* "runup/cli.pyx":79
+      /* "runup/cli.pyx":78
  *         vResponse(config.verbose, "Interpreter:set_environment", env_set)
  * 
  *         if env_set:             # <<<<<<<<<<<<<<
  *             click.secho("RunUp has been initialized successfully.", fg="green")
- *     else:
+ * 
  */
     }
 
-    /* "runup/cli.pyx":74
+    /* "runup/cli.pyx":73
  * 
  *     # Take actions
  *     if config.interpreter is not None:             # <<<<<<<<<<<<<<
@@ -2258,7 +2239,7 @@ static PyObject *__pyx_pf_5runup_3cli_2init(CYTHON_UNUSED PyObject *__pyx_self, 
   }
   __pyx_L3:;
 
-  /* "runup/cli.pyx":70
+  /* "runup/cli.pyx":69
  * @cli.command()
  * @pass_config
  * def init(Config config):             # <<<<<<<<<<<<<<
@@ -2394,12 +2375,7 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  *         created: Optional[bool] = config.interpreter.create_backup(config.yaml, project)
  *         vResponse(config.verbose, "Interpreter:create_backup", created)
  */
-    __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __pyx_f_5runup_5utils_vCall(__pyx_t_3, __pyx_kp_u_Interpreter_create_backup); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_create_backup);
 
     /* "runup/cli.pyx":95
  *     if config.interpreter is not None:
@@ -2408,10 +2384,10 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  *         vResponse(config.verbose, "Interpreter:create_backup", created)
  *         if created is True:
  */
-    __pyx_t_4 = __pyx_v_config->yaml;
-    __Pyx_INCREF(__pyx_t_4);
-    __pyx_v_created = ((struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *)__pyx_v_config->interpreter->__pyx_vtab)->create_backup(__pyx_v_config->interpreter, __pyx_t_4, __pyx_v_project, 0);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_3 = __pyx_v_config->yaml;
+    __Pyx_INCREF(__pyx_t_3);
+    __pyx_v_created = ((struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *)__pyx_v_config->interpreter->__pyx_vtab)->create_backup(__pyx_v_config->interpreter, __pyx_t_3, __pyx_v_project, 0);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
     /* "runup/cli.pyx":96
  *         vCall(config.verbose, "Interpreter:create_backup")
@@ -2420,15 +2396,10 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  *         if created is True:
  *             click.secho("New backup created.", fg="green")
  */
-    __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_created); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = __pyx_f_5runup_5utils_vResponse(__pyx_t_4, __pyx_kp_u_Interpreter_create_backup, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 96, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_create_backup, __pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
     /* "runup/cli.pyx":97
  *         created: Optional[bool] = config.interpreter.create_backup(config.yaml, project)
@@ -2447,19 +2418,19 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  *         else:
  *             click.secho("The backup has NOT been created.", fg="red")
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_click); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_secho); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_click); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_fg, __pyx_n_u_green) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__3, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_secho); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 98, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_fg, __pyx_n_u_green) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_tuple__3, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
       /* "runup/cli.pyx":97
  *         created: Optional[bool] = config.interpreter.create_backup(config.yaml, project)
@@ -2479,19 +2450,19 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  *         # click.echo('Interpreter not detected on backup creation.')
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_click); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_secho); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_click); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_fg, __pyx_n_u_red) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__4, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_secho); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_fg, __pyx_n_u_red) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple__4, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
     __pyx_L4:;
 
@@ -2513,27 +2484,27 @@ static PyObject *__pyx_pf_5runup_3cli_4backup(CYTHON_UNUSED PyObject *__pyx_self
  * 
  */
   /*else*/ {
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_sys); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_exit); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_sys); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_5);
-      if (likely(__pyx_t_4)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-        __Pyx_INCREF(__pyx_t_4);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_5, function);
-      }
-    }
-    __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_4, __pyx_int_1) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_int_1);
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_exit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+      }
+    }
+    __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_int_1) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_int_1);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_L3:;
 
@@ -3092,12 +3063,7 @@ static PyObject *__pyx_pf_5runup_3cli_6restore(CYTHON_UNUSED PyObject *__pyx_sel
  *         restored: bool = config.interpreter.restore_backup(
  *             config.yaml, project, location, job, force
  */
-    __pyx_t_7 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 155, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_3 = __pyx_f_5runup_5utils_vCall(__pyx_t_7, __pyx_kp_u_Interpreter_restore_backup); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_restore_backup);
 
     /* "runup/cli.pyx":156
  * 
@@ -3106,8 +3072,8 @@ static PyObject *__pyx_pf_5runup_3cli_6restore(CYTHON_UNUSED PyObject *__pyx_sel
  *             config.yaml, project, location, job, force
  *         )
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_config->interpreter), __pyx_n_s_restore_backup); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 156, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_config->interpreter), __pyx_n_s_restore_backup); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
 
     /* "runup/cli.pyx":157
  *         vCall(config.verbose, "Interpreter:restore_backup")
@@ -3118,30 +3084,30 @@ static PyObject *__pyx_pf_5runup_3cli_6restore(CYTHON_UNUSED PyObject *__pyx_sel
  */
     __pyx_t_6 = NULL;
     __pyx_t_12 = 0;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_7);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
       if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
         __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_7, function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
         __pyx_t_12 = 1;
       }
     }
     #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(__pyx_t_7)) {
+    if (PyFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_config->yaml, __pyx_v_project, __pyx_v_location, __pyx_v_job, __pyx_v_force};
-      __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 156, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GOTREF(__pyx_t_7);
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
       PyObject *__pyx_temp[6] = {__pyx_t_6, __pyx_v_config->yaml, __pyx_v_project, __pyx_v_location, __pyx_v_job, __pyx_v_force};
-      __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_12, 5+__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 156, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_GOTREF(__pyx_t_7);
     } else
     #endif
     {
@@ -3165,13 +3131,13 @@ static PyObject *__pyx_pf_5runup_3cli_6restore(CYTHON_UNUSED PyObject *__pyx_sel
       __Pyx_INCREF(__pyx_v_force);
       __Pyx_GIVEREF(__pyx_v_force);
       PyTuple_SET_ITEM(__pyx_t_9, 4+__pyx_t_12, __pyx_v_force);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_9, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 156, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_v_restored = __pyx_t_3;
-    __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_v_restored = __pyx_t_7;
+    __pyx_t_7 = 0;
 
     /* "runup/cli.pyx":159
  *             config.yaml, project, location, job, force
@@ -3180,12 +3146,7 @@ static PyObject *__pyx_pf_5runup_3cli_6restore(CYTHON_UNUSED PyObject *__pyx_sel
  *         if restored is None:
  *             click.secho("The backup has NOT been restored.", fg="red")
  */
-    __pyx_t_3 = __Pyx_PyBool_FromLong(__pyx_v_config->verbose); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = __pyx_f_5runup_5utils_vResponse(__pyx_t_3, __pyx_kp_u_Interpreter_restore_backup, __pyx_v_restored); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 159, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_config->verbose, __pyx_kp_u_Interpreter_restore_backup, __pyx_v_restored);
 
     /* "runup/cli.pyx":160
  *         )
@@ -3462,14 +3423,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "runup/cli.pyx":80
+  /* "runup/cli.pyx":79
  * 
  *         if env_set:
  *             click.secho("RunUp has been initialized successfully.", fg="green")             # <<<<<<<<<<<<<<
+ * 
  *     else:
- *         # click.echo('Interpreter not detected on Initialization.')
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_RunUp_has_been_initialized_succe); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_RunUp_has_been_initialized_succe); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -3531,7 +3492,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "runup/cli.pyx":45
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):             # <<<<<<<<<<<<<<
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):             # <<<<<<<<<<<<<<
  *     """A simple backup system that only saves the files that has changed."""
  * 
  */
@@ -3540,17 +3501,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__9);
   __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_cli_pyx, __pyx_n_s_cli, 45, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 45, __pyx_L1_error)
 
-  /* "runup/cli.pyx":70
+  /* "runup/cli.pyx":69
  * @cli.command()
  * @pass_config
  * def init(Config config):             # <<<<<<<<<<<<<<
  *     """Initialize the backup system."""
  * 
  */
-  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_config, __pyx_n_s_env_set); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_config, __pyx_n_s_env_set); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_cli_pyx, __pyx_n_s_init, 70, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_runup_cli_pyx, __pyx_n_s_init, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 69, __pyx_L1_error)
 
   /* "runup/cli.pyx":87
  * 
@@ -3694,14 +3655,14 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 8, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5runup_11interpreter_Interpreter = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(1, 8, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(1, 8, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(1, 17, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(1, 17, __pyx_L1_error)
   __pyx_ptype_5runup_11interpreter_Interpreter_1 = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter_1", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter_1), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(1, 19, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(1, 19, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(1, 28, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(1, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyImport_ImportModule("runup.config"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3740,8 +3701,8 @@ static int __Pyx_modinit_function_import_code(void) {
   /*--- Function import code ---*/
   __pyx_t_1 = PyImport_ImportModule("runup.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "vCall", (void (**)(void))&__pyx_f_5runup_5utils_vCall, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "vResponse", (void (**)(void))&__pyx_f_5runup_5utils_vResponse, "PyObject *(PyObject *, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "vCall", (void (**)(void))&__pyx_f_5runup_5utils_vCall, "void (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "vResponse", (void (**)(void))&__pyx_f_5runup_5utils_vResponse, "void (int, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -4276,7 +4237,7 @@ if (!__Pyx_RefNanny) {
  * )
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")             # <<<<<<<<<<<<<<
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_click); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -4299,7 +4260,7 @@ if (!__Pyx_RefNanny) {
  * )
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config             # <<<<<<<<<<<<<<
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):
  *     """A simple backup system that only saves the files that has changed."""
  */
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_pass_config); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
@@ -4308,7 +4269,7 @@ if (!__Pyx_RefNanny) {
   /* "runup/cli.pyx":45
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):             # <<<<<<<<<<<<<<
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):             # <<<<<<<<<<<<<<
  *     """A simple backup system that only saves the files that has changed."""
  * 
  */
@@ -4319,7 +4280,7 @@ if (!__Pyx_RefNanny) {
  * )
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
  * @pass_config             # <<<<<<<<<<<<<<
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):
  *     """A simple backup system that only saves the files that has changed."""
  */
   __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
@@ -4332,7 +4293,7 @@ if (!__Pyx_RefNanny) {
  * )
  * @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")             # <<<<<<<<<<<<<<
  * @pass_config
- * def cli(Config config: Dict[str, Any], context: str, bint verbose):
+ * def cli(Config config: Dict[str, Any], context: str, verbose: bint):
  */
   __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -4377,66 +4338,66 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_cli, __pyx_t_7) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "runup/cli.pyx":68
- * 
+  /* "runup/cli.pyx":67
+ *     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
  * 
  * @cli.command()             # <<<<<<<<<<<<<<
  * @pass_config
  * def init(Config config):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_cli); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_cli); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_command); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_command); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "runup/cli.pyx":69
+  /* "runup/cli.pyx":68
  * 
  * @cli.command()
  * @pass_config             # <<<<<<<<<<<<<<
  * def init(Config config):
  *     """Initialize the backup system."""
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pass_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_pass_config); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "runup/cli.pyx":70
+  /* "runup/cli.pyx":69
  * @cli.command()
  * @pass_config
  * def init(Config config):             # <<<<<<<<<<<<<<
  *     """Initialize the backup system."""
  * 
  */
-  __pyx_t_4 = PyCFunction_NewEx(&__pyx_mdef_5runup_3cli_3init, NULL, __pyx_n_s_runup_cli); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_4 = PyCFunction_NewEx(&__pyx_mdef_5runup_3cli_3init, NULL, __pyx_n_s_runup_cli); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
-  /* "runup/cli.pyx":69
+  /* "runup/cli.pyx":68
  * 
  * @cli.command()
  * @pass_config             # <<<<<<<<<<<<<<
  * def init(Config config):
  *     """Initialize the backup system."""
  */
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "runup/cli.pyx":68
- * 
+  /* "runup/cli.pyx":67
+ *     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
  * 
  * @cli.command()             # <<<<<<<<<<<<<<
  * @pass_config
  * def init(Config config):
  */
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_init, __pyx_t_4) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "runup/cli.pyx":86

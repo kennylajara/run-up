@@ -29,6 +29,7 @@ class CLI_1_0(TestCaseExtended):
     """Test command line executions"""
 
     _context: str = "./tests/cli/version-1.0"
+    maxDiff = None
 
     def setUp(self) -> None:
 

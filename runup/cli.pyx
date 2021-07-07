@@ -42,7 +42,7 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 )
 @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
 @pass_config
-def cli(Config config: Dict[str, Any], context: str, bint verbose):
+def cli(Config config: Dict[str, Any], context: str, verbose: bint):
     """A simple backup system that only saves the files that has changed."""
 
     config.context = context
@@ -64,7 +64,6 @@ def cli(Config config: Dict[str, Any], context: str, bint verbose):
     ).parse()
     vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
 
-
 @cli.command()
 @pass_config
 def init(Config config):
@@ -78,6 +77,7 @@ def init(Config config):
 
         if env_set:
             click.secho("RunUp has been initialized successfully.", fg="green")
+
     else:
         # click.echo('Interpreter not detected on Initialization.')
         sys.exit(1)

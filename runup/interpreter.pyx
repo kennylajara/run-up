@@ -20,7 +20,7 @@ import pyximport  # type: ignore
 pyximport.install()
 
 # Own
-from runup.db import RunupDB
+from runup.db cimport RunupDB
 from runup.utils cimport vCall, vInfo, vResponse
 
 
@@ -206,7 +206,7 @@ cdef class Interpreter_1(Interpreter):
         initiated: bool = self._validate_prev_init(yaml_config)
         if not initiated:
             return False
-
+        
         backup_list: List[str] = []
         working_directories: Dict[str, str]
 
@@ -220,7 +220,7 @@ cdef class Interpreter_1(Interpreter):
             backup_list = yaml_config["project"].keys()
         else:
             backup_list.append(project)
-
+        
         # Create each backup
         for backup in backup_list:
 
@@ -240,7 +240,7 @@ cdef class Interpreter_1(Interpreter):
             vCall(self._verbose, "RunupDB:insert_job")
             job_id: bool = db.insert_job(backup)
             vResponse(self._verbose, "RunupDB:insert_job", job_id)
-
+            
             # Zip File
             with zipfile.ZipFile(f"{context}.runup/jobs/{job_id}", "w") as my_zip:
 
@@ -248,9 +248,12 @@ cdef class Interpreter_1(Interpreter):
 
                     vCall(self._verbose, "RunupDB:insert_file")
                     inserted_new: bool = db.insert_file(
-                        job_id, path_from_pwd, path_from_yaml_file
+                        job_id, 
+                        bytes(path_from_pwd, 'utf-8'),
+                        path_from_yaml_file
                     )
                     vResponse(self._verbose, "RunupDB:insert_file", inserted_new)
+                    
                     if inserted_new:
                         vInfo(self._verbose, f"Zipping file: {path_from_pwd}")
                         my_zip.write(path_from_pwd, path_from_yaml_file)
@@ -540,9 +543,12 @@ cdef class Interpreter_1(Interpreter):
 
         return True
 
-    def _working_directories(self, config: Dict[str, Any]) -> Dict[str, str]:
+    cdef _working_directories(self, config: Dict[str, Any]): # -> Dict[str, str]:
         """Select the working directories based on the `include` and `exclude` on the YAML file."""
 
+        # cdef char* filepath
+
+        tmp_bytes:bytes
         directories: Dict[str, str] = {}
         exclude_list: List[str] = []
         exclude_list_slash: List[str] = []
@@ -597,10 +603,12 @@ cdef class Interpreter_1(Interpreter):
                             ).replace(os.sep, "/")
                         else:
                             for file in files:
-                                filepath: str = root + os.sep + file
+
+                                filepath:str = root + os.sep + file
+                                
                                 if filepath in exclude_list or file in [
-                                    "runup.yml",
-                                    "runup.yaml",
+                                    b"runup.yml",
+                                    b"runup.yaml",
                                 ]:
                                     vInfo(
                                         self._verbose,

@@ -824,7 +824,7 @@ struct __pyx_obj_5runup_5utils___pyx_scope_struct__file_as_blockiter;
 /* "runup/utils.pyx":50
  * 
  * 
- * def file_as_blockiter(afile, blocksize=65536):             # <<<<<<<<<<<<<<
+ * def file_as_blockiter(afile, blocksize: int=65536):             # <<<<<<<<<<<<<<
  *     with afile:
  *         block = afile.read(blocksize)
  */
@@ -1031,6 +1031,47 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
+/* PyThreadStateGet.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
+#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
+#define __Pyx_PyErr_Occurred()  __pyx_tstate->curexc_type
+#else
+#define __Pyx_PyThreadState_declare
+#define __Pyx_PyThreadState_assign
+#define __Pyx_PyErr_Occurred()  PyErr_Occurred()
+#endif
+
+/* PyErrFetchRestore.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#if CYTHON_COMPILING_IN_CPYTHON
+#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
+#else
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#endif
+#else
+#define __Pyx_PyErr_Clear() PyErr_Clear()
+#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
+#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
+#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
+#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
+#endif
+
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
 /* IncludeStringH.proto */
 #include <string.h>
 
@@ -1088,17 +1129,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_LookupSpecial(PyObject* obj, PyObj
 static _PyErr_StackItem * __Pyx_PyErr_GetTopmostException(PyThreadState *tstate);
 #endif
 
-/* PyThreadStateGet.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyThreadState_declare  PyThreadState *__pyx_tstate;
-#define __Pyx_PyThreadState_assign  __pyx_tstate = __Pyx_PyThreadState_Current;
-#define __Pyx_PyErr_Occurred()  __pyx_tstate->curexc_type
-#else
-#define __Pyx_PyThreadState_declare
-#define __Pyx_PyThreadState_assign
-#define __Pyx_PyErr_Occurred()  PyErr_Occurred()
-#endif
-
 /* SaveResetException.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_ExceptionSave(type, value, tb)  __Pyx__ExceptionSave(__pyx_tstate, type, value, tb)
@@ -1118,36 +1148,8 @@ static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject 
 static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb);
 #endif
 
-/* PyErrFetchRestore.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_Clear() __Pyx_ErrRestore(NULL, NULL, NULL)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  __Pyx_ErrRestoreInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)    __Pyx_ErrFetchInState(PyThreadState_GET(), type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  __Pyx_ErrRestoreInState(__pyx_tstate, type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)    __Pyx_ErrFetchInState(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb);
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#if CYTHON_COMPILING_IN_CPYTHON
-#define __Pyx_PyErr_SetNone(exc) (Py_INCREF(exc), __Pyx_ErrRestore((exc), NULL, NULL))
-#else
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#endif
-#else
-#define __Pyx_PyErr_Clear() PyErr_Clear()
-#define __Pyx_PyErr_SetNone(exc) PyErr_SetNone(exc)
-#define __Pyx_ErrRestoreWithState(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchWithState(type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestoreInState(tstate, type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetchInState(tstate, type, value, tb)  PyErr_Fetch(type, value, tb)
-#define __Pyx_ErrRestore(type, value, tb)  PyErr_Restore(type, value, tb)
-#define __Pyx_ErrFetch(type, value, tb)  PyErr_Fetch(type, value, tb)
-#endif
-
 /* BytesEquals.proto */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals);
-
-/* UnicodeEquals.proto */
-static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals);
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
@@ -1323,7 +1325,7 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 /* Module declarations from 'runup.utils' */
 static PyTypeObject *__pyx_ptype_5runup_5utils___pyx_scope_struct__file_as_blockiter = 0;
 static PyObject *__pyx_f_5runup_5utils_hash_bytestr_iter(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_5runup_5utils_hashfile(char *, char *, int __pyx_skip_dispatch); /*proto*/
 #define __Pyx_MODULE_NAME "runup.utils"
 extern int __pyx_module_is_main_runup__utils;
 int __pyx_module_is_main_runup__utils = 0;
@@ -1406,16 +1408,16 @@ static PyObject *__pyx_n_s_read;
 static PyObject *__pyx_n_s_runup_utils;
 static PyObject *__pyx_kp_s_runup_utils_pyx;
 static PyObject *__pyx_n_s_send;
+static PyObject *__pyx_n_b_sha256;
 static PyObject *__pyx_n_s_sha256;
-static PyObject *__pyx_n_u_sha256;
+static PyObject *__pyx_n_b_sha512;
 static PyObject *__pyx_n_s_sha512;
-static PyObject *__pyx_n_u_sha512;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_pf_5runup_5utils_hash_bytestr_iter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bytesiter, PyObject *__pyx_v_hasher); /* proto */
 static PyObject *__pyx_pf_5runup_5utils_2file_as_blockiter(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_afile, PyObject *__pyx_v_blocksize); /* proto */
-static PyObject *__pyx_pf_5runup_5utils_5hashfile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_algo); /* proto */
+static PyObject *__pyx_pf_5runup_5utils_5hashfile(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_fname, char *__pyx_v_algo); /* proto */
 static PyObject *__pyx_tp_new_5runup_5utils___pyx_scope_struct__file_as_blockiter(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_65536;
 static PyObject *__pyx_tuple__3;
@@ -1426,13 +1428,12 @@ static PyObject *__pyx_codeobj__2;
 /* "runup/utils.pyx":21
  * 
  * 
- * cdef vInfo(verbose, msg): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vInfo(bint verbose, msg):             # <<<<<<<<<<<<<<
  *     """Print verbose Info"""
  *     if verbose:
  */
 
-static PyObject *__pyx_f_5runup_5utils_vInfo(PyObject *__pyx_v_verbose, PyObject *__pyx_v_msg) {
-  PyObject *__pyx_r = NULL;
+static void __pyx_f_5runup_5utils_vInfo(int __pyx_v_verbose, PyObject *__pyx_v_msg) {
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -1445,13 +1446,13 @@ static PyObject *__pyx_f_5runup_5utils_vInfo(PyObject *__pyx_v_verbose, PyObject
   __Pyx_RefNannySetupContext("vInfo", 0);
 
   /* "runup/utils.pyx":23
- * cdef vInfo(verbose, msg): # -> None:
+ * cdef void vInfo(bint verbose, msg):
  *     """Print verbose Info"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Info: {msg}")
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_v_verbose != 0);
   if (__pyx_t_1) {
 
     /* "runup/utils.pyx":24
@@ -1487,7 +1488,7 @@ static PyObject *__pyx_f_5runup_5utils_vInfo(PyObject *__pyx_v_verbose, PyObject
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "runup/utils.pyx":23
- * cdef vInfo(verbose, msg): # -> None:
+ * cdef void vInfo(bint verbose, msg):
  *     """Print verbose Info"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Info: {msg}")
@@ -1498,37 +1499,32 @@ static PyObject *__pyx_f_5runup_5utils_vInfo(PyObject *__pyx_v_verbose, PyObject
   /* "runup/utils.pyx":21
  * 
  * 
- * cdef vInfo(verbose, msg): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vInfo(bint verbose, msg):             # <<<<<<<<<<<<<<
  *     """Print verbose Info"""
  *     if verbose:
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("runup.utils.vInfo", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
+  __Pyx_WriteUnraisable("runup.utils.vInfo", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
 }
 
 /* "runup/utils.pyx":27
  * 
  * 
- * cdef vCall(verbose, func): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vCall(bint verbose, func):             # <<<<<<<<<<<<<<
  *     """Print verbose Call"""
  *     if verbose:
  */
 
-static PyObject *__pyx_f_5runup_5utils_vCall(PyObject *__pyx_v_verbose, PyObject *__pyx_v_func) {
-  PyObject *__pyx_r = NULL;
+static void __pyx_f_5runup_5utils_vCall(int __pyx_v_verbose, PyObject *__pyx_v_func) {
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -1541,13 +1537,13 @@ static PyObject *__pyx_f_5runup_5utils_vCall(PyObject *__pyx_v_verbose, PyObject
   __Pyx_RefNannySetupContext("vCall", 0);
 
   /* "runup/utils.pyx":29
- * cdef vCall(verbose, func): # -> None:
+ * cdef void vCall(bint verbose, func):
  *     """Print verbose Call"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Call: {func}")
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_v_verbose != 0);
   if (__pyx_t_1) {
 
     /* "runup/utils.pyx":30
@@ -1583,7 +1579,7 @@ static PyObject *__pyx_f_5runup_5utils_vCall(PyObject *__pyx_v_verbose, PyObject
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "runup/utils.pyx":29
- * cdef vCall(verbose, func): # -> None:
+ * cdef void vCall(bint verbose, func):
  *     """Print verbose Call"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Call: {func}")
@@ -1594,37 +1590,32 @@ static PyObject *__pyx_f_5runup_5utils_vCall(PyObject *__pyx_v_verbose, PyObject
   /* "runup/utils.pyx":27
  * 
  * 
- * cdef vCall(verbose, func): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vCall(bint verbose, func):             # <<<<<<<<<<<<<<
  *     """Print verbose Call"""
  *     if verbose:
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("runup.utils.vCall", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
+  __Pyx_WriteUnraisable("runup.utils.vCall", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
 }
 
 /* "runup/utils.pyx":33
  * 
  * 
- * cdef vResponse(verbose, func, res): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vResponse(bint verbose, func, res):             # <<<<<<<<<<<<<<
  *     """Print verbose Response"""
  *     if verbose:
  */
 
-static PyObject *__pyx_f_5runup_5utils_vResponse(PyObject *__pyx_v_verbose, PyObject *__pyx_v_func, PyObject *__pyx_v_res) {
-  PyObject *__pyx_r = NULL;
+static void __pyx_f_5runup_5utils_vResponse(int __pyx_v_verbose, PyObject *__pyx_v_func, PyObject *__pyx_v_res) {
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -1639,13 +1630,13 @@ static PyObject *__pyx_f_5runup_5utils_vResponse(PyObject *__pyx_v_verbose, PyOb
   __Pyx_RefNannySetupContext("vResponse", 0);
 
   /* "runup/utils.pyx":35
- * cdef vResponse(verbose, func, res): # -> None:
+ * cdef void vResponse(bint verbose, func, res):
  *     """Print verbose Response"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Response: {func} => {res}")
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_verbose); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_t_1 = (__pyx_v_verbose != 0);
   if (__pyx_t_1) {
 
     /* "runup/utils.pyx":36
@@ -1705,7 +1696,7 @@ static PyObject *__pyx_f_5runup_5utils_vResponse(PyObject *__pyx_v_verbose, PyOb
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
     /* "runup/utils.pyx":35
- * cdef vResponse(verbose, func, res): # -> None:
+ * cdef void vResponse(bint verbose, func, res):
  *     """Print verbose Response"""
  *     if verbose:             # <<<<<<<<<<<<<<
  *         echo(f"Response: {func} => {res}")
@@ -1716,25 +1707,21 @@ static PyObject *__pyx_f_5runup_5utils_vResponse(PyObject *__pyx_v_verbose, PyOb
   /* "runup/utils.pyx":33
  * 
  * 
- * cdef vResponse(verbose, func, res): # -> None:             # <<<<<<<<<<<<<<
+ * cdef void vResponse(bint verbose, func, res):             # <<<<<<<<<<<<<<
  *     """Print verbose Response"""
  *     if verbose:
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("runup.utils.vResponse", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
+  __Pyx_WriteUnraisable("runup.utils.vResponse", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
-  return __pyx_r;
 }
 
 /* "runup/utils.pyx":44
@@ -1992,7 +1979,7 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
 /* "runup/utils.pyx":50
  * 
  * 
- * def file_as_blockiter(afile, blocksize=65536):             # <<<<<<<<<<<<<<
+ * def file_as_blockiter(afile, blocksize: int=65536):             # <<<<<<<<<<<<<<
  *     with afile:
  *         block = afile.read(blocksize)
  */
@@ -2138,7 +2125,7 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
 
   /* "runup/utils.pyx":51
  * 
- * def file_as_blockiter(afile, blocksize=65536):
+ * def file_as_blockiter(afile, blocksize: int=65536):
  *     with afile:             # <<<<<<<<<<<<<<
  *         block = afile.read(blocksize)
  *         while len(block) > 0:
@@ -2173,7 +2160,7 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
         /*try:*/ {
 
           /* "runup/utils.pyx":52
- * def file_as_blockiter(afile, blocksize=65536):
+ * def file_as_blockiter(afile, blocksize: int=65536):
  *     with afile:
  *         block = afile.read(blocksize)             # <<<<<<<<<<<<<<
  *         while len(block) > 0:
@@ -2282,7 +2269,7 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
 
           /* "runup/utils.pyx":51
  * 
- * def file_as_blockiter(afile, blocksize=65536):
+ * def file_as_blockiter(afile, blocksize: int=65536):
  *     with afile:             # <<<<<<<<<<<<<<
  *         block = afile.read(blocksize)
  *         while len(block) > 0:
@@ -2364,7 +2351,7 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
   /* "runup/utils.pyx":50
  * 
  * 
- * def file_as_blockiter(afile, blocksize=65536):             # <<<<<<<<<<<<<<
+ * def file_as_blockiter(afile, blocksize: int=65536):             # <<<<<<<<<<<<<<
  *     with afile:
  *         block = afile.read(blocksize)
  */
@@ -2392,18 +2379,18 @@ static PyObject *__pyx_gb_5runup_5utils_4generator(__pyx_CoroutineObject *__pyx_
 /* "runup/utils.pyx":58
  * 
  * 
- * cpdef hashfile(fname, algo):             # <<<<<<<<<<<<<<
+ * cpdef hashfile(char* fname, char* algo):             # <<<<<<<<<<<<<<
  *     algorithm: hashlib._Hash
  * 
  */
 
 static PyObject *__pyx_pw_5runup_5utils_6hashfile(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObject *__pyx_v_algo, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_5runup_5utils_hashfile(char *__pyx_v_fname, char *__pyx_v_algo, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyObject *__pyx_v_algorithm = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
@@ -2415,18 +2402,21 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
   /* "runup/utils.pyx":61
  *     algorithm: hashlib._Hash
  * 
- *     if algo == "sha256":             # <<<<<<<<<<<<<<
+ *     if algo == b"sha256":             # <<<<<<<<<<<<<<
  *         algorithm = hashlib.sha256()
- *     elif algo == "sha512":
+ *     elif algo == b"sha512":
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_algo, __pyx_n_u_sha256, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
-  if (__pyx_t_1) {
+  __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_algo); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = (__Pyx_PyBytes_Equals(__pyx_t_1, __pyx_n_b_sha256, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_2) {
 
     /* "runup/utils.pyx":62
  * 
- *     if algo == "sha256":
+ *     if algo == b"sha256":
  *         algorithm = hashlib.sha256()             # <<<<<<<<<<<<<<
- *     elif algo == "sha512":
+ *     elif algo == b"sha512":
  *         algorithm = hashlib.sha512()
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_hashlib); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
@@ -2444,37 +2434,40 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
         __Pyx_DECREF_SET(__pyx_t_4, function);
       }
     }
-    __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
+    __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_v_algorithm = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __pyx_v_algorithm = __pyx_t_1;
+    __pyx_t_1 = 0;
 
     /* "runup/utils.pyx":61
  *     algorithm: hashlib._Hash
  * 
- *     if algo == "sha256":             # <<<<<<<<<<<<<<
+ *     if algo == b"sha256":             # <<<<<<<<<<<<<<
  *         algorithm = hashlib.sha256()
- *     elif algo == "sha512":
+ *     elif algo == b"sha512":
  */
     goto __pyx_L3;
   }
 
   /* "runup/utils.pyx":63
- *     if algo == "sha256":
+ *     if algo == b"sha256":
  *         algorithm = hashlib.sha256()
- *     elif algo == "sha512":             # <<<<<<<<<<<<<<
+ *     elif algo == b"sha512":             # <<<<<<<<<<<<<<
  *         algorithm = hashlib.sha512()
  *     else:
  */
-  __pyx_t_1 = (__Pyx_PyUnicode_Equals(__pyx_v_algo, __pyx_n_u_sha512, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
-  if (likely(__pyx_t_1)) {
+  __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_algo); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = (__Pyx_PyBytes_Equals(__pyx_t_1, __pyx_n_b_sha512, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (likely(__pyx_t_2)) {
 
     /* "runup/utils.pyx":64
  *         algorithm = hashlib.sha256()
- *     elif algo == "sha512":
+ *     elif algo == b"sha512":
  *         algorithm = hashlib.sha512()             # <<<<<<<<<<<<<<
  *     else:
  *         raise ValueError(f"Unsupported hash algorithm: {algo}")
@@ -2494,18 +2487,18 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
         __Pyx_DECREF_SET(__pyx_t_3, function);
       }
     }
-    __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+    __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_v_algorithm = __pyx_t_2;
-    __pyx_t_2 = 0;
+    __pyx_v_algorithm = __pyx_t_1;
+    __pyx_t_1 = 0;
 
     /* "runup/utils.pyx":63
- *     if algo == "sha256":
+ *     if algo == b"sha256":
  *         algorithm = hashlib.sha256()
- *     elif algo == "sha512":             # <<<<<<<<<<<<<<
+ *     elif algo == b"sha512":             # <<<<<<<<<<<<<<
  *         algorithm = hashlib.sha512()
  *     else:
  */
@@ -2520,16 +2513,19 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
  *     if isdir(fname):
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_algo, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Unsupported_hash_algorithm, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyBytes_FromString(__pyx_v_algo); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_1, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Unsupported_hash_algorithm, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_Raise(__pyx_t_3, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __PYX_ERR(0, 66, __pyx_L1_error)
   }
   __pyx_L3:;
@@ -2541,26 +2537,29 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
  *         return ""
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_isdir); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_isdir); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_fname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_fname) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_fname);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__pyx_t_1) {
+  if (__pyx_t_2) {
 
     /* "runup/utils.pyx":69
  * 
@@ -2589,53 +2588,55 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
  *     return hash_bytestr_iter(file_as_blockiter(open(fname, "rb")), algorithm)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_file_as_blockiter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_file_as_blockiter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = __Pyx_PyBytes_FromString(__pyx_v_fname); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_INCREF(__pyx_v_fname);
-  __Pyx_GIVEREF(__pyx_v_fname);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_fname);
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4);
   __Pyx_INCREF(__pyx_n_u_rb);
   __Pyx_GIVEREF(__pyx_n_u_rb);
-  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_n_u_rb);
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_n_u_rb);
+  __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_5, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __pyx_f_5runup_5utils_hash_bytestr_iter(__pyx_t_2, __pyx_v_algorithm, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __pyx_f_5runup_5utils_hash_bytestr_iter(__pyx_t_3, __pyx_v_algorithm, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
   /* "runup/utils.pyx":58
  * 
  * 
- * cpdef hashfile(fname, algo):             # <<<<<<<<<<<<<<
+ * cpdef hashfile(char* fname, char* algo):             # <<<<<<<<<<<<<<
  *     algorithm: hashlib._Hash
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
@@ -2651,8 +2652,8 @@ static PyObject *__pyx_f_5runup_5utils_hashfile(PyObject *__pyx_v_fname, PyObjec
 /* Python wrapper */
 static PyObject *__pyx_pw_5runup_5utils_6hashfile(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_pw_5runup_5utils_6hashfile(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_fname = 0;
-  PyObject *__pyx_v_algo = 0;
+  char *__pyx_v_fname;
+  char *__pyx_v_algo;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2694,8 +2695,8 @@ static PyObject *__pyx_pw_5runup_5utils_6hashfile(PyObject *__pyx_self, PyObject
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_fname = values[0];
-    __pyx_v_algo = values[1];
+    __pyx_v_fname = __Pyx_PyObject_AsWritableString(values[0]); if (unlikely((!__pyx_v_fname) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L3_error)
+    __pyx_v_algo = __Pyx_PyObject_AsWritableString(values[1]); if (unlikely((!__pyx_v_algo) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
@@ -2712,7 +2713,7 @@ static PyObject *__pyx_pw_5runup_5utils_6hashfile(PyObject *__pyx_self, PyObject
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5runup_5utils_5hashfile(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_fname, PyObject *__pyx_v_algo) {
+static PyObject *__pyx_pf_5runup_5utils_5hashfile(CYTHON_UNUSED PyObject *__pyx_self, char *__pyx_v_fname, char *__pyx_v_algo) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2951,10 +2952,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_runup_utils, __pyx_k_runup_utils, sizeof(__pyx_k_runup_utils), 0, 0, 1, 1},
   {&__pyx_kp_s_runup_utils_pyx, __pyx_k_runup_utils_pyx, sizeof(__pyx_k_runup_utils_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
+  {&__pyx_n_b_sha256, __pyx_k_sha256, sizeof(__pyx_k_sha256), 0, 0, 0, 1},
   {&__pyx_n_s_sha256, __pyx_k_sha256, sizeof(__pyx_k_sha256), 0, 0, 1, 1},
-  {&__pyx_n_u_sha256, __pyx_k_sha256, sizeof(__pyx_k_sha256), 0, 1, 0, 1},
+  {&__pyx_n_b_sha512, __pyx_k_sha512, sizeof(__pyx_k_sha512), 0, 0, 0, 1},
   {&__pyx_n_s_sha512, __pyx_k_sha512, sizeof(__pyx_k_sha512), 0, 0, 1, 1},
-  {&__pyx_n_u_sha512, __pyx_k_sha512, sizeof(__pyx_k_sha512), 0, 1, 0, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_throw, __pyx_k_throw, sizeof(__pyx_k_throw), 0, 0, 1, 1},
   {&__pyx_n_s_update, __pyx_k_update, sizeof(__pyx_k_update), 0, 0, 1, 1},
@@ -2974,7 +2975,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "runup/utils.pyx":51
  * 
- * def file_as_blockiter(afile, blocksize=65536):
+ * def file_as_blockiter(afile, blocksize: int=65536):
  *     with afile:             # <<<<<<<<<<<<<<
  *         block = afile.read(blocksize)
  *         while len(block) > 0:
@@ -2986,7 +2987,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "runup/utils.pyx":50
  * 
  * 
- * def file_as_blockiter(afile, blocksize=65536):             # <<<<<<<<<<<<<<
+ * def file_as_blockiter(afile, blocksize: int=65536):             # <<<<<<<<<<<<<<
  *     with afile:
  *         block = afile.read(blocksize)
  */
@@ -3040,11 +3041,11 @@ static int __Pyx_modinit_function_export_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_function_export_code", 0);
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("vInfo", (void (*)(void))__pyx_f_5runup_5utils_vInfo, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("vCall", (void (*)(void))__pyx_f_5runup_5utils_vCall, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("vResponse", (void (*)(void))__pyx_f_5runup_5utils_vResponse, "PyObject *(PyObject *, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("vInfo", (void (*)(void))__pyx_f_5runup_5utils_vInfo, "void (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("vCall", (void (*)(void))__pyx_f_5runup_5utils_vCall, "void (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("vResponse", (void (*)(void))__pyx_f_5runup_5utils_vResponse, "void (int, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   if (__Pyx_ExportFunction("hash_bytestr_iter", (void (*)(void))__pyx_f_5runup_5utils_hash_bytestr_iter, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("hashfile", (void (*)(void))__pyx_f_5runup_5utils_hashfile, "PyObject *(PyObject *, PyObject *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("hashfile", (void (*)(void))__pyx_f_5runup_5utils_hashfile, "PyObject *(char *, char *, int __pyx_skip_dispatch)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3358,7 +3359,7 @@ if (!__Pyx_RefNanny) {
   /* "runup/utils.pyx":50
  * 
  * 
- * def file_as_blockiter(afile, blocksize=65536):             # <<<<<<<<<<<<<<
+ * def file_as_blockiter(afile, blocksize: int=65536):             # <<<<<<<<<<<<<<
  *     with afile:
  *         block = afile.read(blocksize)
  */
@@ -3760,6 +3761,72 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
+/* PyErrFetchRestore */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    tmp_type = tstate->curexc_type;
+    tmp_value = tstate->curexc_value;
+    tmp_tb = tstate->curexc_traceback;
+    tstate->curexc_type = type;
+    tstate->curexc_value = value;
+    tstate->curexc_traceback = tb;
+    Py_XDECREF(tmp_type);
+    Py_XDECREF(tmp_value);
+    Py_XDECREF(tmp_tb);
+}
+static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    *type = tstate->curexc_type;
+    *value = tstate->curexc_value;
+    *tb = tstate->curexc_traceback;
+    tstate->curexc_type = 0;
+    tstate->curexc_value = 0;
+    tstate->curexc_traceback = 0;
+}
+#endif
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
 /* JoinPyUnicode */
 static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
                                       CYTHON_UNUSED Py_UCS4 max_char) {
@@ -4116,30 +4183,6 @@ bad:
     return -1;
 }
 
-/* PyErrFetchRestore */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx_ErrRestoreInState(PyThreadState *tstate, PyObject *type, PyObject *value, PyObject *tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    tmp_type = tstate->curexc_type;
-    tmp_value = tstate->curexc_value;
-    tmp_tb = tstate->curexc_traceback;
-    tstate->curexc_type = type;
-    tstate->curexc_value = value;
-    tstate->curexc_traceback = tb;
-    Py_XDECREF(tmp_type);
-    Py_XDECREF(tmp_value);
-    Py_XDECREF(tmp_tb);
-}
-static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    *type = tstate->curexc_type;
-    *value = tstate->curexc_value;
-    *tb = tstate->curexc_traceback;
-    tstate->curexc_type = 0;
-    tstate->curexc_value = 0;
-    tstate->curexc_traceback = 0;
-}
-#endif
-
 /* BytesEquals */
 static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int equals) {
 #if CYTHON_COMPILING_IN_PYPY
@@ -4184,108 +4227,6 @@ static CYTHON_INLINE int __Pyx_PyBytes_Equals(PyObject* s1, PyObject* s2, int eq
         Py_DECREF(py_result);
         return result;
     }
-#endif
-}
-
-/* UnicodeEquals */
-static CYTHON_INLINE int __Pyx_PyUnicode_Equals(PyObject* s1, PyObject* s2, int equals) {
-#if CYTHON_COMPILING_IN_PYPY
-    return PyObject_RichCompareBool(s1, s2, equals);
-#else
-#if PY_MAJOR_VERSION < 3
-    PyObject* owned_ref = NULL;
-#endif
-    int s1_is_unicode, s2_is_unicode;
-    if (s1 == s2) {
-        goto return_eq;
-    }
-    s1_is_unicode = PyUnicode_CheckExact(s1);
-    s2_is_unicode = PyUnicode_CheckExact(s2);
-#if PY_MAJOR_VERSION < 3
-    if ((s1_is_unicode & (!s2_is_unicode)) && PyString_CheckExact(s2)) {
-        owned_ref = PyUnicode_FromObject(s2);
-        if (unlikely(!owned_ref))
-            return -1;
-        s2 = owned_ref;
-        s2_is_unicode = 1;
-    } else if ((s2_is_unicode & (!s1_is_unicode)) && PyString_CheckExact(s1)) {
-        owned_ref = PyUnicode_FromObject(s1);
-        if (unlikely(!owned_ref))
-            return -1;
-        s1 = owned_ref;
-        s1_is_unicode = 1;
-    } else if (((!s2_is_unicode) & (!s1_is_unicode))) {
-        return __Pyx_PyBytes_Equals(s1, s2, equals);
-    }
-#endif
-    if (s1_is_unicode & s2_is_unicode) {
-        Py_ssize_t length;
-        int kind;
-        void *data1, *data2;
-        if (unlikely(__Pyx_PyUnicode_READY(s1) < 0) || unlikely(__Pyx_PyUnicode_READY(s2) < 0))
-            return -1;
-        length = __Pyx_PyUnicode_GET_LENGTH(s1);
-        if (length != __Pyx_PyUnicode_GET_LENGTH(s2)) {
-            goto return_ne;
-        }
-#if CYTHON_USE_UNICODE_INTERNALS
-        {
-            Py_hash_t hash1, hash2;
-        #if CYTHON_PEP393_ENABLED
-            hash1 = ((PyASCIIObject*)s1)->hash;
-            hash2 = ((PyASCIIObject*)s2)->hash;
-        #else
-            hash1 = ((PyUnicodeObject*)s1)->hash;
-            hash2 = ((PyUnicodeObject*)s2)->hash;
-        #endif
-            if (hash1 != hash2 && hash1 != -1 && hash2 != -1) {
-                goto return_ne;
-            }
-        }
-#endif
-        kind = __Pyx_PyUnicode_KIND(s1);
-        if (kind != __Pyx_PyUnicode_KIND(s2)) {
-            goto return_ne;
-        }
-        data1 = __Pyx_PyUnicode_DATA(s1);
-        data2 = __Pyx_PyUnicode_DATA(s2);
-        if (__Pyx_PyUnicode_READ(kind, data1, 0) != __Pyx_PyUnicode_READ(kind, data2, 0)) {
-            goto return_ne;
-        } else if (length == 1) {
-            goto return_eq;
-        } else {
-            int result = memcmp(data1, data2, (size_t)(length * kind));
-            #if PY_MAJOR_VERSION < 3
-            Py_XDECREF(owned_ref);
-            #endif
-            return (equals == Py_EQ) ? (result == 0) : (result != 0);
-        }
-    } else if ((s1 == Py_None) & s2_is_unicode) {
-        goto return_ne;
-    } else if ((s2 == Py_None) & s1_is_unicode) {
-        goto return_ne;
-    } else {
-        int result;
-        PyObject* py_result = PyObject_RichCompare(s1, s2, equals);
-        #if PY_MAJOR_VERSION < 3
-        Py_XDECREF(owned_ref);
-        #endif
-        if (!py_result)
-            return -1;
-        result = __Pyx_PyObject_IsTrue(py_result);
-        Py_DECREF(py_result);
-        return result;
-    }
-return_eq:
-    #if PY_MAJOR_VERSION < 3
-    Py_XDECREF(owned_ref);
-    #endif
-    return (equals == Py_EQ);
-return_ne:
-    #if PY_MAJOR_VERSION < 3
-    Py_XDECREF(owned_ref);
-    #endif
-    return (equals == Py_NE);
 #endif
 }
 

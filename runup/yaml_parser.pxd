@@ -15,7 +15,6 @@ from runup.interpreter cimport Interpreter
 
 
 cdef class ParserYAML:
-    """Analizer of the `runup.yml` or `runup.yaml` file."""
 
     cdef _context
     cdef Interpreter _interpreter

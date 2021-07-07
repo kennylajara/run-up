@@ -5,6 +5,15 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
+# # 3rd party
+# import pyximport  # type: ignore
+
+# pyximport.install()
+
+# # Own
+# from runup.db cimport RunupDB
+
+
 cdef class Interpreter:
 
     cdef _context
@@ -19,3 +28,5 @@ cdef class Interpreter:
 cdef class Interpreter_1(Interpreter):
 
     cpdef bint create_backup(self, yaml_config, project)
+
+    cdef _working_directories(self, config: Dict[str, Any])

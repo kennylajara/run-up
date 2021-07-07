@@ -859,8 +859,8 @@ struct __pyx_obj_5runup_11interpreter_Interpreter_1 {
  * 
  * 
  * cdef class ParserYAML:             # <<<<<<<<<<<<<<
- *     """Analizer of the `runup.yml` or `runup.yaml` file."""
  * 
+ *     cdef _context
  */
 struct __pyx_obj_5runup_11yaml_parser_ParserYAML {
   PyObject_HEAD
@@ -1425,9 +1425,9 @@ static PyTypeObject *__pyx_ptype_5runup_11interpreter_Interpreter = 0;
 static PyTypeObject *__pyx_ptype_5runup_11interpreter_Interpreter_1 = 0;
 
 /* Module declarations from 'runup.utils' */
-static PyObject *(*__pyx_f_5runup_5utils_vInfo)(PyObject *, PyObject *); /*proto*/
-static PyObject *(*__pyx_f_5runup_5utils_vCall)(PyObject *, PyObject *); /*proto*/
-static PyObject *(*__pyx_f_5runup_5utils_vResponse)(PyObject *, PyObject *, PyObject *); /*proto*/
+static void (*__pyx_f_5runup_5utils_vInfo)(int, PyObject *); /*proto*/
+static void (*__pyx_f_5runup_5utils_vCall)(int, PyObject *); /*proto*/
+static void (*__pyx_f_5runup_5utils_vResponse)(int, PyObject *, PyObject *); /*proto*/
 
 /* Module declarations from 'runup.yaml_parser' */
 static PyTypeObject *__pyx_ptype_5runup_11yaml_parser_ParserYAML = 0;
@@ -1885,12 +1885,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *         yaml_config = self._read_yaml_file(context=self._context)
  *         vResponse(self._verbose, "ParserYAML:_read_yaml_file", yaml_config)
  */
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_5runup_5utils_vCall(__pyx_t_1, __pyx_kp_u_ParserYAML__read_yaml_file); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_f_5runup_5utils_vCall(__pyx_v_self->_verbose, __pyx_kp_u_ParserYAML__read_yaml_file);
 
   /* "runup/yaml_parser.pyx":55
  *         yaml_config: Optional[Dict[str, Union[str]]]
@@ -1899,13 +1894,13 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *         vResponse(self._verbose, "ParserYAML:_read_yaml_file", yaml_config)
  * 
  */
-  __pyx_t_2 = __pyx_v_self->_context;
-  __Pyx_INCREF(__pyx_t_2);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_5runup_11yaml_parser_ParserYAML *)__pyx_v_self->__pyx_vtab)->_read_yaml_file(__pyx_v_self, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_yaml_config = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_1 = __pyx_v_self->_context;
+  __Pyx_INCREF(__pyx_t_1);
+  __pyx_t_2 = ((struct __pyx_vtabstruct_5runup_11yaml_parser_ParserYAML *)__pyx_v_self->__pyx_vtab)->_read_yaml_file(__pyx_v_self, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_yaml_config = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "runup/yaml_parser.pyx":56
  *         vCall(self._verbose, "ParserYAML:_read_yaml_file")
@@ -1914,12 +1909,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  * 
  *         if yaml_config is None:
  */
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_5runup_5utils_vResponse(__pyx_t_1, __pyx_kp_u_ParserYAML__read_yaml_file, __pyx_v_yaml_config); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_f_5runup_5utils_vResponse(__pyx_v_self->_verbose, __pyx_kp_u_ParserYAML__read_yaml_file, __pyx_v_yaml_config);
 
   /* "runup/yaml_parser.pyx":58
  *         vResponse(self._verbose, "ParserYAML:_read_yaml_file", yaml_config)
@@ -1960,12 +1950,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *         version = self._get_version(yaml_config)
  *         vResponse(self._verbose, "ParserYAML:_get_version", version)
  */
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __pyx_f_5runup_5utils_vCall(__pyx_t_2, __pyx_kp_u_ParserYAML__get_version); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_f_5runup_5utils_vCall(__pyx_v_self->_verbose, __pyx_kp_u_ParserYAML__get_version);
 
   /* "runup/yaml_parser.pyx":62
  * 
@@ -1974,25 +1959,25 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *         vResponse(self._verbose, "ParserYAML:_get_version", version)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_version); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_version); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_yaml_config) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_yaml_config);
+  __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_3, __pyx_v_yaml_config) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_yaml_config);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_version = __pyx_t_1;
-  __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_version = __pyx_t_2;
+  __pyx_t_2 = 0;
 
   /* "runup/yaml_parser.pyx":63
  *         vCall(self._verbose, "ParserYAML:_get_version")
@@ -2001,12 +1986,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  * 
  *         if version is None:
  */
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_f_5runup_5utils_vResponse(__pyx_t_1, __pyx_kp_u_ParserYAML__get_version, __pyx_v_version); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_f_5runup_5utils_vResponse(__pyx_v_self->_verbose, __pyx_kp_u_ParserYAML__get_version, __pyx_v_version);
 
   /* "runup/yaml_parser.pyx":65
  *         vResponse(self._verbose, "ParserYAML:_get_version", version)
@@ -2026,12 +2006,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             return None, None
  * 
  */
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_f_5runup_5utils_vInfo(__pyx_t_2, __pyx_kp_u_Version_not_detected); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_kp_u_Version_not_detected);
 
     /* "runup/yaml_parser.pyx":67
  *         if version is None:
@@ -2061,28 +2036,28 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             # Initialize interpreter
  *             vCall(self._verbose, " Interpreter_1")
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_version, __pyx_n_s_split); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_version, __pyx_n_s_split); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_kp_u__2) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u__2);
+  __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_3, __pyx_kp_u__2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_u__2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_2, __pyx_kp_u_1, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_5 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_kp_u_1, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_5)) {
 
     /* "runup/yaml_parser.pyx":72
@@ -2092,12 +2067,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             my_interpreter = Interpreter_1(
  *                 context=Path(self._context), verbose=self._verbose
  */
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_f_5runup_5utils_vCall(__pyx_t_2, __pyx_kp_u_Interpreter_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_self->_verbose, __pyx_kp_u_Interpreter_1);
 
     /* "runup/yaml_parser.pyx":74
  *             vCall(self._verbose, " Interpreter_1")
@@ -2152,12 +2122,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  * 
  *             # Find missing parameter
  */
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __pyx_f_5runup_5utils_vResponse(__pyx_t_2, __pyx_n_u_Interpreter_1_2, ((PyObject *)__pyx_v_my_interpreter)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_self->_verbose, __pyx_n_u_Interpreter_1_2, ((PyObject *)__pyx_v_my_interpreter));
 
     /* "runup/yaml_parser.pyx":79
  * 
@@ -2166,12 +2131,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             missing_parameter: Optional[str] = my_interpreter.missing_parameter(
  *                 yaml_config
  */
-    __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __pyx_f_5runup_5utils_vCall(__pyx_t_1, __pyx_kp_u_my_interpreter_missing_parameter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_self->_verbose, __pyx_kp_u_my_interpreter_missing_parameter);
 
     /* "runup/yaml_parser.pyx":80
  *             # Find missing parameter
@@ -2208,16 +2168,6 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
     __pyx_v_missing_parameter = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "runup/yaml_parser.pyx":84
- *             )
- *             vResponse(
- *                 self._verbose, "my_interpreter.missing_parameter", missing_parameter             # <<<<<<<<<<<<<<
- *             )
- * 
- */
-    __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-
     /* "runup/yaml_parser.pyx":83
  *                 yaml_config
  *             )
@@ -2225,10 +2175,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *                 self._verbose, "my_interpreter.missing_parameter", missing_parameter
  *             )
  */
-    __pyx_t_1 = __pyx_f_5runup_5utils_vResponse(__pyx_t_2, __pyx_kp_u_my_interpreter_missing_parameter, __pyx_v_missing_parameter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_self->_verbose, __pyx_kp_u_my_interpreter_missing_parameter, __pyx_v_missing_parameter);
 
     /* "runup/yaml_parser.pyx":87
  *             )
@@ -2248,25 +2195,25 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *                     click.echo(f"Parameter `{missing_parameter[1:]}` cannot be empty.")
  *                 else:
  */
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_missing_parameter, __pyx_n_s_startswith); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_missing_parameter, __pyx_n_s_startswith); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __pyx_t_3 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
         if (likely(__pyx_t_3)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
           __Pyx_INCREF(__pyx_t_3);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_2, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_kp_u__3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_kp_u__3);
+      __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_3, __pyx_kp_u__3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_u__3);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       if (__pyx_t_6) {
 
         /* "runup/yaml_parser.pyx":89
@@ -2276,19 +2223,19 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *                 else:
  *                     click.echo(
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_click); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_echo); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_click); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_echo); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         __pyx_t_7 = 0;
         __pyx_t_8 = 127;
         __Pyx_INCREF(__pyx_kp_u_Parameter);
         __pyx_t_7 += 11;
         __Pyx_GIVEREF(__pyx_kp_u_Parameter);
-        PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_kp_u_Parameter);
+        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_Parameter);
         __pyx_t_4 = __Pyx_PyObject_GetSlice(__pyx_v_missing_parameter, 1, 0, NULL, NULL, &__pyx_slice__4, 1, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_t_9 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
@@ -2297,32 +2244,32 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
         __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_9) : __pyx_t_8;
         __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_9);
         __Pyx_GIVEREF(__pyx_t_9);
-        PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_9);
+        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_9);
         __pyx_t_9 = 0;
         __Pyx_INCREF(__pyx_kp_u_cannot_be_empty);
         __pyx_t_7 += 18;
         __Pyx_GIVEREF(__pyx_kp_u_cannot_be_empty);
-        PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_kp_u_cannot_be_empty);
-        __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_2, 3, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+        PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_cannot_be_empty);
+        __pyx_t_9 = __Pyx_PyUnicode_Join(__pyx_t_1, 3, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = NULL;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_1 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-          __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
-          if (likely(__pyx_t_2)) {
+          __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_3);
+          if (likely(__pyx_t_1)) {
             PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-            __Pyx_INCREF(__pyx_t_2);
+            __Pyx_INCREF(__pyx_t_1);
             __Pyx_INCREF(function);
             __Pyx_DECREF_SET(__pyx_t_3, function);
           }
         }
-        __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_9);
-        __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_9);
+        __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
         /* "runup/yaml_parser.pyx":88
  * 
@@ -2363,19 +2310,19 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
         __pyx_t_7 += 28;
         __Pyx_GIVEREF(__pyx_kp_u_Missing_required_parameter);
         PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_kp_u_Missing_required_parameter);
-        __pyx_t_2 = __Pyx_PyObject_FormatSimple(__pyx_v_missing_parameter, __pyx_empty_unicode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_2) : __pyx_t_8;
-        __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_2);
-        __Pyx_GIVEREF(__pyx_t_2);
-        PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
-        __pyx_t_2 = 0;
+        __pyx_t_1 = __Pyx_PyObject_FormatSimple(__pyx_v_missing_parameter, __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __pyx_t_8 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) > __pyx_t_8) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_1) : __pyx_t_8;
+        __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_1);
+        __Pyx_GIVEREF(__pyx_t_1);
+        PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
+        __pyx_t_1 = 0;
         __Pyx_INCREF(__pyx_kp_u_on_YAML_file);
         __pyx_t_7 += 15;
         __Pyx_GIVEREF(__pyx_kp_u_on_YAML_file);
         PyTuple_SET_ITEM(__pyx_t_3, 2, __pyx_kp_u_on_YAML_file);
-        __pyx_t_2 = __Pyx_PyUnicode_Join(__pyx_t_3, 3, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_1 = __Pyx_PyUnicode_Join(__pyx_t_3, 3, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_3 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_9))) {
@@ -2387,13 +2334,13 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
             __Pyx_DECREF_SET(__pyx_t_9, function);
           }
         }
-        __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_2);
+        __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_1);
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
       __pyx_L7:;
 
@@ -2425,12 +2372,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             invalid_parameters: Optional[str] = my_interpreter.validate_parameters(
  *                 yaml_config
  */
-    __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __pyx_f_5runup_5utils_vCall(__pyx_t_1, __pyx_kp_u_my_interpreter_validate_paramete); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_f_5runup_5utils_vCall(__pyx_v_self->_verbose, __pyx_kp_u_my_interpreter_validate_paramete);
 
     /* "runup/yaml_parser.pyx":98
  *             # Validate received parameters
@@ -2439,8 +2381,8 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *                 yaml_config
  *             )
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_my_interpreter), __pyx_n_s_validate_parameters); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_my_interpreter), __pyx_n_s_validate_parameters); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
 
     /* "runup/yaml_parser.pyx":99
  *             vCall(self._verbose, "my_interpreter.validate_parameters")
@@ -2449,33 +2391,23 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *             )
  *             vResponse(
  */
-    __pyx_t_2 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
-      if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-        __Pyx_INCREF(__pyx_t_2);
+    __pyx_t_1 = NULL;
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_9))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_9);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
+        __Pyx_INCREF(__pyx_t_1);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __Pyx_DECREF_SET(__pyx_t_9, function);
       }
     }
-    __pyx_t_9 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_v_yaml_config) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_yaml_config);
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 98, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_v_invalid_parameters = __pyx_t_9;
-    __pyx_t_9 = 0;
-
-    /* "runup/yaml_parser.pyx":102
- *             )
- *             vResponse(
- *                 self._verbose, "my_interpreter.validate_parameters", invalid_parameters             # <<<<<<<<<<<<<<
- *             )
- * 
- */
-    __pyx_t_9 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 102, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_1, __pyx_v_yaml_config) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_v_yaml_config);
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_v_invalid_parameters = __pyx_t_2;
+    __pyx_t_2 = 0;
 
     /* "runup/yaml_parser.pyx":101
  *                 yaml_config
@@ -2484,10 +2416,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *                 self._verbose, "my_interpreter.validate_parameters", invalid_parameters
  *             )
  */
-    __pyx_t_1 = __pyx_f_5runup_5utils_vResponse(__pyx_t_9, __pyx_kp_u_my_interpreter_validate_paramete, __pyx_v_invalid_parameters); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_f_5runup_5utils_vResponse(__pyx_v_self->_verbose, __pyx_kp_u_my_interpreter_validate_paramete, __pyx_v_invalid_parameters);
 
     /* "runup/yaml_parser.pyx":105
  *             )
@@ -2509,8 +2438,8 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  */
       __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_click); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_echo); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_echo); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
       /* "runup/yaml_parser.pyx":107
@@ -2543,22 +2472,22 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __pyx_t_9 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-        __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_2);
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_9 = PyMethod_GET_SELF(__pyx_t_1);
         if (likely(__pyx_t_9)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
           __Pyx_INCREF(__pyx_t_9);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_2, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_9, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
+      __pyx_t_2 = (__pyx_t_9) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_9, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
       /* "runup/yaml_parser.pyx":109
  *                     f"Found invalid parameter `{invalid_parameters}` on YAML file."
@@ -2599,10 +2528,10 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *         return yaml_config, my_interpreter
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 112, __pyx_L1_error)
   }
   __pyx_L5:;
@@ -2615,16 +2544,16 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML_parse(struct __pyx_ob
  *     def _get_version(self, config): # -> Union[str, None]:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_yaml_config);
   __Pyx_GIVEREF(__pyx_v_yaml_config);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_yaml_config);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_yaml_config);
   __Pyx_INCREF(((PyObject *)__pyx_v_my_interpreter));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_my_interpreter));
-  PyTuple_SET_ITEM(__pyx_t_1, 1, ((PyObject *)__pyx_v_my_interpreter));
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 1, ((PyObject *)__pyx_v_my_interpreter));
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "runup/yaml_parser.pyx":41
@@ -2961,12 +2890,7 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *             # If it contains a dot (is a minor/specific version)
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __pyx_f_5runup_5utils_vInfo(__pyx_t_4, __pyx_kp_u_YAML_version_found); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 133, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_kp_u_YAML_version_found);
 
     /* "runup/yaml_parser.pyx":136
  * 
@@ -2975,28 +2899,28 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                 vInfo(
  *                     self._verbose, f"Info: Version {config['version']} is minor version"
  */
-    __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_find); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_find); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 136, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = NULL;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_9))) {
-      __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_9);
-      if (likely(__pyx_t_4)) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_9);
+      if (likely(__pyx_t_5)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_9);
-        __Pyx_INCREF(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_9, function);
       }
     }
-    __pyx_t_5 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_4, __pyx_kp_u__2) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_kp_u__2);
-    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_5, __pyx_kp_u__2) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_kp_u__2);
+    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __pyx_t_9 = PyObject_RichCompare(__pyx_t_5, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 136, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_9 = PyObject_RichCompare(__pyx_t_4, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 136, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 136, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     if (__pyx_t_2) {
@@ -3008,33 +2932,31 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                 )
  *                 # Use the vesion defined by the user
  */
-      __pyx_t_9 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 138, __pyx_L1_error)
+      __pyx_t_9 = PyTuple_New(3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 138, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 138, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
       __pyx_t_6 = 0;
       __pyx_t_7 = 127;
       __Pyx_INCREF(__pyx_kp_u_Info_Version);
       __pyx_t_6 += 14;
       __Pyx_GIVEREF(__pyx_kp_u_Info_Version);
-      PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_kp_u_Info_Version);
+      PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_kp_u_Info_Version);
       __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_5 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 138, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_7 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) > __pyx_t_7) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_3) : __pyx_t_7;
-      __pyx_t_6 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_3);
-      __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_3);
-      __pyx_t_3 = 0;
+      __pyx_t_7 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_7) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_7;
+      __pyx_t_6 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
+      __Pyx_GIVEREF(__pyx_t_5);
+      PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_5);
+      __pyx_t_5 = 0;
       __Pyx_INCREF(__pyx_kp_u_is_minor_version);
       __pyx_t_6 += 17;
       __Pyx_GIVEREF(__pyx_kp_u_is_minor_version);
-      PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_kp_u_is_minor_version);
-      __pyx_t_3 = __Pyx_PyUnicode_Join(__pyx_t_5, 3, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      PyTuple_SET_ITEM(__pyx_t_9, 2, __pyx_kp_u_is_minor_version);
+      __pyx_t_5 = __Pyx_PyUnicode_Join(__pyx_t_9, 3, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 138, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
       /* "runup/yaml_parser.pyx":137
  *             # If it contains a dot (is a minor/specific version)
@@ -3043,10 +2965,7 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                     self._verbose, f"Info: Version {config['version']} is minor version"
  *                 )
  */
-      __pyx_t_5 = __pyx_f_5runup_5utils_vInfo(__pyx_t_9, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_5);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
       /* "runup/yaml_parser.pyx":141
@@ -3080,12 +2999,7 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                 found_major: bool = False
  */
     /*else*/ {
-      __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 144, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = __pyx_f_5runup_5utils_vInfo(__pyx_t_5, __pyx_kp_u_Version_is_major_version); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_kp_u_Version_is_major_version);
 
       /* "runup/yaml_parser.pyx":146
  *                 vInfo(self._verbose, "Version is major version")
@@ -3113,39 +3027,39 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                     if version == config["version"]:
  *                         found_major = True
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_YAML_VERSIONS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
-        __pyx_t_5 = __pyx_t_3; __Pyx_INCREF(__pyx_t_5); __pyx_t_6 = 0;
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_YAML_VERSIONS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      if (likely(PyList_CheckExact(__pyx_t_5)) || PyTuple_CheckExact(__pyx_t_5)) {
+        __pyx_t_9 = __pyx_t_5; __Pyx_INCREF(__pyx_t_9); __pyx_t_6 = 0;
         __pyx_t_10 = NULL;
       } else {
-        __pyx_t_6 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_10 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __pyx_t_6 = -1; __pyx_t_9 = PyObject_GetIter(__pyx_t_5); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_9);
+        __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 148, __pyx_L1_error)
       }
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       for (;;) {
         if (likely(!__pyx_t_10)) {
-          if (likely(PyList_CheckExact(__pyx_t_5))) {
-            if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_5)) break;
+          if (likely(PyList_CheckExact(__pyx_t_9))) {
+            if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_9)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
+            __pyx_t_5 = PyList_GET_ITEM(__pyx_t_9, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_5 = PySequence_ITEM(__pyx_t_9, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_5);
             #endif
           } else {
-            if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
+            if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_9)) break;
             #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
+            __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_9, __pyx_t_6); __Pyx_INCREF(__pyx_t_5); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 148, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
-            __Pyx_GOTREF(__pyx_t_3);
+            __pyx_t_5 = PySequence_ITEM(__pyx_t_9, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 148, __pyx_L1_error)
+            __Pyx_GOTREF(__pyx_t_5);
             #endif
           }
         } else {
-          __pyx_t_3 = __pyx_t_10(__pyx_t_5);
-          if (unlikely(!__pyx_t_3)) {
+          __pyx_t_5 = __pyx_t_10(__pyx_t_9);
+          if (unlikely(!__pyx_t_5)) {
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
@@ -3153,10 +3067,10 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
             }
             break;
           }
-          __Pyx_GOTREF(__pyx_t_3);
+          __Pyx_GOTREF(__pyx_t_5);
         }
-        __Pyx_XDECREF_SET(__pyx_v_version, __pyx_t_3);
-        __pyx_t_3 = 0;
+        __Pyx_XDECREF_SET(__pyx_v_version, __pyx_t_5);
+        __pyx_t_5 = 0;
 
         /* "runup/yaml_parser.pyx":149
  *                 latest_minor: Optional[str] = None
@@ -3165,12 +3079,12 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                         found_major = True
  * 
  */
-        __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_9 = PyObject_RichCompare(__pyx_v_version, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_9); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 149, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+        __pyx_t_5 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 149, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
+        __pyx_t_4 = PyObject_RichCompare(__pyx_v_version, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         if (__pyx_t_2) {
 
           /* "runup/yaml_parser.pyx":150
@@ -3208,34 +3122,34 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                             latest_minor = version
  *                         elif latest_minor is not None:
  */
-          __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_version, __pyx_n_s_startswith); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_version, __pyx_n_s_startswith); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
+          __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_4 = __Pyx_PyObject_Dict_GetItem(__pyx_v_config, __pyx_n_u_version); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_4, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __pyx_t_8 = __Pyx_PyObject_FormatSimple(__pyx_t_3, __pyx_empty_unicode); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_8);
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __pyx_t_4 = __Pyx_PyUnicode_Concat(__pyx_t_8, __pyx_kp_u__2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __pyx_t_3 = __Pyx_PyUnicode_Concat(__pyx_t_8, __pyx_kp_u__2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_3);
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __pyx_t_8 = NULL;
-          if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-            __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_3);
+          if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+            __pyx_t_8 = PyMethod_GET_SELF(__pyx_t_5);
             if (likely(__pyx_t_8)) {
-              PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+              PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
               __Pyx_INCREF(__pyx_t_8);
               __Pyx_INCREF(function);
-              __Pyx_DECREF_SET(__pyx_t_3, function);
+              __Pyx_DECREF_SET(__pyx_t_5, function);
             }
           }
-          __pyx_t_9 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_8, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+          __pyx_t_4 = (__pyx_t_8) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_8, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_3);
           __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 153, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_9);
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-          __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_9); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 153, __pyx_L1_error)
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+          if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_4);
+          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 153, __pyx_L1_error)
+          __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           if (__pyx_t_2) {
 
             /* "runup/yaml_parser.pyx":154
@@ -3279,7 +3193,7 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
             __Pyx_XDECREF(__pyx_r);
             __Pyx_INCREF(__pyx_v_latest_minor);
             __pyx_r = __pyx_v_latest_minor;
-            __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+            __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
             goto __pyx_L0;
 
             /* "runup/yaml_parser.pyx":155
@@ -3309,7 +3223,7 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *                         found_major = True
  */
       }
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
       /* "runup/yaml_parser.pyx":160
  *                 # If this the execution reach this point, that means that the YAML
@@ -3319,13 +3233,13 @@ static PyObject *__pyx_pf_5runup_11yaml_parser_10ParserYAML_4_get_version(struct
  *     cpdef _read_yaml_file(self, context): # -> Optional[Dict[str, Union[str]]]:
  */
       __Pyx_XDECREF(__pyx_r);
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_YAML_VERSIONS); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 160, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_5, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 160, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_YAML_VERSIONS); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 160, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_r = __pyx_t_9;
-      __pyx_t_9 = 0;
+      __pyx_t_4 = __Pyx_GetItemInt(__pyx_t_9, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+      __pyx_r = __pyx_t_4;
+      __pyx_t_4 = 0;
       goto __pyx_L0;
     }
   }
@@ -3773,33 +3687,28 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
  *         # Return YAML file
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->_verbose); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_7 = 0;
     __pyx_t_9 = 127;
     __Pyx_INCREF(__pyx_kp_u__6);
     __pyx_t_7 += 1;
     __Pyx_GIVEREF(__pyx_kp_u__6);
-    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_kp_u__6);
-    __pyx_t_10 = __Pyx_PyUnicode_FromBInt_int(__pyx_v_file_found); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 189, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_10);
-    __Pyx_GIVEREF(__pyx_t_10);
-    PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_10);
-    __pyx_t_10 = 0;
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u__6);
+    __pyx_t_4 = __Pyx_PyUnicode_FromBInt_int(__pyx_v_file_found); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_7 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_4);
+    __pyx_t_4 = 0;
     __Pyx_INCREF(__pyx_kp_u_found);
     __pyx_t_7 += 8;
     __Pyx_GIVEREF(__pyx_kp_u_found);
-    PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_kp_u_found);
-    __pyx_t_10 = __Pyx_PyUnicode_Join(__pyx_t_4, 3, __pyx_t_7, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 189, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __pyx_f_5runup_5utils_vInfo(__pyx_t_1, __pyx_t_10); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
+    PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_kp_u_found);
+    __pyx_t_4 = __Pyx_PyUnicode_Join(__pyx_t_1, 3, __pyx_t_7, __pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 189, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
 
@@ -3820,31 +3729,31 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
     __Pyx_INCREF(__pyx_n_u_r);
     __Pyx_GIVEREF(__pyx_n_u_r);
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_n_u_r);
-    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_4, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 192, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_12 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_exit); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 192, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_12);
-    __pyx_t_1 = __Pyx_PyObject_LookupSpecial(__pyx_t_10, __pyx_n_s_enter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L8_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_open, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_12 = __Pyx_PyObject_LookupSpecial(__pyx_t_1, __pyx_n_s_exit); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __pyx_t_10 = __Pyx_PyObject_LookupSpecial(__pyx_t_1, __pyx_n_s_enter); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 192, __pyx_L8_error)
+    __Pyx_GOTREF(__pyx_t_10);
     __pyx_t_2 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
+    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
+      __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_10);
       if (likely(__pyx_t_2)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
         __Pyx_INCREF(__pyx_t_2);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_1, function);
+        __Pyx_DECREF_SET(__pyx_t_10, function);
       }
     }
-    __pyx_t_4 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+    __pyx_t_4 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_10);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L8_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __pyx_t_4;
-    __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = __pyx_t_4;
+    __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     /*try:*/ {
       {
         __Pyx_PyThreadState_declare
@@ -3854,8 +3763,8 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
         __Pyx_XGOTREF(__pyx_t_14);
         __Pyx_XGOTREF(__pyx_t_15);
         /*try:*/ {
-          __pyx_v_stream = __pyx_t_1;
-          __pyx_t_1 = 0;
+          __pyx_v_stream = __pyx_t_10;
+          __pyx_t_10 = 0;
 
           /* "runup/yaml_parser.pyx":193
  *         # Return YAML file
@@ -3880,28 +3789,28 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
  *                 if yaml_content is None:
  *                     click.echo("The YAML file is empty. No job have been initated.")
  */
-              __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_yaml); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 194, __pyx_L18_error)
-              __Pyx_GOTREF(__pyx_t_10);
-              __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_safe_load); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L18_error)
+              __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_yaml); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L18_error)
+              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_safe_load); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L18_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-              __pyx_t_10 = NULL;
+              __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+              __pyx_t_1 = NULL;
               if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-                __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_4);
-                if (likely(__pyx_t_10)) {
+                __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
+                if (likely(__pyx_t_1)) {
                   PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-                  __Pyx_INCREF(__pyx_t_10);
+                  __Pyx_INCREF(__pyx_t_1);
                   __Pyx_INCREF(function);
                   __Pyx_DECREF_SET(__pyx_t_4, function);
                 }
               }
-              __pyx_t_1 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_10, __pyx_v_stream) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_stream);
-              __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-              if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L18_error)
-              __Pyx_GOTREF(__pyx_t_1);
+              __pyx_t_10 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, __pyx_v_stream) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_stream);
+              __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+              if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 194, __pyx_L18_error)
+              __Pyx_GOTREF(__pyx_t_10);
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-              __pyx_v_yaml_content = __pyx_t_1;
-              __pyx_t_1 = 0;
+              __pyx_v_yaml_content = __pyx_t_10;
+              __pyx_t_10 = 0;
 
               /* "runup/yaml_parser.pyx":195
  *             try:
@@ -3923,25 +3832,25 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
  */
                 __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_click); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L18_error)
                 __Pyx_GOTREF(__pyx_t_4);
-                __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_echo); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 196, __pyx_L18_error)
-                __Pyx_GOTREF(__pyx_t_10);
+                __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_echo); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L18_error)
+                __Pyx_GOTREF(__pyx_t_1);
                 __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
                 __pyx_t_4 = NULL;
-                if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_10))) {
-                  __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_10);
+                if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+                  __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
                   if (likely(__pyx_t_4)) {
-                    PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+                    PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
                     __Pyx_INCREF(__pyx_t_4);
                     __Pyx_INCREF(function);
-                    __Pyx_DECREF_SET(__pyx_t_10, function);
+                    __Pyx_DECREF_SET(__pyx_t_1, function);
                   }
                 }
-                __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_10, __pyx_t_4, __pyx_kp_u_The_YAML_file_is_empty_No_job_ha) : __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_kp_u_The_YAML_file_is_empty_No_job_ha);
+                __pyx_t_10 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_kp_u_The_YAML_file_is_empty_No_job_ha) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_u_The_YAML_file_is_empty_No_job_ha);
                 __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-                if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L18_error)
-                __Pyx_GOTREF(__pyx_t_1);
-                __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+                if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 196, __pyx_L18_error)
+                __Pyx_GOTREF(__pyx_t_10);
                 __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+                __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
                 /* "runup/yaml_parser.pyx":195
  *             try:
@@ -3987,7 +3896,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
  *                 where = str(error.args[3]).strip()
  *                 msg = str(f"ParserError {error.args[0]} {where}")
  */
-            __Pyx_ErrFetch(&__pyx_t_1, &__pyx_t_10, &__pyx_t_4);
+            __Pyx_ErrFetch(&__pyx_t_10, &__pyx_t_1, &__pyx_t_4);
             __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_yaml); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L20_except_error)
             __Pyx_GOTREF(__pyx_t_2);
             __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_parser); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L20_except_error)
@@ -3996,18 +3905,18 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
             __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ParserError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 200, __pyx_L20_except_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-            __pyx_t_19 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_1, __pyx_t_2);
+            __pyx_t_19 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_10, __pyx_t_2);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __Pyx_ErrRestore(__pyx_t_1, __pyx_t_10, __pyx_t_4);
-            __pyx_t_1 = 0; __pyx_t_10 = 0; __pyx_t_4 = 0;
+            __Pyx_ErrRestore(__pyx_t_10, __pyx_t_1, __pyx_t_4);
+            __pyx_t_10 = 0; __pyx_t_1 = 0; __pyx_t_4 = 0;
             if (__pyx_t_19) {
               __Pyx_AddTraceback("runup.yaml_parser.ParserYAML._read_yaml_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
-              if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_10, &__pyx_t_1) < 0) __PYX_ERR(0, 200, __pyx_L20_except_error)
+              if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_1, &__pyx_t_10) < 0) __PYX_ERR(0, 200, __pyx_L20_except_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __Pyx_GOTREF(__pyx_t_10);
               __Pyx_GOTREF(__pyx_t_1);
-              __Pyx_INCREF(__pyx_t_10);
-              __pyx_v_error = __pyx_t_10;
+              __Pyx_GOTREF(__pyx_t_10);
+              __Pyx_INCREF(__pyx_t_1);
+              __pyx_v_error = __pyx_t_1;
               /*try:*/ {
 
                 /* "runup/yaml_parser.pyx":201
@@ -4200,7 +4109,7 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
  *                 where = str(error.args[3]).strip()
  *                 msg = str(f"ScannerError {error.args[0]} {where}")
  */
-            __Pyx_ErrFetch(&__pyx_t_1, &__pyx_t_10, &__pyx_t_4);
+            __Pyx_ErrFetch(&__pyx_t_10, &__pyx_t_1, &__pyx_t_4);
             __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_yaml); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L20_except_error)
             __Pyx_GOTREF(__pyx_t_2);
             __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_scanner); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 206, __pyx_L20_except_error)
@@ -4209,18 +4118,18 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
             __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ScannerError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L20_except_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-            __pyx_t_20 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_1, __pyx_t_2);
+            __pyx_t_20 = __Pyx_PyErr_GivenExceptionMatches(__pyx_t_10, __pyx_t_2);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __Pyx_ErrRestore(__pyx_t_1, __pyx_t_10, __pyx_t_4);
-            __pyx_t_1 = 0; __pyx_t_10 = 0; __pyx_t_4 = 0;
+            __Pyx_ErrRestore(__pyx_t_10, __pyx_t_1, __pyx_t_4);
+            __pyx_t_10 = 0; __pyx_t_1 = 0; __pyx_t_4 = 0;
             if (__pyx_t_20) {
               __Pyx_AddTraceback("runup.yaml_parser.ParserYAML._read_yaml_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
-              if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_10, &__pyx_t_1) < 0) __PYX_ERR(0, 206, __pyx_L20_except_error)
+              if (__Pyx_GetException(&__pyx_t_4, &__pyx_t_1, &__pyx_t_10) < 0) __PYX_ERR(0, 206, __pyx_L20_except_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __Pyx_GOTREF(__pyx_t_10);
               __Pyx_GOTREF(__pyx_t_1);
-              __Pyx_INCREF(__pyx_t_10);
-              __pyx_v_error = __pyx_t_10;
+              __Pyx_GOTREF(__pyx_t_10);
+              __Pyx_INCREF(__pyx_t_1);
+              __pyx_v_error = __pyx_t_1;
               /*try:*/ {
 
                 /* "runup/yaml_parser.pyx":207
@@ -4448,11 +4357,11 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
         /*except:*/ {
           __Pyx_AddTraceback("runup.yaml_parser.ParserYAML._read_yaml_file", __pyx_clineno, __pyx_lineno, __pyx_filename);
-          if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_10, &__pyx_t_4) < 0) __PYX_ERR(0, 192, __pyx_L14_except_error)
-          __Pyx_GOTREF(__pyx_t_1);
+          if (__Pyx_GetException(&__pyx_t_10, &__pyx_t_1, &__pyx_t_4) < 0) __PYX_ERR(0, 192, __pyx_L14_except_error)
           __Pyx_GOTREF(__pyx_t_10);
+          __Pyx_GOTREF(__pyx_t_1);
           __Pyx_GOTREF(__pyx_t_4);
-          __pyx_t_2 = PyTuple_Pack(3, __pyx_t_1, __pyx_t_10, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L14_except_error)
+          __pyx_t_2 = PyTuple_Pack(3, __pyx_t_10, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L14_except_error)
           __Pyx_GOTREF(__pyx_t_2);
           __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_2, NULL);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
@@ -4464,15 +4373,15 @@ static PyObject *__pyx_f_5runup_11yaml_parser_10ParserYAML__read_yaml_file(struc
           if (__pyx_t_5 < 0) __PYX_ERR(0, 192, __pyx_L14_except_error)
           __pyx_t_6 = ((!(__pyx_t_5 != 0)) != 0);
           if (__pyx_t_6) {
-            __Pyx_GIVEREF(__pyx_t_1);
             __Pyx_GIVEREF(__pyx_t_10);
+            __Pyx_GIVEREF(__pyx_t_1);
             __Pyx_XGIVEREF(__pyx_t_4);
-            __Pyx_ErrRestoreWithState(__pyx_t_1, __pyx_t_10, __pyx_t_4);
-            __pyx_t_1 = 0; __pyx_t_10 = 0; __pyx_t_4 = 0; 
+            __Pyx_ErrRestoreWithState(__pyx_t_10, __pyx_t_1, __pyx_t_4);
+            __pyx_t_10 = 0; __pyx_t_1 = 0; __pyx_t_4 = 0; 
             __PYX_ERR(0, 192, __pyx_L14_except_error)
           }
-          __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
+          __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           goto __pyx_L13_exception_handled;
         }
@@ -5813,9 +5722,9 @@ static int __Pyx_modinit_function_import_code(void) {
   /*--- Function import code ---*/
   __pyx_t_1 = PyImport_ImportModule("runup.utils"); if (!__pyx_t_1) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (__Pyx_ImportFunction(__pyx_t_1, "vInfo", (void (**)(void))&__pyx_f_5runup_5utils_vInfo, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "vCall", (void (**)(void))&__pyx_f_5runup_5utils_vCall, "PyObject *(PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ImportFunction(__pyx_t_1, "vResponse", (void (**)(void))&__pyx_f_5runup_5utils_vResponse, "PyObject *(PyObject *, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "vInfo", (void (**)(void))&__pyx_f_5runup_5utils_vInfo, "void (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "vCall", (void (**)(void))&__pyx_f_5runup_5utils_vCall, "void (int, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ImportFunction(__pyx_t_1, "vResponse", (void (**)(void))&__pyx_f_5runup_5utils_vResponse, "void (int, PyObject *, PyObject *)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;
