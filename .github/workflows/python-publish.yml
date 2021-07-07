@@ -29,8 +29,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install cython
         pip install wheel
+        pip install auditwheel
     - name: Build package
       run: python3 setup.py sdist bdist_wheel
+      run: auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_86_64.whl
+      run: mv wheelhouse/* dist
+      run: rm dist/*-cp38-cp38-linux_x86_64.whl
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
