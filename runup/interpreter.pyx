@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -13,39 +15,38 @@ import zipfile
 
 # 3rd party
 import click
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
-from runup.runupdb import RunupDB
-from runup.utils import vCall, vInfo, vResponse
+from runup.db cimport RunupDB
+from runup.utils cimport vCall, vInfo, vResponse
 
 
-class Interpreter(ABC):
+cdef class Interpreter:
     """Interpreters' abstract class."""
 
-    @abstractmethod
     def __init__(
         self,
         context: Path,
-        verbose: bool,
-        version: str,
+        bint verbose,
+        char* version,
         required_parameters: List[str],
         valid_parameters: Dict[str, Any],
-    ) -> None:
+    ):
         """Set interpreter variables."""
-        self._context: Path = context
-        self._required_parameters: List[str] = required_parameters
-        self._valid_parameters: Dict[str, Any] = valid_parameters
-        self._verbose: bool = verbose
-        self._version: str = version
+        self._context:Path = context
+        self._required_parameters:List[str] = required_parameters
+        self._valid_parameters:Dict[str, Any] = valid_parameters
+        self._verbose:bint = verbose
+        self._version = version
 
-    @abstractmethod
-    def create_backup(
-        self, yaml_config: Dict[str, Any], backup_id: str
-    ) -> Optional[bool]:
+    cpdef bint create_backup(self, yaml_config, project):
         """Create a new backup."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def restore_backup(
         self,
         yaml_config: Dict[str, Any],
@@ -57,17 +58,17 @@ class Interpreter(ABC):
         """Restore the specified backup."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def set_environment(self) -> bool:
         """Create the backup enviroment."""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def missing_parameter(self, yaml_config: Dict[str, Any]) -> Optional[str]:
         """Find the required parameters missing on YAML file"""
         raise NotImplementedError()
 
-    @abstractmethod
+    # @abstractmethod
     def validate_parameters(
         self, search_area: Union[Dict[Any, Any], List[Any]], prefix: str = ""
     ) -> Optional[str]:
@@ -77,7 +78,7 @@ class Interpreter(ABC):
         full_key: str = ""
 
         if prefix != "":
-            prefix = f"{prefix}."
+            prefix = str(f"{prefix}.")
             vInfo(self._verbose, f"New prefix `{prefix}`")
 
         if type(search_area) == list:
@@ -86,9 +87,9 @@ class Interpreter(ABC):
                 vInfo(self._verbose, f"Testing parameter `{value}`")
                 if f"{prefix}*" in valid_parameters:
                     vInfo(self._verbose, f"`{value}` has been found as `{prefix}*`")
-                    full_key = f"{prefix}*"
+                    full_key = str(f"{prefix}*")
                 elif f"{prefix}{value}" in valid_parameters:
-                    full_key = f"{prefix}{value}"
+                    full_key = str(f"{prefix}{value}")
                     vInfo(
                         self._verbose, f"`{value}` has been found as `{prefix}{value}`"
                     )
@@ -119,9 +120,9 @@ class Interpreter(ABC):
                 vInfo(self._verbose, f"Testing parameter `{key}`")
                 if f"{prefix}*" in valid_parameters:
                     vInfo(self._verbose, f"`{key}` has been found as `{prefix}*`")
-                    full_key = f"{prefix}*"
+                    full_key = str(f"{prefix}*")
                 elif f"{prefix}{key}" in valid_parameters:
-                    full_key = f"{prefix}{key}"
+                    full_key = str(f"{prefix}{key}")
                     vInfo(self._verbose, f"`{key}` has been found as `{prefix}{key}`")
 
                 if len(full_key) > 0:
@@ -144,7 +145,7 @@ class Interpreter(ABC):
                     if type(values) == dict or type(values) == list:
                         vInfo(self._verbose, f"Analysing subparameters of `{key}`")
                         vCall(self._verbose, "Interpreter:validate_parameters")
-                        next_prefix: str = (
+                        next_prefix: str = str(
                             f"{prefix}*"
                             if f"{prefix}*" in valid_parameters
                             else f"{prefix}{key}"
@@ -168,7 +169,7 @@ class Interpreter(ABC):
         return None
 
 
-class Interpreter_1(Interpreter):
+cdef class Interpreter_1(Interpreter):
     """Interpreter that implements the rules for YAML version 1.0"""
 
     def __init__(self, context: Path, verbose: bool):
@@ -196,18 +197,16 @@ class Interpreter_1(Interpreter):
                 # 'project.*.password': str,
             },
             verbose=verbose,
-            version="1",
+            version= b'1',
         )
 
-    def create_backup(
-        self, yaml_config: Dict[str, Any], project: str
-    ) -> Optional[bool]:
+    cpdef bint create_backup(self, yaml_config, project):
         """Create a new backup"""
 
         initiated: bool = self._validate_prev_init(yaml_config)
         if not initiated:
-            return None
-
+            return False
+        
         backup_list: List[str] = []
         working_directories: Dict[str, str]
 
@@ -221,7 +220,7 @@ class Interpreter_1(Interpreter):
             backup_list = yaml_config["project"].keys()
         else:
             backup_list.append(project)
-
+        
         # Create each backup
         for backup in backup_list:
 
@@ -241,7 +240,7 @@ class Interpreter_1(Interpreter):
             vCall(self._verbose, "RunupDB:insert_job")
             job_id: bool = db.insert_job(backup)
             vResponse(self._verbose, "RunupDB:insert_job", job_id)
-
+            
             # Zip File
             with zipfile.ZipFile(f"{context}.runup/jobs/{job_id}", "w") as my_zip:
 
@@ -249,9 +248,12 @@ class Interpreter_1(Interpreter):
 
                     vCall(self._verbose, "RunupDB:insert_file")
                     inserted_new: bool = db.insert_file(
-                        job_id, path_from_pwd, path_from_yaml_file
+                        job_id, 
+                        bytes(path_from_pwd, 'utf-8'),
+                        path_from_yaml_file
                     )
                     vResponse(self._verbose, "RunupDB:insert_file", inserted_new)
+                    
                     if inserted_new:
                         vInfo(self._verbose, f"Zipping file: {path_from_pwd}")
                         my_zip.write(path_from_pwd, path_from_yaml_file)
@@ -344,14 +346,16 @@ class Interpreter_1(Interpreter):
 
                         while dst.startswith("./"):
                             dst = dst[2:]
-                        dst = f"{location.strip('/')}/{dst}"
+                        dst = str(f"{location.strip('/')}/{dst}")
 
                         # Try to get File info
                         try:
                             src_info = myzip.getinfo(src)
                         # If is an empty directory
                         except KeyError:
-                            os.mkdir(f"{context}{dst}")
+                            dst = f"{context}{dst}"
+                            if not os.path.exists(dst):
+                                os.mkdir(dst)
                         # else
                         else:
                             src_info.filename = dst
@@ -494,8 +498,9 @@ class Interpreter_1(Interpreter):
             return False
 
         # Create file `.version`
-        with open(f"{self._context}/.runup/.version", "w") as file:
-            file.write(self._version)
+        # TODO: Convert this into a function the `version.pyx` file.
+        with open(f"{str(self._context)}/.runup/.version", "w") as file:
+            file.write(self._version.decode())
         vInfo(self._verbose, f"Created file `{self._context}/.runup/.version`")
 
         # Create the directory `.runup`
@@ -538,9 +543,12 @@ class Interpreter_1(Interpreter):
 
         return True
 
-    def _working_directories(self, config: Dict[str, Any]) -> Dict[str, str]:
+    cdef _working_directories(self, config: Dict[str, Any]): # -> Dict[str, str]:
         """Select the working directories based on the `include` and `exclude` on the YAML file."""
 
+        # cdef char* filepath
+
+        tmp_bytes:bytes
         directories: Dict[str, str] = {}
         exclude_list: List[str] = []
         exclude_list_slash: List[str] = []
@@ -563,18 +571,18 @@ class Interpreter_1(Interpreter):
 
         exclude_tuple_slash: Tuple = tuple(exclude_list_slash)
 
-        for include in include_dict.keys():
-            if os.path.isfile(include):
+        for include_str in include_dict.keys():
+            if os.path.isfile(include_str):
                 vInfo(
                     self._verbose,
-                    f"`{include}` is a file. Including it into workspace.",
+                    f"`{include_str}` is a file. Including it into workspace.",
                 )
-                directories[include] = os.path.relpath(include, self._context).replace(
-                    os.sep, "/"
-                )
+                directories[include_str] = os.path.relpath(
+                    include_str, self._context
+                ).replace(os.sep, "/")
             else:
                 # traverse root directory as root, and list directories as _ and files as files
-                for root, _, files in os.walk(include):
+                for root, _, files in os.walk(include_str):
                     if (
                         not (root + os.sep).startswith(exclude_tuple_slash)
                         and root not in exclude_list
@@ -595,10 +603,12 @@ class Interpreter_1(Interpreter):
                             ).replace(os.sep, "/")
                         else:
                             for file in files:
-                                filepath: str = root + os.sep + file
+
+                                filepath:str = root + os.sep + file
+                                
                                 if filepath in exclude_list or file in [
-                                    "runup.yml",
-                                    "runup.yaml",
+                                    b"runup.yml",
+                                    b"runup.yaml",
                                 ]:
                                     vInfo(
                                         self._verbose,

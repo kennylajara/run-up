@@ -1,3 +1,5 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -12,12 +14,18 @@ from typing import Dict
 
 # 3rd Party
 import click
+import pyximport  # type: ignore
+
+pyximport.install()
+
+# 3rd party - C
+from libc.stdlib cimport malloc
 
 # Own
-from runup.utils import vInfo, hashfile
+from runup.utils cimport vInfo, hashfile
 
 
-class RunupDB:
+cdef class RunupDB:
     """
     Handle the database where the data is stored.
 
@@ -26,13 +34,13 @@ class RunupDB:
     where this file was found the first time.
     """
 
-    def __init__(self, context: Path, verbose: bool):
+    def __init__(self, context: Path, bint verbose):
 
-        self._dbname: str = f"{context}/.runup/runup.db"
-        self._verbose: bool = verbose
+        self._dbname: str = str(f"{context}/.runup/runup.db")
+        self._verbose: bint = verbose
         self._conn = None
 
-    def execute(self, name: str, query: str):
+    cdef execute(self, name, query):
         """Execute a query."""
 
         vInfo(self._verbose, f"Executed query: {name}")
@@ -51,16 +59,16 @@ class RunupDB:
         except Error as e:
             click.echo(e)
 
-    def close_connection(self, commit=True):
+    cdef close_connection(self, bint commit):
         """Close database connection"""
 
         vInfo(self._verbose, f"Closing connection to: {self._dbname}")
         if commit:
             self._conn.commit()
         self._conn.close()
-        vInfo(self._verbose, "Connetion closed")
+        vInfo(self._verbose, b"Connetion closed")
 
-    def connect(self):
+    cdef connect(self):
         """Create a database connection to a `runup.db`."""
         vInfo(self._verbose, f"Creating connection to: {self._dbname}")
 
@@ -73,7 +81,7 @@ class RunupDB:
     def create_database(self):
         """Create a database `runup.db`."""
 
-        sql_dict: Dict[str] = {
+        sql_dict: Dict[bytes, bytes] = {
             "Create backups": """
             CREATE TABLE `backups` (
                 `name` TEXT PRIMARY KEY,
@@ -123,12 +131,12 @@ class RunupDB:
         self.connect()
         for name, sql in sql_dict.items():
             self.execute(name, sql)
-        self.close_connection()
+        self.close_connection(commit=True)
 
     def insert_backup(self, name: str) -> None:
         """Insert a backup"""
 
-        sql: str = f"""
+        sql:str = f"""
             INSERT OR IGNORE
             INTO backups (name, running, execute)
             VALUES ('{name}', 0, NULL)
@@ -136,36 +144,35 @@ class RunupDB:
 
         self.connect()
         self.execute("Insert backup", sql)
-        self.close_connection()
+        self.close_connection(commit=True)
 
-    def insert_file(
-        self, job_id: int, path_from_pwd: str, path_from_yaml_file: str
-    ) -> bool:
+    cdef insert_file(
+        self, int job_id, char* path_from_pwd, path_from_yaml_file
+    ):
         """
         Insert a file into DB.
 
         Returns a boolean indicatinf if the inserted
         """
+        sql:str
 
-        sha256: str = hashfile(path_from_pwd, "sha256")
-        sha512: str = hashfile(path_from_pwd, "sha512")
-        sql: str
+        sha256:str = hashfile(path_from_pwd, b"sha256")
+        sha512:str = hashfile(path_from_pwd, b"sha512")
 
         self.connect()
 
-        # Find
-        if sha256 == "dir" or sha512 == "dir":
-            pass
-        else:
-            sql = f"""
-                SELECT file_id, sha256, sha512
-                FROM files
-                WHERE sha256='{sha256}' AND sha512='{sha512}'
-                ORDER BY file_id ASC
-                LIMIT 1;
-            """
+        # TODO: Do not execute this query if is a directory (empty sha256 and sha512)
+        sql = f"""
+            SELECT file_id, sha256, sha512
+            FROM files
+            WHERE sha256='{sha256}' AND sha512='{sha512}'
+            ORDER BY file_id ASC
+            LIMIT 1;
+        """
 
         result = self.execute(f"Search file: {path_from_yaml_file}", sql)
+        
+
         inserted_new: bool
 
         if len(result) == 0:
@@ -174,6 +181,7 @@ class RunupDB:
                 INSERT INTO files (job_id, sha256, sha512, path)
                 VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
             """
+            
             self.execute(f"Insert new file: {path_from_yaml_file}", sql)
             inserted_new = True
         else:
@@ -182,35 +190,35 @@ class RunupDB:
                 INSERT INTO files (job_id, sha256, sha512, file_loc, path)
                 VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
             """
+
             self.execute(f"Insert existing file: {path_from_yaml_file}", sql)
             inserted_new = False
 
-        self.close_connection()
+        self.close_connection(commit=True)
 
         return inserted_new
 
     def insert_job(self, backup_name: str):
         """Insert a job"""
 
-        sql: str = f"""
+        sql:str = f"""
             INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)
             VALUES (NULL, '{backup_name}', {int(time.time())}, NULL, 0)
         """
 
         self.connect()
-        id: str = self.execute("Insert job", sql)
-        self.close_connection()
+        id: int = self.execute("Insert job", sql)
+        self.close_connection(commit=True)
 
         return id
 
-    def select_job(self, job: int, project: str):
+    cdef select_job(self, int job, project):
         """Select a job"""
-
-        sql: str
 
         # Select latest job from DB
         if job == 0:
-            sql = f"""
+
+            sql:str = f"""
                 SELECT MAX(files.job_id)
                 FROM files
                 JOIN jobs ON jobs.job_id = files.job_id
@@ -219,13 +227,13 @@ class RunupDB:
 
             self.connect()
             job = self.execute("Select latest job", sql)[0][0]
-            self.close_connection()
+            self.close_connection(commit=True)
 
         if job is None:
             return None
 
         # Select data from DB
-        sql = f"""
+        sql:str = f"""
             SELECT A.job_id, A.path, B.job_id, B.path
             FROM files AS A
             JOIN jobs ON jobs.job_id = A.job_id
@@ -235,6 +243,6 @@ class RunupDB:
 
         self.connect()
         data = self.execute("Get job info", sql)
-        self.close_connection()
+        self.close_connection(commit=True)
 
         return data

@@ -1,34 +1,36 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
 # Built-in
-from typing import Any, Optional
 import hashlib
 from os.path import isdir
 
 # 3rd party
 from click import echo
 
+
 # ------- #
 # VERBOSE #
 # ------- #
 
 
-def vInfo(verbose: bool, msg: str) -> None:
+cdef void vInfo(bint verbose, msg):
     """Print verbose Info"""
     if verbose:
         echo(f"Info: {msg}")
 
 
-def vCall(verbose: bool, func: str) -> None:
+cdef void vCall(bint verbose, func):
     """Print verbose Call"""
     if verbose:
         echo(f"Call: {func}")
 
 
-def vResponse(verbose: bool, func: str, res: Optional[Any]) -> None:
+cdef void vResponse(bint verbose, func, res):
     """Print verbose Response"""
     if verbose:
         echo(f"Response: {func} => {res}")
@@ -39,13 +41,13 @@ def vResponse(verbose: bool, func: str, res: Optional[Any]) -> None:
 # -------------- #
 
 
-def hash_bytestr_iter(bytesiter, hasher):
+cpdef hash_bytestr_iter(bytesiter, hasher):
     for block in bytesiter:
         hasher.update(block)
     return hasher.hexdigest()
 
 
-def file_as_blockiter(afile, blocksize=65536):
+def file_as_blockiter(afile, blocksize: int=65536):
     with afile:
         block = afile.read(blocksize)
         while len(block) > 0:
@@ -53,12 +55,12 @@ def file_as_blockiter(afile, blocksize=65536):
             block = afile.read(blocksize)
 
 
-def hashfile(fname, algo: str):
+cpdef hashfile(char* fname, char* algo):
     algorithm: hashlib._Hash
 
-    if algo == "sha256":
+    if algo == b"sha256":
         algorithm = hashlib.sha256()
-    elif algo == "sha512":
+    elif algo == b"sha512":
         algorithm = hashlib.sha512()
     else:
         raise ValueError(f"Unsupported hash algorithm: {algo}")

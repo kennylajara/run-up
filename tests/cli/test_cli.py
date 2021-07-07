@@ -15,17 +15,21 @@ from zipfile import ZipFile
 
 # 3rd party
 from click.testing import CliRunner
+import pyximport  # type: ignore
+
+pyximport.install()
 
 # Own
 from dev.unittest import TestCaseExtended
 from runup.cli import cli
-from runup.version import runup_version
+from runup.version import RUNUP_VERSION
 
 
 class CLI_1_0(TestCaseExtended):
     """Test command line executions"""
 
     _context: str = "./tests/cli/version-1.0"
+    maxDiff = None
 
     def setUp(self) -> None:
 
@@ -101,7 +105,7 @@ class CLI_1_0(TestCaseExtended):
         # Execute
         result = runner.invoke(cli, ["--version"])
         # Assert
-        self.assertEqual(result.output, f"RunUp, version {runup_version}\n")
+        self.assertEqual(result.output, f"RunUp, version {RUNUP_VERSION}\n")
         self.assertEqual(result.exit_code, 0)
 
     def test_create_backup_implicit(self):

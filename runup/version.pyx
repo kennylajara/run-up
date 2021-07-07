@@ -1,15 +1,17 @@
+# cython: language_level=3
+
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
 # Built-in
-from typing import List
+from typing import Tuple
 
 # ----------------------------------------------- #
 # Current version of runup                        #
 # ----------------------------------------------- #
-runup_version: str = "0.1.b2"
+RUNUP_VERSION: str = "0.1b3"
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #
@@ -23,7 +25,7 @@ runup_version: str = "0.1.b2"
 # "Update major to latest until 2.0 is released"        #
 # without quotes.                                       #
 # ----------------------------------------------------- #
-yaml_versions: List[str] = [
+YAML_VERSIONS: Tuple[str] = (
     "1",
     "1.0",
-]
+)
