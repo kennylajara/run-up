@@ -11,7 +11,7 @@ from typing import Tuple
 # ----------------------------------------------- #
 # Current version of runup                        #
 # ----------------------------------------------- #
-RUNUP_VERSION: str = "0.1b3"
+RUNUP_VERSION: str = "0.1.b3"
 
 # ----------------------------------------------------- #
 # List of versions supported when reading the YAML file #

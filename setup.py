@@ -90,7 +90,6 @@ setup(
     ext_modules=ext_modules,
     include_package_data=True,
     install_requires=[
-        "whell",
         "Click==8.0.1",
         "pyyaml==5.4.1",
     ],
