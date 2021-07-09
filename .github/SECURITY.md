@@ -18,6 +18,6 @@ I will make sure this is changed in the future.
 
 | Version           | Supported          |
 | ----------------- | ------------------ |
-| 0.1b4             | :white_check_mark: |
+| 0.1b4 or higher   | :white_check_mark: |
 | 0.1b3 or lower    | :x:                |
 | 0.1dev11 or lower | :x:                |
