@@ -34,7 +34,19 @@ jobs:
     - name: Build package
       run: |
         python3 setup.py sdist bdist_wheel
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux1
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2010_x86_64
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2010_i686
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_x86_64
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_i686
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_aarch64
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_ppc64le
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_s390x
         auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_x86_64
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_i686
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_aarch64
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_ppc64le
+        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux_2_24_s390x
         rm dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl
         rm dist/RunUp-${{ github.event.release.tag_name }}.tar.gz
         mv wheelhouse/* dist
