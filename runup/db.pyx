@@ -71,7 +71,7 @@ cdef class RunupDB:
         if commit:
             self._conn.commit()
         self._conn.close()
-        vInfo(self._verbose, b"Connetion closed")
+        vInfo(self._verbose, "Connetion closed")
 
     cdef void connect(self):
         """Create a database connection to a `runup.db`."""
