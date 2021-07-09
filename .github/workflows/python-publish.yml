@@ -35,8 +35,6 @@ jobs:
     - name: Build package
       run: |
         python3 setup.py sdist bdist_wheel
-        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2010_x86_64
-        auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2010_i686
         auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_x86_64
         auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_i686
         auditwheel repair dist/RunUp-${{ github.event.release.tag_name }}-cp39-cp39-linux_x86_64.whl --plat manylinux2014_aarch64
