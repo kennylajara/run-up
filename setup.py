@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
-
-
 # Built-in
 from sys import version_info as python_version
 from setuptools import setup  # type: ignore
@@ -88,7 +83,7 @@ setup(
         ],
     },
     ext_modules=ext_modules,
-    include_package_data=True,
+    include_package_data=False,
     install_requires=[
         "Click==8.0.1",
         "pyyaml==5.4.1",
