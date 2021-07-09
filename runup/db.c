@@ -1402,7 +1402,7 @@ static PyObject *__pyx_kp_u_CREATE_TABLE_backups_name_TEXT;
 static PyObject *__pyx_kp_u_CREATE_TABLE_files_file_id_INTE;
 static PyObject *__pyx_kp_u_CREATE_TABLE_jobs_job_id_INTEGE;
 static PyObject *__pyx_kp_u_Closing_connection_to;
-static PyObject *__pyx_kp_b_Connetion_closed;
+static PyObject *__pyx_kp_u_Connetion_closed;
 static PyObject *__pyx_kp_u_Create_backups;
 static PyObject *__pyx_kp_u_Create_files;
 static PyObject *__pyx_kp_u_Create_job_id_index;
@@ -1687,7 +1687,7 @@ static PyObject *__pyx_f_5runup_2db_7RunupDB_execute(struct __pyx_obj_5runup_2db
  */
   __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_Executed_query, __pyx_v_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_1);
+  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, ((PyObject*)__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "runup/db.pyx":53
@@ -2272,7 +2272,7 @@ static void __pyx_f_5runup_2db_7RunupDB_close_connection(struct __pyx_obj_5runup
  */
   __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_Closing_connection_to, __pyx_v_self->_dbname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_1);
+  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, ((PyObject*)__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "runup/db.pyx":71
@@ -2290,7 +2290,7 @@ static void __pyx_f_5runup_2db_7RunupDB_close_connection(struct __pyx_obj_5runup
  *         if commit:
  *             self._conn.commit()             # <<<<<<<<<<<<<<
  *         self._conn.close()
- *         vInfo(self._verbose, b"Connetion closed")
+ *         vInfo(self._verbose, "Connetion closed")
  */
     __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_conn, __pyx_n_s_commit); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -2324,7 +2324,7 @@ static void __pyx_f_5runup_2db_7RunupDB_close_connection(struct __pyx_obj_5runup
  *         if commit:
  *             self._conn.commit()
  *         self._conn.close()             # <<<<<<<<<<<<<<
- *         vInfo(self._verbose, b"Connetion closed")
+ *         vInfo(self._verbose, "Connetion closed")
  * 
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_conn, __pyx_n_s_close); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
@@ -2349,11 +2349,11 @@ static void __pyx_f_5runup_2db_7RunupDB_close_connection(struct __pyx_obj_5runup
   /* "runup/db.pyx":74
  *             self._conn.commit()
  *         self._conn.close()
- *         vInfo(self._verbose, b"Connetion closed")             # <<<<<<<<<<<<<<
+ *         vInfo(self._verbose, "Connetion closed")             # <<<<<<<<<<<<<<
  * 
  *     cdef void connect(self):
  */
-  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_kp_b_Connetion_closed);
+  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_kp_u_Connetion_closed);
 
   /* "runup/db.pyx":67
  *             click.echo(e)
@@ -2375,7 +2375,7 @@ static void __pyx_f_5runup_2db_7RunupDB_close_connection(struct __pyx_obj_5runup
 }
 
 /* "runup/db.pyx":76
- *         vInfo(self._verbose, b"Connetion closed")
+ *         vInfo(self._verbose, "Connetion closed")
  * 
  *     cdef void connect(self):             # <<<<<<<<<<<<<<
  *         """Create a database connection to a `runup.db`."""
@@ -2417,7 +2417,7 @@ static void __pyx_f_5runup_2db_7RunupDB_connect(struct __pyx_obj_5runup_2db_Runu
  */
   __pyx_t_1 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_Creating_connection_to, __pyx_v_self->_dbname); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_1);
+  __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, ((PyObject*)__pyx_t_1));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "runup/db.pyx":80
@@ -2484,7 +2484,8 @@ static void __pyx_f_5runup_2db_7RunupDB_connect(struct __pyx_obj_5runup_2db_Runu
       __pyx_t_1 = PyNumber_Add(__pyx_kp_u_Database_version, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, __pyx_t_1);
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 82, __pyx_L3_error)
+      __pyx_f_5runup_5utils_vInfo(__pyx_v_self->_verbose, ((PyObject*)__pyx_t_1));
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
       /* "runup/db.pyx":80
@@ -2637,7 +2638,7 @@ static void __pyx_f_5runup_2db_7RunupDB_connect(struct __pyx_obj_5runup_2db_Runu
   }
 
   /* "runup/db.pyx":76
- *         vInfo(self._verbose, b"Connetion closed")
+ *         vInfo(self._verbose, "Connetion closed")
  * 
  *     cdef void connect(self):             # <<<<<<<<<<<<<<
  *         """Create a database connection to a `runup.db`."""
@@ -4445,7 +4446,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_CREATE_TABLE_files_file_id_INTE, __pyx_k_CREATE_TABLE_files_file_id_INTE, sizeof(__pyx_k_CREATE_TABLE_files_file_id_INTE), 0, 1, 0, 0},
   {&__pyx_kp_u_CREATE_TABLE_jobs_job_id_INTEGE, __pyx_k_CREATE_TABLE_jobs_job_id_INTEGE, sizeof(__pyx_k_CREATE_TABLE_jobs_job_id_INTEGE), 0, 1, 0, 0},
   {&__pyx_kp_u_Closing_connection_to, __pyx_k_Closing_connection_to, sizeof(__pyx_k_Closing_connection_to), 0, 1, 0, 0},
-  {&__pyx_kp_b_Connetion_closed, __pyx_k_Connetion_closed, sizeof(__pyx_k_Connetion_closed), 0, 0, 0, 0},
+  {&__pyx_kp_u_Connetion_closed, __pyx_k_Connetion_closed, sizeof(__pyx_k_Connetion_closed), 0, 1, 0, 0},
   {&__pyx_kp_u_Create_backups, __pyx_k_Create_backups, sizeof(__pyx_k_Create_backups), 0, 1, 0, 0},
   {&__pyx_kp_u_Create_files, __pyx_k_Create_files, sizeof(__pyx_k_Create_files), 0, 1, 0, 0},
   {&__pyx_kp_u_Create_job_id_index, __pyx_k_Create_job_id_index, sizeof(__pyx_k_Create_job_id_index), 0, 1, 0, 0},

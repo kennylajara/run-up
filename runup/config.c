@@ -825,7 +825,7 @@ struct __pyx_obj_5runup_11interpreter_Interpreter;
 struct __pyx_obj_5runup_11interpreter_Interpreter_1;
 struct __pyx_obj_5runup_6config_Config;
 
-/* "runup/interpreter.pxd":17
+/* "runup/interpreter.pxd":8
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -839,11 +839,11 @@ struct __pyx_obj_5runup_11interpreter_Interpreter {
   PyObject *_required_parameters;
   PyObject *_valid_parameters;
   int _verbose;
-  PyObject *_version;
+  char *_version;
 };
 
 
-/* "runup/interpreter.pxd":28
+/* "runup/interpreter.pxd":21
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -872,7 +872,7 @@ struct __pyx_obj_5runup_6config_Config {
 
 
 
-/* "runup/interpreter.pxd":17
+/* "runup/interpreter.pxd":8
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -882,11 +882,12 @@ struct __pyx_obj_5runup_6config_Config {
 
 struct __pyx_vtabstruct_5runup_11interpreter_Interpreter {
   int (*create_backup)(struct __pyx_obj_5runup_11interpreter_Interpreter *, PyObject *, PyObject *, int __pyx_skip_dispatch);
+  PyObject *(*restore_backup)(struct __pyx_obj_5runup_11interpreter_Interpreter *, PyObject *, PyObject *, PyObject *, int, int, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5runup_11interpreter_Interpreter;
 
 
-/* "runup/interpreter.pxd":28
+/* "runup/interpreter.pxd":21
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -897,6 +898,7 @@ static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5
 struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 {
   struct __pyx_vtabstruct_5runup_11interpreter_Interpreter __pyx_base;
   PyObject *(*_working_directories)(struct __pyx_obj_5runup_11interpreter_Interpreter_1 *, PyObject *);
+  PyObject *(*_validate_prev_init)(struct __pyx_obj_5runup_11interpreter_Interpreter_1 *, PyObject *);
 };
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 *__pyx_vtabptr_5runup_11interpreter_Interpreter_1;
 
@@ -2497,14 +2499,14 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 17, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5runup_11interpreter_Interpreter = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(2, 17, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(2, 17, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(2, 8, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(2, 8, __pyx_L1_error)
   __pyx_ptype_5runup_11interpreter_Interpreter_1 = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter_1", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter_1), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(2, 28, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(2, 28, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(2, 21, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(2, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

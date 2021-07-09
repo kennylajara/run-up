@@ -1,9 +1,5 @@
 # cython: language_level=3
 
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at https://mozilla.org/MPL/2.0/.
-
 
 # Built-in
 import os
@@ -23,7 +19,7 @@ from runup.config cimport Config
 from runup.interpreter cimport Interpreter
 from runup.utils cimport vCall, vResponse
 from runup.version import RUNUP_VERSION
-from runup.yaml_parser cimport ParserYAML
+from runup import actions
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -42,65 +38,42 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 )
 @click.version_option(version=RUNUP_VERSION, prog_name="RunUp")
 @pass_config
-def cli(Config config: Dict[str, Any], context: str, verbose: bint):
-    """A simple backup system that only saves the files that has changed."""
+def cli(config: Config, context: str, verbose: bint):
+    """Common CLI actions."""
 
-    config.context = context
-    config.verbose = verbose
-
-    if verbose:
-        click.echo("-" * 10)
-        click.echo(f"RunUp, version {RUNUP_VERSION}")
-        click.echo("-" * 10)
-        click.echo(f"verbose: {verbose}")
-        click.echo(f"Context: {context}")
-        click.echo("-" * 10)
-
-    # Parse YAML file
-    vCall(config.verbose, "ParserYAML.parse")
-    config.yaml, config.interpreter = ParserYAML(
-        context=config.context,
-        verbose=config.verbose,
-    ).parse()
-    vResponse(config.verbose, "ParserYAML.parse", config.interpreter)
+    # Take action
+    actions.set_config(
+        config=config,
+        context=context,
+        verbose=verbose
+    )
 
 @cli.command()
 @pass_config
-def init(Config config):
+def init(config: Config):
     """Initialize the backup system."""
 
-    # Take actions
-    if config.interpreter is not None:
-        vCall(config.verbose, "Interpreter:set_environment")
-        env_set: bool = config.interpreter.set_environment()
-        vResponse(config.verbose, "Interpreter:set_environment", env_set)
-
-        if env_set:
-            click.secho("RunUp has been initialized successfully.", fg="green")
-
-    else:
-        # click.echo('Interpreter not detected on Initialization.')
-        sys.exit(1)
+    # Take action
+    result = actions.init(config)
+    if result: 
+        click.secho("RunUp has been initialized successfully.", fg="green")
 
 
 @cli.command()
 @click.argument("project", type=str, default="")
 @pass_config
-def backup(Config config, project: str):
+def backup(config: Config, project: str):
     """Create a backup based on he yaml file config."""
 
-    # Take actions
-    if config.interpreter is not None:
-        vCall(config.verbose, "Interpreter:create_backup")
-        created: Optional[bool] = config.interpreter.create_backup(config.yaml, project)
-        vResponse(config.verbose, "Interpreter:create_backup", created)
-        if created is True:
-            click.secho("New backup created.", fg="green")
-        else:
-            click.secho("The backup has NOT been created.", fg="red")
+    # Take action
+    result = actions.backup(
+        config=config,
+        project=project
+    )
+    if result is True:
+        click.secho("New backup created.", fg="green")
     else:
-        # click.echo('Interpreter not detected on backup creation.')
-        sys.exit(1)
+        click.secho("The backup has NOT been created.", fg="red")
 
 
 @cli.command()
@@ -137,31 +110,17 @@ def restore(
 ):
     """Create a backup based on he yaml file config."""
 
-    # Take actions
-    if config.interpreter is not None:
-
-        if clear_location:
-            restored_backup_dir = str(f"{config.context}/{location}")
-            for f in os.listdir(restored_backup_dir):
-                if Path.is_dir(Path(f)):
-                    if f == ".runup":
-                        continue
-                    rmtree(f)
-                else:
-                    if f == "runup.yaml":
-                        continue
-                    os.remove(os.path.join(restored_backup_dir, f))
-
-        vCall(config.verbose, "Interpreter:restore_backup")
-        restored: bool = config.interpreter.restore_backup(
-            config.yaml, project, location, job, force
-        )
-        vResponse(config.verbose, "Interpreter:restore_backup", restored)
-        if restored is None:
-            click.secho("The backup has NOT been restored.", fg="red")
-    else:
-        # click.secho('Interpreter not detected on backup restore.', fg="red")
-        sys.exit(0)
+    # Take action
+    result = actions.restore(
+        config=config, 
+        project=project, 
+        location=location, 
+        job=job, 
+        clear_location=clear_location, 
+        force=force
+    )
+    if result is False:
+        click.secho("The backup has NOT been restored.", fg="red")
 
 
 if __name__ == "__main__":
