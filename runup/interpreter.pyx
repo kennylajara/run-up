@@ -46,29 +46,18 @@ cdef class Interpreter:
         """Create a new backup."""
         raise NotImplementedError()
 
-    # @abstractmethod
-    def restore_backup(
-        self,
-        yaml_config: Dict[str, Any],
-        backup_id: str,
-        location: str,
-        job: int,
-        force: bool,
-    ) -> Optional[bool]:
+    cpdef restore_backup(self, yaml_config, str project, str location, int job, bint force):
         """Restore the specified backup."""
         raise NotImplementedError()
 
-    # @abstractmethod
     def set_environment(self) -> bool:
         """Create the backup enviroment."""
         raise NotImplementedError()
 
-    # @abstractmethod
     def missing_parameter(self, yaml_config: Dict[str, Any]) -> Optional[str]:
         """Find the required parameters missing on YAML file"""
         raise NotImplementedError()
 
-    # @abstractmethod
     def validate_parameters(
         self, search_area: Union[Dict[Any, Any], List[Any]], prefix: str = ""
     ) -> Optional[str]:
@@ -203,11 +192,11 @@ cdef class Interpreter_1(Interpreter):
     cpdef bint create_backup(self, yaml_config, project):
         """Create a new backup"""
 
-        initiated: bool = self._validate_prev_init(yaml_config)
+        cdef bint initiated = self._validate_prev_init(yaml_config)
         if not initiated:
             return False
         
-        backup_list: List[str] = []
+        backup_list = [] #: List[str] = []
         working_directories: Dict[str, str]
 
         # Make context relative
@@ -238,7 +227,7 @@ cdef class Interpreter_1(Interpreter):
             # Create DB backup
             db: RunupDB = RunupDB(self._context, self._verbose)
             vCall(self._verbose, "RunupDB:insert_job")
-            job_id: bool = db.insert_job(backup)
+            job_id: bool = db.insert_job(str(backup))
             vResponse(self._verbose, "RunupDB:insert_job", job_id)
             
             # Zip File
@@ -249,7 +238,7 @@ cdef class Interpreter_1(Interpreter):
                     vCall(self._verbose, "RunupDB:insert_file")
                     inserted_new: bool = db.insert_file(
                         job_id, 
-                        bytes(path_from_pwd, 'utf-8'),
+                        path_from_pwd,
                         path_from_yaml_file
                     )
                     vResponse(self._verbose, "RunupDB:insert_file", inserted_new)
@@ -262,14 +251,7 @@ cdef class Interpreter_1(Interpreter):
 
         return True
 
-    def restore_backup(
-        self,
-        yaml_config: Dict[str, Any],
-        project: str,
-        location: str,
-        job: int,
-        force: bool,
-    ) -> Optional[bool]:
+    cpdef restore_backup(self, yaml_config, str project, str location, int job, bint force):
         """Restore a backup"""
 
         initiated: bool = self._validate_prev_init(yaml_config)
@@ -528,7 +510,7 @@ cdef class Interpreter_1(Interpreter):
     ) -> Optional[str]:
         return super().validate_parameters(yaml_config, prefix)
 
-    def _validate_prev_init(self, yaml_config: Dict[str, Any]):
+    cdef _validate_prev_init(self, yaml_config: Dict[str, Any]):
         """Validate RunUp has been previously initialized."""
 
         if not os.path.exists(f"{self._context}/.runup"):
@@ -538,7 +520,7 @@ cdef class Interpreter_1(Interpreter):
         for project in yaml_config["project"].keys():
             vCall(self._verbose, "RunupDB.insert_backup")
             db = RunupDB(self._context, self._verbose)
-            db.insert_backup(project)
+            db.insert_backup(str(project))
             vResponse(self._verbose, "RunupDB.insert_backup", None)
 
         return True
@@ -548,11 +530,11 @@ cdef class Interpreter_1(Interpreter):
 
         # cdef char* filepath
 
-        tmp_bytes:bytes
-        directories: Dict[str, str] = {}
-        exclude_list: List[str] = []
-        exclude_list_slash: List[str] = []
-        include_dict: Dict[str, str] = {}
+        cdef char* tmp_bytes
+        cdef dict directories = {}
+        cdef list exclude_list = []
+        cdef list exclude_list_slash = []
+        cdef dict include_dict = {}
 
         for inc in config["include"]:
             inc_os = inc.replace("/", os.sep)

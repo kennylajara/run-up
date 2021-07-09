@@ -825,7 +825,7 @@ struct __pyx_obj_5runup_11interpreter_Interpreter;
 struct __pyx_obj_5runup_11interpreter_Interpreter_1;
 struct __pyx_obj_5runup_6config_Config;
 
-/* "runup/interpreter.pxd":8
+/* "runup/interpreter.pxd":17
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -839,11 +839,11 @@ struct __pyx_obj_5runup_11interpreter_Interpreter {
   PyObject *_required_parameters;
   PyObject *_valid_parameters;
   int _verbose;
-  char *_version;
+  PyObject *_version;
 };
 
 
-/* "runup/interpreter.pxd":19
+/* "runup/interpreter.pxd":28
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -872,7 +872,7 @@ struct __pyx_obj_5runup_6config_Config {
 
 
 
-/* "runup/interpreter.pxd":8
+/* "runup/interpreter.pxd":17
  * 
  * 
  * cdef class Interpreter:             # <<<<<<<<<<<<<<
@@ -886,7 +886,7 @@ struct __pyx_vtabstruct_5runup_11interpreter_Interpreter {
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5runup_11interpreter_Interpreter;
 
 
-/* "runup/interpreter.pxd":19
+/* "runup/interpreter.pxd":28
  * 
  * 
  * cdef class Interpreter_1(Interpreter):             # <<<<<<<<<<<<<<
@@ -896,6 +896,7 @@ static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter *__pyx_vtabptr_5
 
 struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 {
   struct __pyx_vtabstruct_5runup_11interpreter_Interpreter __pyx_base;
+  PyObject *(*_working_directories)(struct __pyx_obj_5runup_11interpreter_Interpreter_1 *, PyObject *);
 };
 static struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1 *__pyx_vtabptr_5runup_11interpreter_Interpreter_1;
 
@@ -1357,8 +1358,8 @@ static PyObject *__pyx_codeobj__3;
  *     """Default config of the "Global" args and kwargs."""
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
- *         self.context:str = '.'
- *         self.verbose: bint = False
+ *         self.context = '.'
+ *         self.verbose = False
  */
 
 /* Python wrapper */
@@ -1385,9 +1386,9 @@ static int __pyx_pf_5runup_6config_6Config___init__(struct __pyx_obj_5runup_6con
   /* "runup/config.pyx":21
  * 
  *     def __init__(self):
- *         self.context:str = '.'             # <<<<<<<<<<<<<<
- *         self.verbose: bint = False
- *         self.interpreter:Interpreter = None
+ *         self.context = '.'             # <<<<<<<<<<<<<<
+ *         self.verbose = False
+ *         self.interpreter = None
  */
   __Pyx_INCREF(__pyx_kp_u_);
   __Pyx_GIVEREF(__pyx_kp_u_);
@@ -1397,18 +1398,18 @@ static int __pyx_pf_5runup_6config_6Config___init__(struct __pyx_obj_5runup_6con
 
   /* "runup/config.pyx":22
  *     def __init__(self):
- *         self.context:str = '.'
- *         self.verbose: bint = False             # <<<<<<<<<<<<<<
- *         self.interpreter:Interpreter = None
- *         self.yaml: Optional[Dict[str, Union[str]]] = None
+ *         self.context = '.'
+ *         self.verbose = False             # <<<<<<<<<<<<<<
+ *         self.interpreter = None
+ *         self.yaml = None
  */
   __pyx_v_self->verbose = 0;
 
   /* "runup/config.pyx":23
- *         self.context:str = '.'
- *         self.verbose: bint = False
- *         self.interpreter:Interpreter = None             # <<<<<<<<<<<<<<
- *         self.yaml: Optional[Dict[str, Union[str]]] = None
+ *         self.context = '.'
+ *         self.verbose = False
+ *         self.interpreter = None             # <<<<<<<<<<<<<<
+ *         self.yaml = None
  */
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -1417,9 +1418,9 @@ static int __pyx_pf_5runup_6config_6Config___init__(struct __pyx_obj_5runup_6con
   __pyx_v_self->interpreter = ((struct __pyx_obj_5runup_11interpreter_Interpreter *)Py_None);
 
   /* "runup/config.pyx":24
- *         self.verbose: bint = False
- *         self.interpreter:Interpreter = None
- *         self.yaml: Optional[Dict[str, Union[str]]] = None             # <<<<<<<<<<<<<<
+ *         self.verbose = False
+ *         self.interpreter = None
+ *         self.yaml = None             # <<<<<<<<<<<<<<
  */
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -1431,8 +1432,8 @@ static int __pyx_pf_5runup_6config_6Config___init__(struct __pyx_obj_5runup_6con
  *     """Default config of the "Global" args and kwargs."""
  * 
  *     def __init__(self):             # <<<<<<<<<<<<<<
- *         self.context:str = '.'
- *         self.verbose: bint = False
+ *         self.context = '.'
+ *         self.verbose = False
  */
 
   /* function exit code */
@@ -1571,7 +1572,7 @@ static PyObject *__pyx_pf_5runup_6config_6Config_2__reduce_cython__(struct __pyx
  *         return __pyx_unpickle_Config, (type(self), 0x7298d40, None), state
  */
   /*else*/ {
-    __pyx_t_3 = (__pyx_v_self->context != Py_None);
+    __pyx_t_3 = (__pyx_v_self->context != ((PyObject*)Py_None));
     __pyx_t_5 = (__pyx_t_3 != 0);
     if (!__pyx_t_5) {
     } else {
@@ -2065,10 +2066,11 @@ static PyObject *__pyx_f_5runup_6config___pyx_unpickle_Config__set_state(struct 
   }
   __pyx_t_1 = __Pyx_GetItemInt_Tuple(__pyx_v___pyx_state, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v___pyx_result->context);
   __Pyx_DECREF(__pyx_v___pyx_result->context);
-  __pyx_v___pyx_result->context = __pyx_t_1;
+  __pyx_v___pyx_result->context = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   if (unlikely(__pyx_v___pyx_state == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
@@ -2202,7 +2204,7 @@ static PyObject *__pyx_tp_new_5runup_6config_Config(PyTypeObject *t, CYTHON_UNUS
   }
   if (unlikely(!o)) return 0;
   p = ((struct __pyx_obj_5runup_6config_Config *)o);
-  p->context = Py_None; Py_INCREF(Py_None);
+  p->context = ((PyObject*)Py_None); Py_INCREF(Py_None);
   p->interpreter = ((struct __pyx_obj_5runup_11interpreter_Interpreter *)Py_None); Py_INCREF(Py_None);
   p->yaml = Py_None; Py_INCREF(Py_None);
   return o;
@@ -2225,9 +2227,6 @@ static void __pyx_tp_dealloc_5runup_6config_Config(PyObject *o) {
 static int __pyx_tp_traverse_5runup_6config_Config(PyObject *o, visitproc v, void *a) {
   int e;
   struct __pyx_obj_5runup_6config_Config *p = (struct __pyx_obj_5runup_6config_Config *)o;
-  if (p->context) {
-    e = (*v)(p->context, a); if (e) return e;
-  }
   if (p->interpreter) {
     e = (*v)(((PyObject *)p->interpreter), a); if (e) return e;
   }
@@ -2240,9 +2239,6 @@ static int __pyx_tp_traverse_5runup_6config_Config(PyObject *o, visitproc v, voi
 static int __pyx_tp_clear_5runup_6config_Config(PyObject *o) {
   PyObject* tmp;
   struct __pyx_obj_5runup_6config_Config *p = (struct __pyx_obj_5runup_6config_Config *)o;
-  tmp = ((PyObject*)p->context);
-  p->context = Py_None; Py_INCREF(Py_None);
-  Py_XDECREF(tmp);
   tmp = ((PyObject*)p->interpreter);
   p->interpreter = ((struct __pyx_obj_5runup_11interpreter_Interpreter *)Py_None); Py_INCREF(Py_None);
   Py_XDECREF(tmp);
@@ -2501,14 +2497,14 @@ static int __Pyx_modinit_type_import_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_import_code", 0);
   /*--- Type import code ---*/
-  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 8, __pyx_L1_error)
+  __pyx_t_1 = PyImport_ImportModule("runup.interpreter"); if (unlikely(!__pyx_t_1)) __PYX_ERR(2, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_ptype_5runup_11interpreter_Interpreter = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(2, 8, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(2, 8, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter) __PYX_ERR(2, 17, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter)) __PYX_ERR(2, 17, __pyx_L1_error)
   __pyx_ptype_5runup_11interpreter_Interpreter_1 = __Pyx_ImportType(__pyx_t_1, "runup.interpreter", "Interpreter_1", sizeof(struct __pyx_obj_5runup_11interpreter_Interpreter_1), __Pyx_ImportType_CheckSize_Warn);
-   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(2, 19, __pyx_L1_error)
-  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(2, 19, __pyx_L1_error)
+   if (!__pyx_ptype_5runup_11interpreter_Interpreter_1) __PYX_ERR(2, 28, __pyx_L1_error)
+  __pyx_vtabptr_5runup_11interpreter_Interpreter_1 = (struct __pyx_vtabstruct_5runup_11interpreter_Interpreter_1*)__Pyx_GetVtable(__pyx_ptype_5runup_11interpreter_Interpreter_1->tp_dict); if (unlikely(!__pyx_vtabptr_5runup_11interpreter_Interpreter_1)) __PYX_ERR(2, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_RefNannyFinishContext();
   return 0;

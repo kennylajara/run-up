@@ -5,12 +5,12 @@
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 
-cdef void vInfo(bint verbose, msg)
+cdef void vInfo(bint verbose, str msg)
 
-cdef void vCall(bint verbose, func)
+cdef void vCall(bint verbose, str func)
 
-cdef void vResponse(bint verbose, func, res)
+cdef void vResponse(bint verbose, str func, res)
 
 cpdef hash_bytestr_iter(bytesiter, hasher)
 
-cpdef hashfile(char* fname, char* algo)
+cpdef hashfile(str fname, char* algo)

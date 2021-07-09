@@ -25,6 +25,11 @@ from libc.stdlib cimport malloc
 from runup.utils cimport vInfo, hashfile
 
 
+cdef struct sql_dict_type:
+    char* sql_name
+    char* sql_query
+
+
 cdef class RunupDB:
     """
     Handle the database where the data is stored.
@@ -36,14 +41,14 @@ cdef class RunupDB:
 
     def __init__(self, context: Path, bint verbose):
 
-        self._dbname: str = str(f"{context}/.runup/runup.db")
-        self._verbose: bint = verbose
+        self._dbname = str(context) + "/.runup/runup.db"
+        self._verbose = verbose
         self._conn = None
 
-    cdef execute(self, name, query):
+    cdef execute(self, str name, str query):
         """Execute a query."""
 
-        vInfo(self._verbose, f"Executed query: {name}")
+        vInfo(self._verbose, "Executed query: " + name)
 
         try:
             assert self._conn is not None
@@ -58,38 +63,39 @@ cdef class RunupDB:
             return c
         except Error as e:
             click.echo(e)
-
-    cdef close_connection(self, bint commit):
+            
+    cdef void close_connection(self, bint commit):
         """Close database connection"""
 
-        vInfo(self._verbose, f"Closing connection to: {self._dbname}")
+        vInfo(self._verbose, "Closing connection to: " + self._dbname)
         if commit:
             self._conn.commit()
         self._conn.close()
         vInfo(self._verbose, b"Connetion closed")
 
-    cdef connect(self):
+    cdef void connect(self):
         """Create a database connection to a `runup.db`."""
-        vInfo(self._verbose, f"Creating connection to: {self._dbname}")
+        vInfo(self._verbose, "Creating connection to: " + self._dbname)
 
         try:
             self._conn = sqlite3.connect(self._dbname)
-            vInfo(self._verbose, f"Database version: {sqlite3.version}")
+            vInfo(self._verbose, "Database version: " + sqlite3.version)
         except Error as e:
             click.echo(e)
 
-    def create_database(self):
+    cdef void create_database(self):
         """Create a database `runup.db`."""
 
-        sql_dict: Dict[bytes, bytes] = {
-            "Create backups": """
+        
+        self.connect()
+        self.execute("Create backups", """
             CREATE TABLE `backups` (
                 `name` TEXT PRIMARY KEY,
                 `running` INTEGER NOT NULL,
                 `execute` INTEGER NULL
             );
-        """,
-            "Create jobs": """
+        """)
+        self.execute("Create jobs", """
             CREATE TABLE `jobs` (
                 `job_id` INTEGER PRIMARY KEY,
                 `backup_name` TEXT NOT NULL,
@@ -101,8 +107,8 @@ cdef class RunupDB:
                     ON UPDATE CASCADE
                     ON DELETE CASCADE
             );
-        """,
-            "Create files": """
+        """)
+        self.execute("Create files", """
             CREATE TABLE `files` (
                 `file_id` INTEGER PRIMARY KEY,
                 `job_id` INTEGER NOT NULL,
@@ -119,130 +125,113 @@ cdef class RunupDB:
                         ON UPDATE CASCADE
                         ON DELETE CASCADE
             );
-        """,
-            "Create signature index": """
+        """)
+        self.execute("Create signature index", """
             CREATE INDEX `idx_signature` ON `files` (`sha256`, `sha512`);
-        """,
-            "Create job_id index": """
-            CREATE INDEX `idx_job_id` ON `files` (`job_id`);
-        """,
-        }
+        """)
+        self.execute("Create job_id index", """
+        CREATE INDEX `idx_job_id` ON `files` (`job_id`);
+        """)
 
-        self.connect()
-        for name, sql in sql_dict.items():
-            self.execute(name, sql)
         self.close_connection(commit=True)
 
-    def insert_backup(self, name: str) -> None:
+    cdef void insert_backup(self, str name):
         """Insert a backup"""
 
-        sql:str = f"""
-            INSERT OR IGNORE
-            INTO backups (name, running, execute)
-            VALUES ('{name}', 0, NULL)
-        """
-
         self.connect()
-        self.execute("Insert backup", sql)
+        self.execute("Insert backup", 
+            "INSERT OR IGNORE " + \
+            "INTO backups (name, running, execute) " + \
+            "VALUES ('"+ name +"', 0, NULL)"
+        )
         self.close_connection(commit=True)
 
-    cdef insert_file(
-        self, int job_id, char* path_from_pwd, path_from_yaml_file
-    ):
+    cdef bint insert_file(self, int job_id, str path_from_pwd, str path_from_yaml_file):
         """
         Insert a file into DB.
 
         Returns a boolean indicatinf if the inserted
         """
-        sql:str
 
-        sha256:str = hashfile(path_from_pwd, b"sha256")
-        sha512:str = hashfile(path_from_pwd, b"sha512")
+        cdef str sha256
+        cdef str sha512
+        cdef bint inserted_new
+
+        sha256 = hashfile(path_from_pwd, b"sha256")
+        sha512 = hashfile(path_from_pwd, b"sha512")
 
         self.connect()
 
         # TODO: Do not execute this query if is a directory (empty sha256 and sha512)
-        sql = f"""
-            SELECT file_id, sha256, sha512
-            FROM files
-            WHERE sha256='{sha256}' AND sha512='{sha512}'
-            ORDER BY file_id ASC
-            LIMIT 1;
-        """
-
-        result = self.execute(f"Search file: {path_from_yaml_file}", sql)
-        
-
-        inserted_new: bool
+        result = self.execute("Search file: " + path_from_yaml_file, 
+            "SELECT file_id, sha256, sha512 " + \
+            "FROM files " + \
+            "WHERE sha256='"+sha256+"' AND sha512='"+sha512+"' " + \
+            "ORDER BY file_id ASC " + \
+            "LIMIT 1;"
+        )
 
         if len(result) == 0:
             # Insert
-            sql = f"""
-                INSERT INTO files (job_id, sha256, sha512, path)
-                VALUES ({job_id}, '{sha256}', '{sha512}', '{path_from_yaml_file}')
-            """
-            
-            self.execute(f"Insert new file: {path_from_yaml_file}", sql)
+            self.execute("Insert new file: "+path_from_yaml_file, 
+                "INSERT INTO files (job_id, sha256, sha512, path) " + \
+                "VALUES ("+str(job_id)+", '"+sha256+"', '"+sha512+"', '"+path_from_yaml_file+"')"
+            )
             inserted_new = True
         else:
             # Insert
-            sql = f"""
-                INSERT INTO files (job_id, sha256, sha512, file_loc, path)
-                VALUES ({job_id}, '{result[0][1]}', '{result[0][2]}', {result[0][0]}, '{path_from_yaml_file}')
-            """
-
-            self.execute(f"Insert existing file: {path_from_yaml_file}", sql)
+            self.execute("Insert existing file: "+path_from_yaml_file,
+                "INSERT INTO files (job_id, sha256, sha512, file_loc, path) " + \
+                "VALUES ("+str(job_id)+", '"+result[0][1]+"', '"+result[0][2]+"', "+str(result[0][0])+", '"+path_from_yaml_file+"')"
+            )
             inserted_new = False
 
         self.close_connection(commit=True)
 
         return inserted_new
 
-    def insert_job(self, backup_name: str):
+    cdef int insert_job(self, str backup_name):
         """Insert a job"""
 
-        sql:str = f"""
-            INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)
-            VALUES (NULL, '{backup_name}', {int(time.time())}, NULL, 0)
-        """
-
+        cdef int id 
+        cdef str this_time 
+        
+        this_time = str(int(time.time()))
+        
         self.connect()
-        id: int = self.execute("Insert job", sql)
+        id = self.execute("Insert job", 
+            "INSERT INTO jobs (job_id, backup_name, time_start, time_finish, files_num)" + \
+            "VALUES (NULL, '" + backup_name + "', " + this_time + ", NULL, 0)"
+        )
         self.close_connection(commit=True)
 
         return id
 
-    cdef select_job(self, int job, project):
+    cdef select_job(self, int job, str project):
         """Select a job"""
 
+        cdef str sql
+
+        self.connect()
         # Select latest job from DB
         if job == 0:
-
-            sql:str = f"""
-                SELECT MAX(files.job_id)
-                FROM files
-                JOIN jobs ON jobs.job_id = files.job_id
-                WHERE jobs.backup_name = '{project}'
-            """
-
-            self.connect()
-            job = self.execute("Select latest job", sql)[0][0]
-            self.close_connection(commit=True)
+            job = self.execute("Select latest job",
+                "SELECT MAX(files.job_id) " + \
+                "FROM files " + \
+                "JOIN jobs ON jobs.job_id = files.job_id " + \
+                "WHERE jobs.backup_name = '"+project +"'"
+            )[0][0]
 
         if job is None:
             return None
 
         # Select data from DB
-        sql:str = f"""
-            SELECT A.job_id, A.path, B.job_id, B.path
-            FROM files AS A
-            JOIN jobs ON jobs.job_id = A.job_id
-            LEFT JOIN files AS B ON A.file_loc = B.file_id
-            WHERE jobs.backup_name = '{project}' AND A.job_id = {job}
-        """
-
-        self.connect()
-        data = self.execute("Get job info", sql)
+        data = self.execute("Get job info", 
+            "SELECT A.job_id, A.path, B.job_id, B.path " + \
+            "FROM files AS A JOIN jobs ON jobs.job_id = A.job_id " + \
+            "LEFT JOIN files AS B ON A.file_loc = B.file_id " + \
+            "WHERE jobs.backup_name = '"+project+"' AND A.job_id = "+str(job)
+        )
         self.close_connection(commit=True)
 
         return data

@@ -7,16 +7,22 @@
 
 cdef class RunupDB:
 
-    cdef _dbname
+    cdef str _dbname
     cdef bint _verbose
     cdef _conn
 
-    cdef execute(self, name, query)
+    cdef execute(self, str name, str query)
 
-    cdef close_connection(self, bint commit)
+    cdef void close_connection(self, bint commit)
 
-    cdef connect(self)
+    cdef void connect(self)
 
-    cdef insert_file(self, int job_id, char* path_from_pwd, path_from_yaml_file)
+    cdef void create_database(self)
 
-    cdef select_job(self, int job, project)
+    cdef void insert_backup(self, str name)
+
+    cdef bint insert_file(self, int job_id, str path_from_pwd, str path_from_yaml_file)
+    
+    cdef int insert_job(self, str backup_name)
+
+    cdef select_job(self, int job, str project)

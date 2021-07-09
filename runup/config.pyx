@@ -18,7 +18,7 @@ cdef class Config(object):
     """Default config of the "Global" args and kwargs."""
 
     def __init__(self):
-        self.context:str = '.'
-        self.verbose: bint = False
-        self.interpreter:Interpreter = None
-        self.yaml: Optional[Dict[str, Union[str]]] = None
+        self.context = '.'
+        self.verbose = False
+        self.interpreter = None
+        self.yaml = None

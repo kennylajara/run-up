@@ -17,7 +17,7 @@ from runup.interpreter cimport Interpreter
 cdef class Config(object):
     """Default config of the "Global" args and kwargs."""
     
-    cdef context
+    cdef str context
     cdef bint verbose
     cdef Interpreter interpreter
     cdef yaml

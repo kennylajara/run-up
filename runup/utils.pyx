@@ -18,19 +18,19 @@ from click import echo
 # ------- #
 
 
-cdef void vInfo(bint verbose, msg):
+cdef void vInfo(bint verbose, str msg):
     """Print verbose Info"""
     if verbose:
         echo(f"Info: {msg}")
 
 
-cdef void vCall(bint verbose, func):
+cdef void vCall(bint verbose, str func):
     """Print verbose Call"""
     if verbose:
         echo(f"Call: {func}")
 
 
-cdef void vResponse(bint verbose, func, res):
+cdef void vResponse(bint verbose, str func, res):
     """Print verbose Response"""
     if verbose:
         echo(f"Response: {func} => {res}")
@@ -47,7 +47,7 @@ cpdef hash_bytestr_iter(bytesiter, hasher):
     return hasher.hexdigest()
 
 
-def file_as_blockiter(afile, blocksize: int=65536):
+def file_as_blockiter(afile, int blocksize=65536):
     with afile:
         block = afile.read(blocksize)
         while len(block) > 0:
@@ -55,7 +55,7 @@ def file_as_blockiter(afile, blocksize: int=65536):
             block = afile.read(blocksize)
 
 
-cpdef hashfile(char* fname, char* algo):
+cpdef hashfile(str fname, char* algo):
     algorithm: hashlib._Hash
 
     if algo == b"sha256":
