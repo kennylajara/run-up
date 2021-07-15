@@ -1,0 +1,9 @@
+version: 1
+
+project:
+  projectname:
+    include:
+      - './my-project/first-directory/'
+      - './my-project/second-directory/'
+    exclude:
+      - './my-project/first-directory/ignore-me/'

@@ -15,11 +15,12 @@ import pyximport  # type: ignore
 pyximport.install()
 
 # Own
+from runup import actions
 from runup.config cimport Config
+from runup.editor import Editor
 from runup.interpreter cimport Interpreter
 from runup.utils cimport vCall, vResponse
 from runup.version import RUNUP_VERSION
-from runup import actions
 
 
 pass_config = click.make_pass_decorator(Config, ensure=True)
@@ -74,6 +75,13 @@ def backup(config: Config, project: str):
         click.secho("New backup created.", fg="green")
     else:
         click.secho("The backup has NOT been created.", fg="red")
+
+
+@cli.command()
+@pass_config
+def editor(config: Config):
+    """Show the Graphic User Interfase (GUI)"""
+    Editor()
 
 
 @cli.command()

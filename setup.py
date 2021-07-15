@@ -86,6 +86,7 @@ setup(
     include_package_data=False,
     install_requires=[
         "Click==8.0.1",
+        # "pillow==8.3.1",
         "pyyaml==5.4.1",
     ],
     long_description=README,
