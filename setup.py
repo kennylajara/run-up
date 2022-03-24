@@ -126,7 +126,7 @@ setup(
     install_requires=[
         "Click==8.0.1",
         # "pillow==8.3.1",
-        "pyyaml==5.4.1",
+        "pyyaml==6.0",
         "pygments==2.11.2",
     ],
     long_description=README,
