@@ -815,7 +815,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "runup/version.pyx",
+  "runup/version.py",
 };
 
 /*--- Type declarations ---*/
@@ -1120,7 +1120,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "runup/version.pyx":29
+  /* "runup/version.py":29
  * # ----------------------------------------------------- #
  * YAML_VERSIONS: Tuple[str] = (
  *     "1",             # <<<<<<<<<<<<<<
@@ -1411,7 +1411,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "runup/version.pyx":9
+  /* "runup/version.py":9
  * 
  * # Built-in
  * from typing import Tuple             # <<<<<<<<<<<<<<
@@ -1432,7 +1432,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "runup/version.pyx":14
+  /* "runup/version.py":14
  * # Current version of runup                        #
  * # ----------------------------------------------- #
  * RUNUP_VERSION: str = "0.1b4.1"             # <<<<<<<<<<<<<<
@@ -1441,7 +1441,7 @@ if (!__Pyx_RefNanny) {
  */
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_RUNUP_VERSION, __pyx_kp_u_0_1b4_1) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
 
-  /* "runup/version.pyx":29
+  /* "runup/version.py":29
  * # ----------------------------------------------------- #
  * YAML_VERSIONS: Tuple[str] = (
  *     "1",             # <<<<<<<<<<<<<<
@@ -1450,7 +1450,7 @@ if (!__Pyx_RefNanny) {
  */
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_YAML_VERSIONS, __pyx_tuple_) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
 
-  /* "runup/version.pyx":1
+  /* "runup/version.py":1
  * # cython: language_level=3             # <<<<<<<<<<<<<<
  * 
  * # This Source Code Form is subject to the terms of the Mozilla Public

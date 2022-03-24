@@ -1,17 +1,56 @@
 #!/usr/bin/env python3
 
 # Built-in
+import os
+from typing import Tuple
 from sys import version_info as python_version
-from setuptools import setup  # type: ignore
+from setuptools import Extension, setup  # type: ignore
+
 
 # 3rd party
 import pyximport  # type: ignore
 
 pyximport.install()
 
-# Own
-from dev import build
-from runup.version import RUNUP_VERSION
+
+
+# ----------------------------------------------- #
+# Current version of runup                        #
+# ----------------------------------------------- #
+RUNUP_VERSION: str = "0.1b4.1"
+
+# ----------------------------------------------------- #
+# List of versions supported when reading the YAML file #
+# ----------------------------------------------------- #
+# Format: 2 numbers. Example: 1 and 1.0 but not 1.0.0   #
+#                                                       #
+# On every major release add a version X and a X.0      #
+#                                                       #
+# Until the release 2.0, a test is going to fail every  #
+# time a new version is released. Just search for:      #
+# "Update major to latest until 2.0 is released"        #
+# without quotes.                                       #
+# ----------------------------------------------------- #
+YAML_VERSIONS: Tuple[str] = (
+    "1",
+    "1.0",
+)
+
+
+def get_modules(exts):
+
+    ext_modules = []
+    for root, _, files in os.walk("runup"):
+        for file in files:
+            for ext in exts:
+                if file.endswith(f".{ext}"):
+                    ext_modules += [
+                        Extension(
+                            f'{root.replace(os.sep, ".")}.{file[:-1*(len(ext)+1)]}',
+                            [f"runup{os.sep}{file}"],
+                        ),
+                    ]
+    return ext_modules
 
 
 # Validate Python version
@@ -38,10 +77,10 @@ if USE_CYTHON:
 
 
 if USE_CYTHON:
-    ext_modules = build.get_modules(exts=['py', 'pyx'])
+    ext_modules = get_modules(exts=['py', 'pyx'])
     cmdclass = {"build_ext": build_ext}
 else:
-    ext_modules = build.get_modules(exts=['c'])
+    ext_modules = get_modules(exts=['c'])
 
 
 # Get content of `README.md` to
@@ -88,6 +127,7 @@ setup(
         "Click==8.0.1",
         # "pillow==8.3.1",
         "pyyaml==5.4.1",
+        "pygments==2.11.2",
     ],
     long_description=README,
     long_description_content_type="text/markdown",
