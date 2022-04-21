@@ -9,10 +9,33 @@ You need to have a supported Python version installed on a supported operative s
 
 ## Installation
 
+<!--
 You can install RunUp from [PyPi](https://pypi.org/project/RunUp/) via PIP with the command:
 
 ```
 python3 -m pip install runup
+```
+-->
+
+The installation with PIP will not work as I am still in the process to open source this project. To install it, follow the steps below:
+
+```
+# Clone the repo
+git clone https://github.com/kennylajara/RunUp.git
+# Get into the folder
+cd RunUp
+# Create and activate environment
+python -m venv venv && source venv/bin/activate
+# Install development dependencies
+pip install -r requirements-dev.txt
+# Compile (we are using Cython)
+python setup.py build_ext --inplace
+# Install package
+pip install --editable .
+# Test it has been installed successfully
+runup --version 
+# See how to use the package
+runup --help
 ```
 
 ## Basic Example
