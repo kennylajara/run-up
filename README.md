@@ -36,11 +36,34 @@ When restoring data, we handle it as a full backup, so we don't have the inconve
 
 ## Usage
 
+The installation with PIP will not work as I am still in the process to open source this project. To install it, follow the steps below:
+
+```
+# Clone the repo
+git clone https://github.com/kennylajara/RunUp.git
+# Get into the folder
+cd RunUp
+# Create and activate environment
+python -m venv venv && source venv/bin/activate
+# Install development dependencies
+pip install -r requirements-dev.txt
+# Compile (we are using Cython)
+python setup.py build_ext --inplace
+# Install package
+pip install --editable .
+# Test it has been installed successfully
+runup --version 
+# See how to use the package
+runup --help
+```
+
+<!--
 Install RunUp with PIP:
 
 ```
 python3 -m pip install runup
 ```
+-->
 
 Create a `runup.yaml` file with the configuration of your backups. This is an example to back up all files in the same directory as the configuration file:
 
