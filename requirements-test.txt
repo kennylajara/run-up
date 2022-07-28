@@ -1,5 +1,5 @@
 # Build
-cython==0.29.23
+cython==0.29.31
 
 # Dependencies
 Click==8.0.1
