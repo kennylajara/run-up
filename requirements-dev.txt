@@ -1,7 +1,7 @@
 # Build
 auditwheel>=4.0.0
 cython==0.29.23
-pyinstaller==4.3
+pyinstaller==5.7.0
 wheel>=0.36.2
 
 # Format
